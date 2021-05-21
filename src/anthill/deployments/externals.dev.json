@@ -1,0 +1,14 @@
+{
+  "ANT-BUSD": {
+    "address": "0xDC4467C38483226A0Db7Dc50bE2f3B627e101f72",
+    "decimals": 18
+  },
+  "ANTS-BUSD": {
+    "address": "0xB67Fd1CfA674460d607ac51C4e424D7506608ad6",
+    "decimals": 18
+  },
+  "BUSD": {
+    "address": "0xd0B7B9Bc61a609Bf7a65358C2d2f98F5b4847d58",
+    "decimals": 18
+  }
+}
