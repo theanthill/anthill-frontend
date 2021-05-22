@@ -28,3 +28,4 @@ yarn-error.log*
 deployments.mainnet.json
 
 *.code-workspace
+*.log
