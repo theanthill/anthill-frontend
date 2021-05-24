@@ -14,7 +14,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "@theanthill/pancake-swap-periphery": "^1.1.0-beta.0",
+    "@theanthill/pancake-swap-periphery": "1.1.0-beta.1",
     "@theanthill/pancakeswap-sdk-v1": "1.0.2",
     "@types/humanize-plus": "^1.8.0",
     "@types/jest": "^26.0.9",

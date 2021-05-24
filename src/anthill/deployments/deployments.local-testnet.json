@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0x00826F49DdCe34f527340B20aDF5016cf3a494b6",
+    "address": "0x8F88Eb40B86182729fbeD02C4EeE0534726DF270",
     "abi": [
       {
         "inputs": [
@@ -463,7 +463,7 @@
     ]
   },
   "AntToken": {
-    "address": "0xbB1105C82860d2501C5233048A3e95B2f9C812Db",
+    "address": "0x4B10366c685B8608383b829571E66041409e41B8",
     "abi": [
       {
         "inputs": [
@@ -923,7 +923,7 @@
     ]
   },
   "AntBond": {
-    "address": "0x54D3912fC0264582Df027094787973E73B5885b1",
+    "address": "0x72FD4E11a439beB39512Cfd04AA48214a31f38B0",
     "abi": [
       {
         "inputs": [],
@@ -1377,7 +1377,7 @@
     ]
   },
   "AntShare": {
-    "address": "0xae2cCb3bc98E487b4e25269A1Fe219f392611F78",
+    "address": "0x0a64b77B6A5335A6d9455D1e0fD7B72a78daD1D4",
     "abi": [
       {
         "inputs": [
@@ -1813,7 +1813,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0x42d3FEB8bb174074e7a27b7233a6fe5842Cf009d",
+    "address": "0x2DDFEdee2a1300c9904440229B5F41230b1e26A6",
     "abi": [
       {
         "inputs": [
@@ -2192,7 +2192,7 @@
     ]
   },
   "Treasury": {
-    "address": "0x0799Fa3B44aaa693B06fAD280263531Cc3917122",
+    "address": "0xb1Adb93a4484519C72C4f7FF058dC5D55Ecc7096",
     "abi": [
       {
         "inputs": [
@@ -2837,7 +2837,7 @@
     ]
   },
   "BUSDANTLPTokenANTPool": {
-    "address": "0x7e4c79f3193911B17fCCf88a7448B414976E1781",
+    "address": "0x62891d698bee38421F41cFEbFbE1b6BacB3fE0f9",
     "abi": [
       {
         "inputs": [
@@ -3328,7 +3328,7 @@
     ]
   },
   "LiquidityProviderHelper": {
-    "address": "0xe4eb8629A81884e2cf30cC34Fa5f3a2948C2F332",
+    "address": "0x7b6E6a909D79d1EbF80CD48B7C0024a2d0b56Dbc",
     "abi": [
       {
         "inputs": [
@@ -3438,7 +3438,7 @@
     ]
   },
   "MockStdReference": {
-    "address": "0x5a87C1F9ee8077c2C6a9db40AA210584bF94B392",
+    "address": "0x374B1d210845E7DD6eFCA32A8c7c92711Cb5d3E5",
     "abi": [
       {
         "inputs": [
@@ -3540,7 +3540,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0xbBe9d7158584c8Eb339F19a582cC61456da7047d",
+    "address": "0x8D606b77D3aEbF1d73e0C95ab821736C6ed0F8A7",
     "abi": [
       {
         "inputs": [

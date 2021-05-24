@@ -2991,10 +2991,10 @@
     event-iterator "^2.0.0"
     loglevel "^1.7.0"
 
-"@theanthill/pancake-swap-periphery@^1.1.0-beta.0":
-  version "1.1.0-beta.0"
-  resolved "https://registry.npmjs.org/@theanthill/pancake-swap-periphery/-/pancake-swap-periphery-1.1.0-beta.0.tgz"
-  integrity sha512-C3GWSJbTC2wUt+NIr1WWO6FfhZDNIPLjLrIGRyNG7BzrwDryjHwLZtTwIMA3LeSe+V89dJNw2XJXReRedjHpkA==
+"@theanthill/pancake-swap-periphery@1.1.0-beta.1":
+  version "1.1.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@theanthill/pancake-swap-periphery/-/pancake-swap-periphery-1.1.0-beta.1.tgz#903d1ad878e72bb215b2b37ffb2ef5c4d0c8add9"
+  integrity sha512-O7dYf+AHOQuDGJps1/8vUyLsI7RPSsqIhWF/OE/YQDyRKbe8R+xLgoZkaRImWo6KzPD6hs4sWEo7QD4OpzE32g==
   dependencies:
     "@pancakeswap2/pancake-swap-core" "^0.1.0"
     "@uniswap/lib" "1.1.1"
