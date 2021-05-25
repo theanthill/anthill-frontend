@@ -9,9 +9,7 @@ const useRedeem = (bank: Bank) => {
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleRedeem = useCallback(() => {
-    const liquidityHelper = antToken.contracts['LiquidityProviderHelper'];
-    
-    handleTransactionReceipt(liquidityHelper.exit(deadline()), `Settle & Withdraw ${bank.contract}`);
+    handleTransactionReceipt(antToken.settleWithdraw(), `Settle & Withdraw ${bank.contract}`);
   }, [bank, antToken]);
 
   return { onRedeem: handleRedeem };

@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0x8F88Eb40B86182729fbeD02C4EeE0534726DF270",
+    "address": "0x11C8182187c7A93BB5693B5178fcBA6b10B67FCc",
     "abi": [
       {
         "inputs": [
@@ -463,7 +463,7 @@
     ]
   },
   "AntToken": {
-    "address": "0x4B10366c685B8608383b829571E66041409e41B8",
+    "address": "0xB89ccd4Cb0C8Fc8782937971DBC067580CAefD2b",
     "abi": [
       {
         "inputs": [
@@ -923,7 +923,7 @@
     ]
   },
   "AntBond": {
-    "address": "0x72FD4E11a439beB39512Cfd04AA48214a31f38B0",
+    "address": "0xb51Fd926d366d3e3c8eab7Ad818f1159cBdd76cC",
     "abi": [
       {
         "inputs": [],
@@ -1377,7 +1377,7 @@
     ]
   },
   "AntShare": {
-    "address": "0x0a64b77B6A5335A6d9455D1e0fD7B72a78daD1D4",
+    "address": "0x02093d01A06d178795068c67f68B8f3917E82338",
     "abi": [
       {
         "inputs": [
@@ -1813,7 +1813,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0x2DDFEdee2a1300c9904440229B5F41230b1e26A6",
+    "address": "0x11A7B07739A2B35C091cdcdB3aAbDF68F74f8d47",
     "abi": [
       {
         "inputs": [
@@ -2192,7 +2192,7 @@
     ]
   },
   "Treasury": {
-    "address": "0xb1Adb93a4484519C72C4f7FF058dC5D55Ecc7096",
+    "address": "0xA951FfB591B49D270B6B4Bb159D59C7a3D5fBdE4",
     "abi": [
       {
         "inputs": [
@@ -2837,7 +2837,7 @@
     ]
   },
   "BUSDANTLPTokenANTPool": {
-    "address": "0x62891d698bee38421F41cFEbFbE1b6BacB3fE0f9",
+    "address": "0xD6C1d246038e9F41283E9438ADD40817ED259EE0",
     "abi": [
       {
         "inputs": [
@@ -3313,6 +3313,13 @@
         "type": "function"
       },
       {
+        "inputs": [],
+        "name": "getMyReward",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
         "inputs": [
           {
             "internalType": "uint256",
@@ -3328,7 +3335,7 @@
     ]
   },
   "LiquidityProviderHelper": {
-    "address": "0x7b6E6a909D79d1EbF80CD48B7C0024a2d0b56Dbc",
+    "address": "0xEc98c5E7b457DB24E89E50005b401d87fFf89B25",
     "abi": [
       {
         "inputs": [
@@ -3438,7 +3445,7 @@
     ]
   },
   "MockStdReference": {
-    "address": "0x374B1d210845E7DD6eFCA32A8c7c92711Cb5d3E5",
+    "address": "0x6392199E4CD6f6c91AEE21E13F26c0424c262e13",
     "abi": [
       {
         "inputs": [
@@ -3540,7 +3547,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0x8D606b77D3aEbF1d73e0C95ab821736C6ed0F8A7",
+    "address": "0x6D0F35d8E24772ca997811720d1faBb3C2A2c8A7",
     "abi": [
       {
         "inputs": [

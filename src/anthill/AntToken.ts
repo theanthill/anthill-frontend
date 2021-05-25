@@ -276,17 +276,22 @@ export class AntToken {
    */
   async harvest(poolName: ContractName): Promise<TransactionResponse> {
     const pool = this.contracts[poolName];
-    const gas = await pool.estimateGas.getReward();
-    return await pool.getReward(this.gasOptions(gas));
+    const gas = await pool.estimateGas.getMyReward();
+    return await pool.getMyReward(this.gasOptions(gas));
   }
 
   /**
    * Harvests and withdraws deposited tokens from the pool.
    */
-  async exit(poolName: ContractName): Promise<TransactionResponse> {
-    const pool = this.contracts[poolName];
+  async settleWithdraw(): Promise<TransactionResponse> {
+    /*const pool = this.contracts[poolName];
     const gas = await pool.estimateGas.exit();
-    return await pool.exit(this.gasOptions(gas));
+    return await pool.exit(this.gasOptions(gas));*/
+
+    const liquidityHelper = this.contracts['LiquidityProviderHelper'];
+    const deadline = Math.floor(new Date().getTime() / 1000) + 1800;
+    var gas = await liquidityHelper.estimateGas.exit(deadline);
+    return await liquidityHelper.exit(deadline, this.gasOptions(gas));
   }
 
   async fetchBoardroomVersionOfUser(): Promise<string> {
