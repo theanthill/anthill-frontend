@@ -1,13 +1,14 @@
 {
   "ANT-BUSD": {
-    "address": "0x23784938a002860D8eb25636c7396b782a293FC6",
+    "address": "0xDC4467C38483226A0Db7Dc50bE2f3B627e101f72",
+    "decimals": 18
+  },
+  "ANTS-BUSD": {
+    "address": "0xB67Fd1CfA674460d607ac51C4e424D7506608ad6",
     "decimals": 18
   },
   "BUSD": {
-    "address": "0x8425965bCEeC59618EF40e106e2B3fc3FC3aE3fC",
+    "address": "0xd0B7B9Bc61a609Bf7a65358C2d2f98F5b4847d58",
     "decimals": 18
-  },
-  "PancakeRouter": {
-    "address": "0xD99D1c33F9fC3444f8101754aBC46c52416550D1"
   }
 }
