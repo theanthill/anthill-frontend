@@ -7,6 +7,7 @@ const Nav: React.FC = () => {
     <StyledNav>
       <StyledLink exact activeClassName="active" to="/">Home</StyledLink>
       <StyledLink exact activeClassName="active" to="/bank">Bank</StyledLink>
+      <StyledLink exact activeClassName="active" to="/swap">Swap</StyledLink>
       <StyledLink exact activeClassName="active" to="/bonds">Ant Bonds</StyledLink>
       <StyledLink exact activeClassName="active" to="/boardroom">Boardroom</StyledLink>
       <StyledLink exact activeClassName="active" to={{pathname: "http://docs.theanthill.io"}} target="_blank">Docs</StyledLink>

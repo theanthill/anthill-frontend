@@ -17,16 +17,17 @@ import BanksProvider from './contexts/Banks';
 import AntTokenProvider from './contexts/AntTokenProvider';
 import ModalsProvider from './contexts/Modals';
 
-import Banks from './views/Banks';
 import Home from './views/Home';
+import Banks from './views/Banks';
+import Swaps from './views/Swaps';
 import AntBond from './views/AntBond';
+import Boardroom from './views/Boardroom';
+import Help from './views/Help';
 
 import store from './state';
 import theme from './theme';
 import config from './config';
 import Updaters from './state/Updaters';
-import Boardroom from './views/Boardroom';
-import Help from './views/Help';
 import Popups from './components/Popups';
 
 const App: React.FC = () => {
@@ -39,6 +40,9 @@ const App: React.FC = () => {
           </Route>
           <Route path="/bank">
             <Banks />
+          </Route>
+          <Route path="/swap">
+            <Swaps />
           </Route>
           <Route path="/bonds">
             <AntBond />
