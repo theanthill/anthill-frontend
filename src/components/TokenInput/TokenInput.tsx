@@ -16,6 +16,7 @@ const TokenInput: React.FC<TokenInputProps> = ({
   onChange,
   onSelectMax,
   value,
+  disable=false
 }) => {
   return (
     <StyledTokenInput>
@@ -23,16 +24,22 @@ const TokenInput: React.FC<TokenInputProps> = ({
       <Input
         endAdornment={(
           <StyledTokenAdornmentWrapper>
-            <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
+            {(
+              !disable ?
+              <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
+              :
+              <StyledTokenSymbolDisabled>{symbol}</StyledTokenSymbolDisabled>
+            )}
             <StyledSpacer />
             <div>
-              <Button size="sm" text="Max" onClick={onSelectMax} />
+              <Button size="sm" text="Max" onClick={onSelectMax} disabled={disable}/>
             </div>
           </StyledTokenAdornmentWrapper>
         )}
         onChange={onChange}
         placeholder="0"
         value={value}
+        disable={disable}
       />
     </StyledTokenInput>
   )
@@ -69,6 +76,11 @@ const StyledMaxText = styled.div`
 
 const StyledTokenSymbol = styled.span`
   color: ${props => props.theme.color.grey[600]};
+  font-weight: 700;
+`
+
+const StyledTokenSymbolDisabled = styled.span`
+  color: ${props => props.theme.color.grey[200]};
   font-weight: 700;
 `
 
