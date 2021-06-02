@@ -4,6 +4,7 @@ export type ContractName = string;
 
 export interface BankInfo {
   name: string;
+  swapTitle: string;
   contract: ContractName;
   depositTokenName: ContractName;
   token0Name: ContractName,

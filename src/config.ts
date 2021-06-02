@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap-libs/sdk';
 import { Configuration } from './anthill/config';
 import { BankInfo, TokenInfo } from './anthill';
+import { runInThisContext } from 'vm';
 
 export const tokens: { [tokenName: string]: TokenInfo } =
 {
@@ -111,6 +112,7 @@ const configurations: { [env: string]: Configuration } = {
 export const bankDefinitions: { [contractName: string]: BankInfo } = {
   BUSDANTLPTokenANTPool: {
     name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol}/BUSD`,
+    swapTitle: `Swap ${tokens['AntToken'].inlineName} and BUSD`,
     contract: 'BUSDANTLPTokenANTPool',
     depositTokenName: 'ANT-BUSD',
     token0Name: 'ANT',
