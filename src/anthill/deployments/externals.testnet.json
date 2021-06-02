@@ -1,10 +1,10 @@
 {
   "ANT-BUSD": {
-    "address": "0x23784938a002860D8eb25636c7396b782a293FC6",
+    "address": "0xEf17c90E1893B81982A4EbE949784A6D79171c91",
     "decimals": 18
   },
   "BUSD": {
-    "address": "0x8425965bCEeC59618EF40e106e2B3fc3FC3aE3fC",
+    "address": "0xC1210B58F4A05e8720cf39604D79E8C69F82FCf2",
     "decimals": 18
   },
   "PancakeRouter": {
