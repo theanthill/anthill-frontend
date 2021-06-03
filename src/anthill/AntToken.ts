@@ -421,32 +421,6 @@ export class AntToken {
     return [token0AmountBN, token1AmountBN];
   }
 
-  async getANTBUSDLiquidity(alreadyStakedAmount: BigNumber): Promise<Array<BigNumber>>
-  {
-    const { chainId } = this.config;
-
-    const ant = new Token(chainId, this.tokens.ANT.address, this.tokens.ANT.decimal);
-    const busd = new Token(chainId, this.tokens.BUSD.address, this.tokens.BUSD.decimal);
-
-    const ANTBUSDPair = await Fetcher.fetchPairData(ant , busd, this.provider, this.ChainId == ChainId.MAINNET);
-    
-    let ANTBUSDLiquidity =  await this.ANTBUSD.balanceOf(this.myAccount);
-    ANTBUSDLiquidity = ANTBUSDLiquidity.add(alreadyStakedAmount);
-
-    const ANTBUSDTotalSupply = await this.ANTBUSD.totalSupply();
-    
-    const liquidityAmount = new TokenAmount(ANTBUSDPair.liquidityToken, ANTBUSDLiquidity);
-    const totalSupplyAmount = new TokenAmount(ANTBUSDPair.liquidityToken, ANTBUSDTotalSupply);
-
-    const token0Amount = ANTBUSDPair.getLiquidityValue(ANTBUSDPair.token0, totalSupplyAmount, liquidityAmount, false);
-    const token1Amount = ANTBUSDPair.getLiquidityValue(ANTBUSDPair.token1, totalSupplyAmount, liquidityAmount, false);
-
-    const token0AmountBN = BigNumber.from(token0Amount.raw.toString());
-    const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
-
-    return [token0AmountBN, token1AmountBN];
-  }
-
   // Faucet
   async getFreeTokens() : Promise<TransactionResponse> 
   {
