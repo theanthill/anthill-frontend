@@ -9,8 +9,6 @@ import CardIcon from '../../components/CardIcon';
 import useBanks from '../../hooks/useBanks';
 import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
-import useAntToken from '../../hooks/useAntToken';
-import useApprove, { ApprovalState } from '../../hooks/useApprove';
 
 const SwapCards: React.FC = () => {
   const [banks] = useBanks();
@@ -76,12 +74,6 @@ interface SwapCardProps {
 }
 
 const SwapCard: React.FC<SwapCardProps> = ({ bank }) => {
-  
-  const antToken = useAntToken();
-
-  const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts.LiquidityProviderHelper.address);
-  const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts.LiquidityProviderHelper.address);
-
   return (
     <StyledCardWrapper>
       <StyledCardSuperAccent />

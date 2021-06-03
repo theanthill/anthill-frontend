@@ -50,6 +50,7 @@ const Help: React.FC = () => {
                                         {header:`${tokens.AntShare.titleName}`, content: `${Configurations.deployments['AntShare'].address}`},
                                         {header:`${tokens.AntBond.titleName}`, content: `${Configurations.deployments['AntBond'].address}`},
                                         {header:'BUSD Token', content: `${Configurations.externalTokens['BUSD'].address}`},
+                                        {header:'BNB Token', content: `${Configurations.externalTokens['BNB'].address}`}
                     ]}/>
                     </StyledDesc>
                     <StyledDesc>

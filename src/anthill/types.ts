@@ -10,6 +10,7 @@ export interface BankInfo {
   token0Name: ContractName,
   token1Name: ContractName,
   earnTokenName: ContractName;
+  providerHelperName: ContractName;
   sort: number;
   finished: boolean;
 }

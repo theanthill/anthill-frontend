@@ -35,8 +35,8 @@ interface StakeProps {
 const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
   const antToken = useAntToken();
 
-  const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts.LiquidityProviderHelper.address);
-  const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts.LiquidityProviderHelper.address);
+  const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts[bank.providerHelperName].address);
+  const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts[bank.providerHelperName].address);
   
   // TODO: reactive update of token balance
   const antTokenBalance = useTokenBalance(antToken.ANT);
@@ -54,7 +54,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
         onAddLiquidity(amount);
         onDismissDeposit();
       }}
-      tokenName={`${antToken.ANT.symbol}/${antToken.externalTokens['BUSD'].symbol}`}
+      tokenName={`${bank.token0Name}/${bank.token1Name}`}
     />,
   );
 

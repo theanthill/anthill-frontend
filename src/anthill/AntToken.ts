@@ -283,12 +283,8 @@ export class AntToken {
   /**
    * Harvests and withdraws deposited tokens from the pool.
    */
-  async settleWithdraw(): Promise<TransactionResponse> {
-    /*const pool = this.contracts[poolName];
-    const gas = await pool.estimateGas.exit();
-    return await pool.exit(this.gasOptions(gas));*/
-
-    const liquidityHelper = this.contracts['LiquidityProviderHelper'];
+  async settleWithdraw(providerHelperName: ContractName): Promise<TransactionResponse> {
+    const liquidityHelper = this.contracts[providerHelperName];
     const deadline = Math.floor(new Date().getTime() / 1000) + 1800;
     var gas = await liquidityHelper.estimateGas.exit(deadline);
     return await liquidityHelper.exit(deadline, this.gasOptions(gas));

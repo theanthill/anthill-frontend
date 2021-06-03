@@ -22,7 +22,7 @@ interface SwapTokensProps {
 
 const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
   const [amountIn, setAmountIn] = useState<BigNumber>(null);
-  const [token0In, setToken0In] = useState<boolean>(null);
+  const [token0In, setToken0In] = useState<boolean>(true);
   const antToken = useAntToken();
   const {onSwapTokens} = useSwapTokens(bank);
 

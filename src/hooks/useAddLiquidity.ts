@@ -12,14 +12,14 @@ const useAddLiquidity = (bank: Bank) => {
   const handleAddLiquidity = useCallback(
     (amount: string) => {
         // [workerant] TODO: Rework this to make it token agnostic
-        const BUSD = antToken.externalTokens['BUSD'];
-        const liquidityHelper = antToken.contracts['LiquidityProviderHelper'];
+        const token1 = antToken.externalTokens[bank.token1Name];
+        const liquidityHelper = antToken.contracts[bank.providerHelperName];
 
         const antAmount = parseUnits(amount, antToken.ANT.decimal);
-        const busdAmount = parseUnits(amount, BUSD.decimal);
+        const token1Amount = parseUnits(amount, token1.decimal);
 
         handleTransactionReceipt(
-            liquidityHelper.stake(antAmount, busdAmount, antAmount, busdAmount, deadline()),
+            liquidityHelper.stake(antAmount, token1Amount, antAmount, token1Amount, deadline()),
             `Adding ${amount}/${amount} ANT/BUSD to liquidity pool`,
         );
     },

@@ -38,7 +38,7 @@ const Home: React.FC = () => {
   return (
     <Page>
       <PageHeader
-        subtitle={ `Testnet Only! This is an alpha test on how to buy, sell, and provide liquidity for ${tokens.AntToken.inlineName} on PancakeSwap}` }
+        subtitle={ `Testnet Only! This is an alpha test on how to buy, sell, and provide liquidity for ${tokens.AntToken.inlineName} on PancakeSwap` }
         title="The Anthill Testnet!"
       />
       { Date.now() / 1000 < 1610596800 ? (

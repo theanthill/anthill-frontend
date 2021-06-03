@@ -12,7 +12,7 @@ const useRemoveLiquidity = (bank: Bank) => {
 
   const handleRemoveLiquidity = useCallback(
     (amount: string) => {
-        const liquidityHelper = antToken.contracts.LiquidityProviderHelper;
+        const liquidityHelper = antToken.contracts[bank.providerHelperName];
         const liquidityAmount = parseUnits(amount, bank.depositToken.decimal);
 
         handleTransactionReceipt(
