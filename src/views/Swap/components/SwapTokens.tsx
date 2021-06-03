@@ -45,7 +45,6 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
     setToken0In(!token0In)
   }, [setToken0In, token0In])
   
-  
   const handleSwapTokens = useCallback(() => {
     onSwapTokens(token0In, amountIn, amountOut);
   }, [token0In, amountIn, amountOut])

@@ -4,10 +4,11 @@ import { ThemeContext } from 'styled-components'
 import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
+import { parseUnits } from 'ethers/lib/utils';
 
 // [workerant] ADD BACK for real deploy
 //import { Fetcher, Route, Token } from '@pancakeswap-libs/sdk';
-import { Pair, TokenAmount, ChainId } from '@pancakeswap-libs/sdk';
+import { Pair, TokenAmount, ChainId, Price } from '@pancakeswap-libs/sdk';
 import { Fetcher, Route, Token } from '@theanthill/pancakeswap-sdk-v1';
 import { abi as IPancakeRouter02ABI } from '@theanthill/pancake-swap-periphery/build/IPancakeRouter02.json'
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
@@ -419,6 +420,40 @@ export class AntToken {
     const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
 
     return [token0AmountBN, token1AmountBN];
+  }
+
+  async getPairPrice(bank: BankInfo, token0In: boolean): Promise<Price>
+  {
+    const { chainId } = this.config;
+
+    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
+    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
+
+    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
+    
+    if (token0In) 
+    {
+      return pair.priceOf(token0);
+    }
+    else
+    {
+      return pair.priceOf(token1);
+    }
+  }
+
+  async getPairReserves(bank: BankInfo): Promise<[BigNumber, BigNumber]>
+  {
+    const { chainId } = this.config;
+
+    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
+    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
+
+    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
+    
+    const reserve0BN = parseUnits(pair.reserve0.toSignificant(token0.decimals), token0.decimals);
+    const reserve1BN = parseUnits(pair.reserve1.toSignificant(token1.decimals), token1.decimals);
+
+    return [ reserve0BN, reserve1BN ];
   }
 
   // Faucet

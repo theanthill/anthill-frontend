@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { TokenAmount, Pair, Currency } from '@pancakeswap-libs/sdk'
 
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
 import CardIcon from '../../../components/CardIcon';
-import { AddIcon, RemoveIcon } from '../../../components/icons';
-import IconButton from '../../../components/IconButton';
 import Label from '../../../components/Label';
 import Value from '../../../components/Value';
 
@@ -15,18 +12,19 @@ import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 import useModal from '../../../hooks/useModal';
 import useStakedBalance from '../../../hooks/useStakedBalance';
 import useTokenBalance from '../../../hooks/useTokenBalance';
-import useWithdraw from '../../../hooks/useWithdraw';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
-import LiquidityModal from './LiquidityModal';
 import WithdrawModal from './WithdrawModal';
 import TokenSymbol from '../../../components/TokenSymbol';
-import { Bank, ContractName } from '../../../anthill';
+import { Bank } from '../../../anthill';
 import useAddLiquidity from '../../../hooks/useAddLiquidity';
 import useRemoveLiquidity from '../../../hooks/useRemoveLiquidity';
 import useAntToken from '../../../hooks/useAntToken';
 import useLiquidityAmounts from '../../../hooks/useLiquidityAmounts';
+import TokenSwapInput from '../../Swap/components/TokenSwapInput';
+import TokenSwapValue from '../../Swap/components/TokenSwapValue';
+import useCalculateLiquidity from '../../../hooks/useCalculateLiquidity';
 
 interface StakeProps {
   bank: Bank;
@@ -34,6 +32,9 @@ interface StakeProps {
 
 const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
   const antToken = useAntToken();
+  const [token0In, setToken0In] = useState<boolean>(true);
+  const [amountTokenA, setAmountTokenA] = useState<number>(0);
+  const amountTokenB = useCalculateLiquidity(bank, token0In, amountTokenA);
 
   const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts[bank.providerHelperName].address);
   const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts[bank.providerHelperName].address);
@@ -46,17 +47,16 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
   const { onAddLiquidity } = useAddLiquidity(bank);
   const { onRemoveLiquidity } = useRemoveLiquidity(bank);
 
-  const [onPresentDeposit, onDismissDeposit] = useModal(
-    <LiquidityModal
-      max={antTokenBalance}
-      decimals={bank.depositToken.decimal}
-      onConfirm={(amount) => {
-        onAddLiquidity(amount);
-        onDismissDeposit();
-      }}
-      tokenName={`${bank.token0Name}/${bank.token1Name}`}
-    />,
-  );
+  const handleAddLiquidity = useCallback(() => 
+  {
+    if (token0In) {
+      onAddLiquidity(amountTokenA, amountTokenB);
+    }
+    else
+    {
+      onAddLiquidity(amountTokenB, amountTokenA);
+    }
+  }, [token0In, amountTokenA, amountTokenB]);
 
   const [onPresentWithdraw, onDismissWithdraw] = useModal(
     <WithdrawModal
@@ -70,6 +70,20 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
     />,
   );
 
+  const handleTokenChange = useCallback((amount: string) => {
+    try{
+      setAmountTokenA(parseInt(amount));
+    }
+    catch(err)
+    {}
+    
+  }, [token0In])
+  
+  const handleChangeSwapDirection = useCallback(() => {
+    setToken0In(!token0In)
+  }, [setToken0In, token0In])
+
+  
   return (
       <Card>
         <CardContent>
@@ -78,6 +92,37 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
               <CardIcon>
                 <TokenSymbol symbol={bank.depositToken.symbol} size={54} />
               </CardIcon>
+              {(
+                  token0In ?
+                    <StyledInputHeader>
+                      <Button size="sm" text={`${bank.token0.symbol} ➔ ${bank.token1.symbol}`} onClick={handleChangeSwapDirection}/>
+                      <TokenSwapInput
+                        token={bank.token0}
+                        tokenName={bank.token0Name}
+                        onChange={handleTokenChange}
+                      />
+                      <TokenSwapValue
+                        token={bank.token1}
+                        tokenName={bank.token1Name}
+                        value={amountTokenB ? amountTokenB.toString() : ''}
+                      />
+                    </StyledInputHeader>
+                    :
+                    <StyledInputHeader>
+                    <Button size="sm" text={`${bank.token1.symbol} ➔ ${bank.token0.symbol}`} onClick={handleChangeSwapDirection}/>
+                    <TokenSwapInput
+                      token={bank.token1}
+                      tokenName={bank.token1Name}
+                      onChange={handleTokenChange}
+                    />
+                    <TokenSwapValue
+                      token={bank.token0}
+                      tokenName={bank.token0Name}
+                      value={amountTokenB ? amountTokenB.toString() : ''}
+                    />
+                  </StyledInputHeader>
+              )}
+              <StyledActionSpacer />
               <Value value={`${getDisplayBalance(token0Balance, bank.token0.decimal)}`}/>
               <Label text={`${bank.token0Name} tokens in pool`} />
               <Value value={`${getDisplayBalance(token1Balance, bank.token1.decimal)}`}/>
@@ -116,16 +161,17 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                 ) : (
                   <StyledCardActions>
                     <>
-                      <IconButton onClick={onPresentWithdraw}>
-                        <RemoveIcon />
-                      </IconButton>
-                      <StyledActionSpacer />
-                      <IconButton
-                        disabled={bank.finished}
-                        onClick={() => (bank.finished ? null : onPresentDeposit())}
-                      >
-                        <AddIcon />
-                      </IconButton>
+                      <Button
+                        disabled={amountTokenA == 0 || amountTokenB == 0}
+                        onClick={handleAddLiquidity}
+                        text={`Add Liquidity`}
+                      />
+                      <StyledActionSpacer/>
+                      <Button
+                        disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)=='0'}
+                        onClick={onPresentWithdraw}
+                        text={`Remove Liquidity`}
+                      />
                     </>
                   </StyledCardActions>
                 )
@@ -141,9 +187,17 @@ const StyledCardHeader = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const StyledInputHeader = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+`;
+
 const StyledCardActions = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
   margin-top: ${(props) => props.theme.spacing[6]}px;
   width: 100%;
 `;
