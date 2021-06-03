@@ -24,10 +24,10 @@ const Banks: React.FC = ({ children }) => {
       banks.push({
         ...bankInfo,
         address: config.deployments[bankInfo.contract].address,
-        depositToken: antToken.externalTokens[bankInfo.depositTokenName],
-        token0: antToken.internalTokens[bankInfo.token0Name] || antToken.externalTokens[bankInfo.token0Name],
-        token1: antToken.internalTokens[bankInfo.token1Name] || antToken.externalTokens[bankInfo.token1Name],
-        earnToken: bankInfo.earnTokenName == 'ANT' ? antToken.ANT : antToken.ANTS,
+        depositToken: antToken.tokens[bankInfo.depositTokenName],
+        token0: antToken.tokens[bankInfo.token0Name],
+        token1: antToken.tokens[bankInfo.token1Name],
+        earnToken: bankInfo.earnTokenName == 'ANT' ? antToken.tokens.ANT : antToken.tokens.ANTS,
       });
     }
     banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));

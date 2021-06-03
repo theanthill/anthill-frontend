@@ -27,7 +27,7 @@ const AntBond: React.FC = () => {
   const antTokenPrice = useAntBondOraclePriceInLastTWAP();
   const realAntTokenPrice = useRealAntTokenPrice();
 
-  const antBondBalance = useTokenBalance(antToken?.ANTB);
+  const antBondBalance = useTokenBalance(antToken?.tokens.ANTB);
 
   const handleBuyAntBonds = useCallback(
     async (amount: string) => {
@@ -68,9 +68,9 @@ const AntBond: React.FC = () => {
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Purchase"
-                  fromToken={antToken.ANT}
+                  fromToken={antToken.tokens.ANT}
                   fromTokenName="Ant Token"
-                  toToken={antToken.ANTB}
+                  toToken={antToken.tokens.ANTB}
                   toTokenName="Ant Bond"
                   // priceDesc={
                   //   antTokenIsOverpriced
@@ -102,9 +102,9 @@ const AntBond: React.FC = () => {
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Redeem"
-                  fromToken={antToken.ANTB}
+                  fromToken={antToken.tokens.ANTB}
                   fromTokenName="Ant Bond"
-                  toToken={antToken.ANT}
+                  toToken={antToken.tokens.ANT}
                   toTokenName="Ant Token"
                   priceDesc={`${getDisplayBalance(antBondBalance)} ANTB Available`}
                   onExchange={handleRedeemAntBonds}

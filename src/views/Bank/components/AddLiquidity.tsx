@@ -39,9 +39,9 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
   const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts[bank.providerHelperName].address);
   
   // TODO: reactive update of token balance
-  const antTokenBalance = useTokenBalance(antToken.ANT);
+  const antTokenBalance = useTokenBalance(antToken.tokens.ANT);
   const stakedBalance = useStakedBalance(bank.contract);
-  const [token0Balance, token1Balance] = useLiquidityAmounts(bank.contract);
+  const [token0Balance, token1Balance] = useLiquidityAmounts(bank);
 
   const { onAddLiquidity } = useAddLiquidity(bank);
   const { onRemoveLiquidity } = useRemoveLiquidity(bank);
@@ -78,9 +78,9 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
               <CardIcon>
                 <TokenSymbol symbol={bank.depositToken.symbol} size={54} />
               </CardIcon>
-              <Value value={`${getDisplayBalance(token0Balance, bank.depositToken.decimal)}`}/>
+              <Value value={`${getDisplayBalance(token0Balance, bank.token0.decimal)}`}/>
               <Label text={`${bank.token0Name} tokens in pool`} />
-              <Value value={`${getDisplayBalance(token1Balance, bank.depositToken.decimal)}`}/>
+              <Value value={`${getDisplayBalance(token1Balance, bank.token1.decimal)}`}/>
               <Label text={`${bank.token1Name} tokens in pool`} />
               <Value value={getDisplayBalance(stakedBalance, bank.depositToken.decimal)} />
               <Label text={`${bank.depositTokenName} Tokens`} />

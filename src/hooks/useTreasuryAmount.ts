@@ -10,7 +10,7 @@ const useTreasuryAmount = () => {
   useEffect(() => {
     if (antToken) {
       const { Treasury } = antToken.contracts;
-      antToken.ANT.balanceOf(Treasury.address).then(setAmount);
+      antToken.tokens.ANT.balanceOf(Treasury.address).then(setAmount);
     }
   }, [antToken]);
   return amount;

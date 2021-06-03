@@ -13,13 +13,13 @@ import TokenSymbol from '../../TokenSymbol';
 const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
   const antToken = useAntToken();
 
-  const antBalance = useTokenBalance(antToken.ANT);
+  const antBalance = useTokenBalance(antToken.tokens.ANT);
   const displayAntBalance = useMemo(() => getDisplayBalance(antBalance), [antBalance]);
 
-  const antsBalance = useTokenBalance(antToken.ANTS);
+  const antsBalance = useTokenBalance(antToken.tokens.ANTS);
   const displayAntsBalance = useMemo(() => getDisplayBalance(antsBalance), [antsBalance]);
 
-  const antbBalance = useTokenBalance(antToken.ANTB);
+  const antbBalance = useTokenBalance(antToken.tokens.ANTB);
   const displayAntbBalance = useMemo(() => getDisplayBalance(antbBalance), [antbBalance]);
 
   return (

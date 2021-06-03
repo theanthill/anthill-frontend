@@ -13,8 +13,10 @@ import { abi as IPancakeRouter02ABI } from '@theanthill/pancake-swap-periphery/b
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
 
 import { Configuration } from './config';
+import { bankDefinitions } from '../config'
+
 import ERC20 from './ERC20';
-import { ContractName, TokenStat, TreasuryAllocationTime } from './types';
+import { BankInfo, ContractName, TokenStat, TreasuryAllocationTime } from './types';
 import { getDefaultProvider } from '../utils/provider';
 
 /**
@@ -34,13 +36,9 @@ export class AntToken {
   priceDecimals: number;
 
   ANTBUSD: Contract;
+  ANTBNB: Contract;
   PancakeRouter: Contract;
-  ANT: ERC20;
-  ANTS: ERC20;
-  ANTB: ERC20;
-
-  ANTBUSDPair: Pair;
-
+  
   ChainId: Number;
 
   constructor(cfg: Configuration) {
@@ -56,30 +54,28 @@ export class AntToken {
       this.contracts[name] = new Contract(deployment.address, deployment.abi, provider);
     }
 
-    this.externalTokens = {};
     this.tokens = {};
     for (const symbol of Object.keys(externalTokens)) {
       const token = externalTokens[symbol];
-      this.tokens[symbol] = this.externalTokens[symbol] = new ERC20(token.address, provider, symbol, token.decimals);
+      this.tokens[symbol] = new ERC20(token.address, provider, symbol, token.decimals);
     }
-    
-    this.internalTokens = {};
 
-    this.ANT = new ERC20(deployments.AntToken.address, provider, 'ANT');
-    this.tokens['ANT'] = this.internalTokens['ANT'] = this.ANT;
-    this.ANTS = new ERC20(deployments.AntShare.address, provider, 'ANTS');
-    this.tokens['ANTS'] = this.internalTokens['ANTS'] = this.ANTS;
-    this.ANTB = new ERC20(deployments.AntBond.address, provider, 'ANTB');
-    this.tokens['ANTB'] = this.internalTokens['ANTB'] = this.ANTB;
+    this.tokens['ANT'] = new ERC20(deployments.AntToken.address, provider, 'ANT');
+    this.tokens['ANTS'] = new ERC20(deployments.AntShare.address, provider, 'ANTS');
+    this.tokens['ANTB'] = new ERC20(deployments.AntBond.address, provider, 'ANTB');
 
-    this.PancakeRouter = new Contract(this.externalTokens['PancakeRouter'].address, IPancakeRouter02ABI, provider);
+    this.contracts['PancakeRouter'] = new Contract(externalTokens['PancakeRouter'].address, IPancakeRouter02ABI, provider);
 
-    // PancakeSwap V2 Pair
-    this.ANTBUSD = new Contract(
-      externalTokens['ANT-BUSD'].address,
-      IUniswapV2PairABI,
-      provider,
-    );
+    // PancakeSwap V2 Pairs
+    for(const bank of Object.keys(bankDefinitions))
+    {
+      const pairName = bankDefinitions[bank].depositTokenName;
+      this.contracts[pairName] = new Contract(
+        externalTokens[pairName].address,
+        IUniswapV2PairABI,
+        provider,
+      );  
+    }
 
     this.config = cfg;
     this.provider = provider;
@@ -97,12 +93,19 @@ export class AntToken {
     for (const [name, contract] of Object.entries(this.contracts)) {
       this.contracts[name] = contract.connect(this.signer);
     }
-    const tokens = [this.ANT, this.ANTS, this.ANTB, ...Object.values(this.externalTokens)];
+    const tokens = [...Object.values(this.tokens)];
     for (const token of tokens) {
       token.connect(this.signer);
     }
-    this.ANTBUSD = this.ANTBUSD.connect(this.signer);
-    this.PancakeRouter = this.PancakeRouter.connect(this.signer);
+    
+    this.contracts.PancakeRouter = this.contracts.PancakeRouter.connect(this.signer);
+
+    // PancakeSwap V2 Pairs
+    for(const bank of Object.keys(bankDefinitions))
+    {
+      const pairName = bankDefinitions[bank].depositTokenName;
+      this.contracts[pairName] = this.contracts[pairName].connect(this.signer);
+    }  
 
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchBoardroomVersionOfUser()
@@ -130,8 +133,8 @@ export class AntToken {
    * It may differ from the ANT price used on Treasury (which is calculated in TWAP)
    */
   async getAntTokenStatFromPancakeSwap(): Promise<TokenStat> {
-    const supply = await this.ANT.displayedTotalSupply();
-    const antTokenPrice = Number(await this.getTokenPriceFromPancakeSwap(this.ANT))
+    const supply = await this.tokens.ANT.displayedTotalSupply();
+    const antTokenPrice = Number(await this.getTokenPriceFromPancakeSwap(this.tokens.ANT))
     const realAntTokenPrice = Number(await this.getRealAntTokenPrice()) / 10**18
 
     return {
@@ -151,7 +154,7 @@ export class AntToken {
 
     const estimatedAntTokenPrice = await Oracle.price1Current();
     const realAntTokenPrice = await this.getRealAntTokenPrice()
-    const totalSupply = await this.ANT.displayedTotalSupply();
+    const totalSupply = await this.tokens.ANT.displayedTotalSupply();
 
     return {
       priceInBUSD: String((Number(estimatedAntTokenPrice) / Number(realAntTokenPrice)).toFixed(this.priceDecimals)),
@@ -177,14 +180,14 @@ export class AntToken {
 
     return {
       priceInBUSD: String(antBondPrice.toFixed(this.priceDecimals)),
-      totalSupply: await this.ANTB.displayedTotalSupply(),
+      totalSupply: await this.tokens.ANTB.displayedTotalSupply(),
     };
   }
 
   async getAntShareStat(): Promise<TokenStat> {
     return {
       priceInBUSD: '0',
-      totalSupply: await this.ANTS.displayedTotalSupply(),
+      totalSupply: await this.tokens.ANTS.displayedTotalSupply(),
     };
   }
 
@@ -192,9 +195,8 @@ export class AntToken {
     await this.provider.ready;
 
     const { chainId } = this.config;
-    const { BUSD } = this.config.externalTokens;
 
-    const busd = new Token(chainId, BUSD.address, BUSD.decimals);
+    const busd = new Token(chainId, this.tokens.BUSD.address, this.tokens.BUSD.decimal);
     const token = new Token(chainId, tokenContract.address, 18);
 
     try {
@@ -393,13 +395,38 @@ export class AntToken {
   }
 
   // Liquidity
+  async getLiquidity(bank: BankInfo, alreadyStakedAmount: BigNumber): Promise<Array<BigNumber>>
+  {
+    const { chainId } = this.config;
+
+    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
+    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
+
+    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
+    
+    let pairLiquidity =  await this.contracts[bank.depositTokenName].balanceOf(this.myAccount);
+    pairLiquidity = pairLiquidity.add(alreadyStakedAmount);
+
+    const pairTotalSupply = await this.contracts[bank.depositTokenName].totalSupply();
+    
+    const liquidityAmount = new TokenAmount(pair.liquidityToken, pairLiquidity);
+    const totalSupplyAmount = new TokenAmount(pair.liquidityToken, pairTotalSupply);
+
+    const token0Amount = pair.getLiquidityValue(pair.token0, totalSupplyAmount, liquidityAmount, false);
+    const token1Amount = pair.getLiquidityValue(pair.token1, totalSupplyAmount, liquidityAmount, false);
+
+    const token0AmountBN = BigNumber.from(token0Amount.raw.toString());
+    const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
+
+    return [token0AmountBN, token1AmountBN];
+  }
+
   async getANTBUSDLiquidity(alreadyStakedAmount: BigNumber): Promise<Array<BigNumber>>
   {
     const { chainId } = this.config;
-    const { BUSD } = this.config.externalTokens;
 
-    const ant = new Token(chainId, this.ANT.address, this.ANT.decimal);
-    const busd = new Token(chainId, BUSD.address, BUSD.decimals);
+    const ant = new Token(chainId, this.tokens.ANT.address, this.tokens.ANT.decimal);
+    const busd = new Token(chainId, this.tokens.BUSD.address, this.tokens.BUSD.decimal);
 
     const ANTBUSDPair = await Fetcher.fetchPairData(ant , busd, this.provider, this.ChainId == ChainId.MAINNET);
     

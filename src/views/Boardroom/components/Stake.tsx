@@ -30,11 +30,11 @@ const Stake: React.FC = () => {
   const antToken = useAntToken();
   const boardroomVersion = useBoardroomVersion();
   const [approveStatus, approve] = useApprove(
-    antToken.ANTS,
+    antToken.tokens.ANTS,
     antToken.boardroomByVersion(boardroomVersion).address,
   );
 
-  const tokenBalance = useTokenBalance(antToken.ANTS);
+  const tokenBalance = useTokenBalance(antToken.tokens.ANTS);
   const stakedBalance = useStakedBalanceOnBoardroom();
   const isOldBoardroomMember = boardroomVersion !== 'latest';
 

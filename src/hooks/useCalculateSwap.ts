@@ -17,7 +17,7 @@ const useCalculateSwap = (bank: Bank, token0In: boolean, amountIn: BigNumber) =>
       } else  {
         path = [ bank.token1.address, bank.token0.address ];
       }
-      const amounts = await antToken.PancakeRouter.getAmountsOut(amountIn, path);
+      const amounts = await antToken.contracts.PancakeRouter.getAmountsOut(amountIn, path);
 
       setAmountOut(amounts[1]);
     }, [bank, token0In, amountIn, antToken],

@@ -12,10 +12,10 @@ const useAddLiquidity = (bank: Bank) => {
   const handleAddLiquidity = useCallback(
     (amount: string) => {
         // [workerant] TODO: Rework this to make it token agnostic
-        const token1 = antToken.externalTokens[bank.token1Name];
+        const token1 = antToken.tokens[bank.token1Name];
         const liquidityHelper = antToken.contracts[bank.providerHelperName];
 
-        const antAmount = parseUnits(amount, antToken.ANT.decimal);
+        const antAmount = parseUnits(amount, antToken.tokens.ANT.decimal);
         const token1Amount = parseUnits(amount, token1.decimal);
 
         handleTransactionReceipt(

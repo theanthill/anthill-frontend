@@ -20,13 +20,13 @@ const useSwapTokens = (bank: Bank) => {
             path = [ bank.token0.address, bank.token1.address ];
 
             handleTransactionReceipt(
-                antToken.PancakeRouter.swapExactTokensForTokens(amountIn, amountOutMin, path, account, deadline()),
+                antToken.contracts.PancakeRouter.swapExactTokensForTokens(amountIn, amountOutMin, path, account, deadline()),
                 `Swapping ${formatUnits(amountIn)} ${bank.token0Name} for at least ${formatUnits(amountOutMin)} ${bank.token1Name} tokens `);
         } else  {
             path = [ bank.token1.address, bank.token0.address ];
 
             handleTransactionReceipt(
-                antToken.PancakeRouter.swapExactTokensForTokens(amountIn, amountOutMin, path, account, deadline()),
+                antToken.contracts.PancakeRouter.swapExactTokensForTokens(amountIn, amountOutMin, path, account, deadline()),
                 `Swapping ${formatUnits(amountIn)} ${bank.token1Name} for at least ${formatUnits(amountOutMin)} ${bank.token0Name} tokens `);
         }
     },

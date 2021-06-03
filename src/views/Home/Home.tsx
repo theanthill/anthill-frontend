@@ -31,9 +31,9 @@ const Home: React.FC = () => {
     }
   }, [ant]);
 
-  const antTokenAddr = useMemo(() => ant?.ANT.address, [ant]);
-  const antShareAddr = useMemo(() => ant?.ANTS.address, [ant]);
-  const antBondAddr = useMemo(() => ant?.ANTB.address, [ant]);
+  const antTokenAddr = useMemo(() => ant?.tokens.ANT.address, [ant]);
+  const antShareAddr = useMemo(() => ant?.tokens.ANTS.address, [ant]);
+  const antBondAddr = useMemo(() => ant?.tokens.ANTB.address, [ant]);
 
   return (
     <Page>

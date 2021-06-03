@@ -9,7 +9,7 @@ import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 const useRemoveLiquidity = (bank: Bank) => {
   const antToken = useAntToken();
   const handleTransactionReceipt = useHandleTransactionReceipt();
-
+  
   const handleRemoveLiquidity = useCallback(
     (amount: string) => {
         const liquidityHelper = antToken.contracts[bank.providerHelperName];
