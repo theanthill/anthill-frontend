@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0x5fC27E794416d743052bE3d02933a084472d0754",
+    "address": "0x692e380fb8Ff193d8Ea48f53715Ef24410f21B74",
     "abi": [
       {
         "inputs": [
@@ -463,7 +463,7 @@
     ]
   },
   "AntToken": {
-    "address": "0x83004D0f6fcd510009bE8f67bAf0e3e59e3Aeb99",
+    "address": "0x608B37Da4cdaF870ceba0B965b0255Cd8cd40a55",
     "abi": [
       {
         "inputs": [
@@ -923,7 +923,7 @@
     ]
   },
   "AntBond": {
-    "address": "0x3aFA2F284A79D0b360890FF463160633E1c12479",
+    "address": "0x71dCf9Fb2e045C09F0d24647348E2436f0610C9D",
     "abi": [
       {
         "inputs": [],
@@ -1377,7 +1377,7 @@
     ]
   },
   "AntShare": {
-    "address": "0x2e2447ac7fD356dD9e42C2Cd5A92B98354804593",
+    "address": "0x776e541c403c46a57BBc1f7B3976Eb195EC7CDac",
     "abi": [
       {
         "inputs": [
@@ -1813,7 +1813,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0xCC7FEc9C17849E8C7164Bb62580a7B3E89D0BDec",
+    "address": "0x5a80c546B0c6a6a17add8eC7EaF64134f4a96f90",
     "abi": [
       {
         "inputs": [
@@ -2192,7 +2192,7 @@
     ]
   },
   "Treasury": {
-    "address": "0xB0CF9dc678dFeEb2aF8424754e8300BBCbebC7eB",
+    "address": "0x32EDadD3DE7Bbe8eE4f7179E015cC3C1c87995Ce",
     "abi": [
       {
         "inputs": [
@@ -2837,7 +2837,7 @@
     ]
   },
   "BNBANTLPHelper": {
-    "address": "0x076A1515fa4F1F15f9F61BF2f567eCf271dc8163",
+    "address": "0x2f5F132fFE4d6fD00BA86b0144A33E021606deBe",
     "abi": [
       {
         "inputs": [
@@ -2947,7 +2947,7 @@
     ]
   },
   "BNBANTLPTokenANTPool": {
-    "address": "0x1Ec6e65a47345A3FD994bCf10279867e18B61cbe",
+    "address": "0x323B374B451726Da95e22168563699E7831f777C",
     "abi": [
       {
         "inputs": [
@@ -3445,7 +3445,7 @@
     ]
   },
   "BUSDANTLPHelper": {
-    "address": "0x0A0d0744bF31736C7a5C9fDD48B1624868Bbee05",
+    "address": "0xc672Af40D085285bdF126a82D3474Fb548B4D1e2",
     "abi": [
       {
         "inputs": [
@@ -3555,7 +3555,7 @@
     ]
   },
   "BUSDANTLPTokenANTPool": {
-    "address": "0x88cE4f6c3D9e1CbdD5A8547d9EB102F14D99A30F",
+    "address": "0xCaea16a64142BD900F33DE8099C9cfDeb83A719F",
     "abi": [
       {
         "inputs": [
@@ -4053,7 +4053,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0xc3616b1FBF9a50D5164B4cd5E10fD599Ba97C348",
+    "address": "0xcA3f716fDD516Eb5Cd33a2eb021ea216E3Ac6a97",
     "abi": [
       {
         "inputs": [
