@@ -26,6 +26,20 @@ export const tokens: { [tokenName: string]: TokenInfo } =
     symbol: 'ANTB',
     color: "#da5eff",
   },
+  'ANT-BUSD' :
+  {
+    titleName: 'ANT-BUSD LP',
+    inlineName: 'ANTBUSD LP',
+    symbol: 'ANT-BUSD',
+    color: "#ffffff",
+  },
+  'ANT-BNB' :
+  {
+    titleName: 'ANT-BNB LP',
+    inlineName: 'ANTBNB LP',
+    symbol: 'ANT-BNB',
+    color: "#ffffff",
+  }
 };
 
 const configurations: { [env: string]: Configuration } = {

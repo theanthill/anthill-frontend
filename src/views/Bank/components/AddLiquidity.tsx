@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
+import { tokens } from '../../../config';
+
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
@@ -128,7 +130,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
               <Value value={`${getDisplayBalance(token1Balance, bank.token1.decimal)}`}/>
               <Label text={`${bank.token1Name} tokens in pool`} />
               <Value value={getDisplayBalance(stakedBalance, bank.depositToken.decimal)} />
-              <Label text={`${bank.depositTokenName} Tokens`} />
+              <Label text={`${tokens[bank.depositTokenName].titleName} Tokens`} />
             </StyledCardHeader>
 
               {
