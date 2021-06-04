@@ -24,6 +24,7 @@ import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import Notice from '../../components/Notice';
 import useBoardroomVersion from '../../hooks/useBoardroomVersion';
 import moment from 'moment';
+import useTotalSupply from '../../hooks/useTotalSupply';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -34,6 +35,8 @@ const Boardroom: React.FC = () => {
   const antToken = useAntToken();
   const antTokenStat = useAntTokenPriceInEstimatedTWAP();
   const treasuryAmount = useTreasuryAmount();
+  const antTokenTotalSupply = useTotalSupply(antToken?.tokens.ANT);
+
   const scalingFactor = useMemo(
     () => (antTokenStat ? Number(antTokenStat.priceInBUSD).toFixed(antToken.priceDecimals) : null),
     [antTokenStat],
@@ -97,10 +100,18 @@ const Boardroom: React.FC = () => {
               <Stat
                 title={
                   treasuryAmount
-                    ? `~${Humanize.compactInteger(getBalance(treasuryAmount), 2)} ANT`
+                    ? `~${Humanize.compactInteger(getBalance(treasuryAmount), 0)} ANT`
                     : '-'
                 }
                 description="Treasury Amount"
+              />
+              <Stat
+                title={
+                  antTokenTotalSupply
+                    ? `~${getBalance(antTokenTotalSupply)}`
+                    : '-'
+                }
+                description="Ant Token Supply"
               />
             </StyledHeader>
             <StyledBoardroom>
