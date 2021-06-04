@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Container from '../Container'
@@ -11,6 +12,8 @@ import Nav from './components/Nav'
 import TxButton from './components/TxButton'
 
 const TopBar: React.FC = () => {
+  const { path } = useRouteMatch();
+  
   return (
     <StyledTopBar>
       <Container size="lg">
@@ -28,18 +31,33 @@ const TopBar: React.FC = () => {
         </StyledTopBarInner>
       </Container>
       <Container size="lg">
-        <StyledTopBarInner>
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center'
-          }}>
-            <DollarPriceButton/>
-            <AllocateSeigniorageButton/>
-            <TxButton />
-            <AccountButton />
-          </div>
-        </StyledTopBarInner>
+      {(
+        path.endsWith('boardroom') ?
+          <StyledTopBarInner>
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+          
+              <DollarPriceButton/>
+              <AllocateSeigniorageButton/>          
+              <TxButton />
+              <AccountButton />
+            </div>
+          </StyledTopBarInner>
+        :
+          <StyledTopBarInner>
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              <TxButton />
+              <AccountButton />
+            </div>
+          </StyledTopBarInner>
+      )}
       </Container>
     </StyledTopBar>
   )
