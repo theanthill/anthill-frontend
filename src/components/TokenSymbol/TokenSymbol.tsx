@@ -6,11 +6,6 @@ import antsLogo from '../../assets/img/ant-share.png';
 import antbLogo from '../../assets/img/ant-bond.png';
 import BUSDLogo from '../../assets/img/BUSD.png';
 import BNBLogo from '../../assets/img/BNB.png';
-import DSDLogo from '../../assets/img/DSD.png';
-import ESDLogo from '../../assets/img/ESD.png';
-import BACLogo from '../../assets/img/BAC.png';
-import SXAULogo from '../../assets/img/SXAU.png';
-import BUILDETHLogo from '../../assets/img/BUILDETH.png';
 
 const logosBySymbol: {[title: string]: string} = {
   'ANT': antLogo,
@@ -18,11 +13,6 @@ const logosBySymbol: {[title: string]: string} = {
   'ANTS': antsLogo,
   'BUSD': BUSDLogo,
   'BNB' : BNBLogo,
-  'DSD': DSDLogo,
-  'ESD': ESDLogo,
-  'BAC': BACLogo,
-  'SXAU': SXAULogo,
-  'BUILD-ETH': BUILDETHLogo,
   'ANT-BUSD': antLogo,
   'ANT-BNB': antLogo,
   'ANTS-BUSD': antsLogo,
