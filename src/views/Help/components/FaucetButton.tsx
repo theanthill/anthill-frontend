@@ -25,7 +25,6 @@ const FaucetButton: React.FC<FaucetButtonProps> = (props) => {
 
 const StyledFaucetButton = styled.div`
   display: flex;
-  flex: 1;
   align-items: center;
   justify-content: center;
   margin-bottom: 40px;

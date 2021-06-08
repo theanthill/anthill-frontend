@@ -7,23 +7,8 @@ import { useWallet } from '@binance-chain/bsc-use-wallet';
 import Button from '../../components/Button';
 import Page from '../../components/Page';
 import List from '../../components/List';
-import Card from '../../components/Card';
 import PageHeader from '../../components/PageHeader';
 import FaucetButton from './components/FaucetButton';
-
-import MetamaskSettings from '../../assets/img/MetamaskSettings.png';
-import MetamaskNetworks from '../../assets/img/MetamaskNetworks.png';
-import MetamaskRPCSettings from '../../assets/img/MetamaskRPCSettings.png';
-import MetamaskAddToken from '../../assets/img/MetamaskAddToken.png';
-import MetamaskAddTokenAddress from '../../assets/img/MetamaskAddTokenAddress.png';
-import MetamaskAddTokenConfirmation from '../../assets/img/MetamaskAddTokenConfirmation.png';
-import MetamaskSelectNetwork from '../../assets/img/MetamaskSelectNetwork.png';
-import BinanceFaucet from '../../assets/img/BinanceFaucet.png';
-import MetamaskWalletAddress from '../../assets/img/MetamaskWalletAddress.png';
-import BinanceFaucetAddress from '../../assets/img/BinanceFaucetAddress.png';
-import FaucetGetBNB from '../../assets/img/FaucetGetBNB.png';
-import FaucetApprovedBNB from '../../assets/img/FaucetApprovedBNB.png';
-
 import Configurations, {tokens} from '../../config';
 
 const Help: React.FC = () => {
@@ -39,7 +24,7 @@ const Help: React.FC = () => {
                 title={`Help`}
             />
             { account ? <FaucetButton/> : <UnlockWallet/>}
-            <Card>
+            <StyledCard>
                 <StyledSection>
                     <StyledTitle>
                         Current deployment addresses
@@ -57,7 +42,7 @@ const Help: React.FC = () => {
                         Please go to the Docs section above to know how to use these addreses
                     </StyledDesc>
                 </StyledSection>
-            </Card>
+            </StyledCard>
         </Page>
 
   )
@@ -91,14 +76,17 @@ const StyledDesc = styled.div`
     text-indent: 34px;
 `;
 
-const StyledScreenshot = styled.div`
-    text-align: center;
-    margin: 24px;
-`;
+const StyledCard = styled.div`
+  background-color: ${props => props.theme.color.grey[900]};
+  border: 1px solid ${props => props.theme.color.grey[800]};
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`
 
 const Center = styled.div`
   display: flex;
-  flex: 1;
   align-items: center;
   justify-content: center;
   margin-bottom: 40px;
