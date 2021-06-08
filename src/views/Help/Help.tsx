@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Switch, NavLink} from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useWallet } from '@binance-chain/bsc-use-wallet';
