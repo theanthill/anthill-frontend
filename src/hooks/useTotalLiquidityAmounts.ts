@@ -5,14 +5,14 @@ import useAntToken from './useAntToken';
 import { BankInfo } from '../anthill';
 import config from '../config';
 
-const useUserLiquidityAmounts = (bank: BankInfo) => {
+const useTotalLiquidityAmounts = (bank: BankInfo) => {
   const [balances, setBalance] = useState([BigNumber.from(0), BigNumber.from(0)]);
   const antToken = useAntToken();
 
   const fetchBalances = useCallback(async () => {
     const stakedBalance = await antToken.stakedBalanceOnBank(bank.contract, antToken.myAccount);
 
-    setBalance(await antToken.getUserLiquidity(bank, stakedBalance));
+    setBalance(await antToken.getTotalLiquidity(bank, stakedBalance));
   }, [antToken?.isUnlocked]);
 
   useEffect(() => {
@@ -28,4 +28,4 @@ const useUserLiquidityAmounts = (bank: BankInfo) => {
   return balances;
 };
 
-export default useUserLiquidityAmounts;
+export default useTotalLiquidityAmounts;
