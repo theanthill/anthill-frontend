@@ -36,9 +36,6 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
   return (
     <Modal>
       <ModalTitle text={`Liquidity Info ${bank.token0Name} + ${bank.token1Name}`} />
-      <ModalActions>
-        <Button text="OK" onClick={onDismiss} />
-      </ModalActions>
     </Modal>
   )
 }
