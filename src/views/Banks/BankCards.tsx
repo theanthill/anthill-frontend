@@ -11,6 +11,7 @@ import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
 import useAntToken from '../../hooks/useAntToken';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
+import { Plus } from 'react-feather';
 
 const BankCards: React.FC = () => {
   const [banks] = useBanks();
@@ -89,7 +90,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
         <CardContent>
           <StyledContent>
             <CardIcon>
-              <TokenSymbol symbol={bank.depositTokenName} size={60} />
+              <TokenSymbol symbol={bank.token0.symbol} size={60} /><PlusText>+</PlusText><TokenSymbol symbol={bank.token1.symbol} size={60} />
             </CardIcon>
             <StyledTitle>{bank.name}</StyledTitle>
             <StyledDetails>
@@ -132,6 +133,13 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
     </StyledCardWrapper>
   );
 };
+
+const PlusText = styled.div`
+  color: #ffffff;
+  padding: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+`;
 
 const StyledCardAccent = styled.div`
   border-radius: 12px;

@@ -9,6 +9,7 @@ import CardIcon from '../../components/CardIcon';
 import useBanks from '../../hooks/useBanks';
 import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
+import { ArrowDown } from 'react-feather';
 
 const SwapCards: React.FC = () => {
   const [banks] = useBanks();
@@ -81,7 +82,7 @@ const SwapCard: React.FC<SwapCardProps> = ({ bank }) => {
         <CardContent>
           <StyledContent>
             <CardIcon>
-              <TokenSymbol symbol={bank.depositTokenName} size={60} />
+              <TokenSymbol symbol={bank.token0.symbol} size={60} /><Arrow>⇄</Arrow><TokenSymbol symbol={bank.token1.symbol} size={60} />
             </CardIcon>
             <StyledTitle>{bank.swapTitle}</StyledTitle>
             <StyledDetails>
@@ -94,6 +95,13 @@ const SwapCard: React.FC<SwapCardProps> = ({ bank }) => {
     </StyledCardWrapper>
   );
 };
+
+const Arrow = styled.div`
+  color: #ffffff;
+  padding: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+`;
 
 const StyledCardSuperAccent = styled.div`
   border-radius: 12px;

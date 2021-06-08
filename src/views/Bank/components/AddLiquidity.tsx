@@ -92,12 +92,12 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
           <StyledCardContentInner>
             <StyledCardHeader>
               <CardIcon>
-                <TokenSymbol symbol={bank.depositToken.symbol} size={54} />
+                <TokenSymbol symbol={token0In ? bank.token0.symbol : bank.token1.symbol} size={54} /><Plus>+</Plus><TokenSymbol symbol={token0In ? bank.token1.symbol : bank.token0.symbol} size={54} />
               </CardIcon>
               {(
                   token0In ?
                     <StyledInputHeader>
-                      <Button size="sm" text={`${bank.token0.symbol} ➔ ${bank.token1.symbol}`} onClick={handleChangeSwapDirection}/>
+                      <Button size="sm" text={`${bank.token0.symbol} + ${bank.token1.symbol}`} onClick={handleChangeSwapDirection}/>
                       <TokenSwapInput
                         token={bank.token0}
                         tokenName={bank.token0Name}
@@ -111,7 +111,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                     </StyledInputHeader>
                     :
                     <StyledInputHeader>
-                    <Button size="sm" text={`${bank.token1.symbol} ➔ ${bank.token0.symbol}`} onClick={handleChangeSwapDirection}/>
+                    <Button size="sm" text={`${bank.token1.symbol} + ${bank.token0.symbol}`} onClick={handleChangeSwapDirection}/>
                     <TokenSwapInput
                       token={bank.token1}
                       tokenName={bank.token1Name}
@@ -170,7 +170,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                       />
                       <StyledActionSpacer/>
                       <Button
-                        disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)=='0'}
+                        disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)=='0.00'}
                         onClick={onPresentWithdraw}
                         text={`Remove Liquidity`}
                       />
@@ -183,6 +183,13 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
       </Card>
     );
 }
+
+const Plus = styled.div`
+  color: #ffffff;
+  padding: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+`;
 
 const StyledCardHeader = styled.div`
   align-items: center;

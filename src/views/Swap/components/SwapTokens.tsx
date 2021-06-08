@@ -5,7 +5,9 @@ import { parseUnits, formatUnits } from 'ethers/lib/utils';
 
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
+import CardIcon from '../../../components/CardIcon';
 import CardContent from '../../../components/CardContent';
+import TokenSymbol from '../../../components/TokenSymbol';
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 import useCalculateSwap from '../../../hooks/useCalculateSwap'
 
@@ -53,6 +55,9 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
       <Card>
         <CardContent>
           <StyledCardContentInner>
+              <CardIcon>
+                <TokenSymbol symbol={token0In ? bank.token0.symbol : bank.token1.symbol} size={54} /><Arrow>➔</Arrow><TokenSymbol symbol={token0In ? bank.token1.symbol : bank.token0.symbol} size={54} />
+              </CardIcon>
               {(
                   token0In ?
                   <StyledCardHeader>
@@ -128,6 +133,13 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
       </Card>
     );
 }
+
+const Arrow = styled.div`
+  color: #ffffff;
+  padding: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+`;
 
 const StyledCardHeader = styled.div`
   align-items: center;
