@@ -7,12 +7,13 @@ interface IconButtonProps {
   children?: React.ReactNode,
   disabled?: boolean,
   onClick?: () => void,
-  to?: string
+  to?: string,
+  size?: string
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ children, disabled, onClick, to }) => {
+const IconButton: React.FC<IconButtonProps> = ({ children, disabled, onClick, to, size }) => {
   return (
-    <StyledButton disabled={disabled} onClick={onClick}>
+    <StyledButton disabled={disabled} onClick={onClick} size={size}>
       {!!to ? (
         <StyledLink to={to}>{children}</StyledLink>
       ) : children}
@@ -21,7 +22,8 @@ const IconButton: React.FC<IconButtonProps> = ({ children, disabled, onClick, to
 }
 
 interface StyledButtonProps {
-  disabled?: boolean
+  disabled?: boolean,
+  size?: string,
 }
 /*
   box-shadow: 6px 6px 12px ${props => props.theme.color.grey[600]},
@@ -37,7 +39,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   cursor: pointer;
   display: flex;
   font-weight: 700;
-  height: 56px;
+  height: ${props => props.size ? props.size : '56px'};
   justify-content: center;
   letter-spacing: 1px;
   outline: none;
@@ -45,7 +47,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   margin: 0;
   pointer-events: ${props => !props.disabled ? undefined : 'none'};
   text-transform: uppercase;
-  width: 56px;
+  width: ${props => props.size ? props.size : '56px'};
   &:hover {
     background-color: ${props => props.theme.color.grey[800]};
   }
