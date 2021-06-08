@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { tokens } from '../../../config';
 
 import Button from '../../../components/Button';
+import InfoButton from '../../../components/InfoButton';
 import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
 import CardIcon from '../../../components/CardIcon';
@@ -27,6 +28,7 @@ import useLiquidityAmounts from '../../../hooks/useLiquidityAmounts';
 import TokenSwapInput from '../../Swap/components/TokenSwapInput';
 import TokenSwapValue from '../../Swap/components/TokenSwapValue';
 import useCalculateLiquidity from '../../../hooks/useCalculateLiquidity';
+import LiquidityInfoModal from './LiquidityInfoModal';
 
 interface StakeProps {
   bank: Bank;
@@ -72,6 +74,10 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
     />,
   );
 
+  const [onPresentInfo] = useModal(
+    <LiquidityInfoModal bank={bank}/>,
+  );
+
   const handleTokenChange = useCallback((amount: string) => {
     try{
       setAmountTokenA(parseInt(amount));
@@ -89,7 +95,11 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
   return (
       <Card>
         <CardContent>
+          <StyledInfoButton>
+            <InfoButton onClick={onPresentInfo} size='25px'/>
+          </StyledInfoButton>
           <StyledCardContentInner>
+
             <StyledCardHeader>
               <CardIcon>
                 <TokenSymbol symbol={token0In ? bank.token0.symbol : bank.token1.symbol} size={54} /><Plus>+</Plus><TokenSymbol symbol={token0In ? bank.token1.symbol : bank.token0.symbol} size={54} />
@@ -222,6 +232,11 @@ const StyledCardContentInner = styled.div`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const StyledInfoButton = styled.div`
+  margin-left: auto; 
+  margin-right: 0;
 `;
 
 const StyledContent = styled.div`
