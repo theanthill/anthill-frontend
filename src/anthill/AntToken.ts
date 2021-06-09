@@ -237,6 +237,26 @@ export class AntToken {
     }
   }
 
+  async getBankRewardRate(poolName: ContractName): Promise<BigNumber> {
+    const pool = this.contracts[poolName];
+    try {
+      return await pool.rewardRate();
+    } catch (err) {
+      console.error(`Failed to call earned() on pool ${pool.address}: ${err.stack}`);
+      return BigNumber.from(0);
+    }
+  }
+
+  async getBankTotalSupply(poolName: ContractName): Promise<BigNumber> {
+    const pool = this.contracts[poolName];
+    try {
+      return await pool.totalSupply();
+    } catch (err) {
+      console.error(`Failed to call earned() on pool ${pool.address}: ${err.stack}`);
+      return BigNumber.from(0); 
+    }
+  }
+  
   async stakedBalanceOnBank(
     poolName: ContractName,
     account = this.myAccount,
@@ -468,7 +488,7 @@ export class AntToken {
     const reserve0BN = parseUnits(pair.reserve0.toSignificant(token0.decimals), token0.decimals);
     const reserve1BN = parseUnits(pair.reserve1.toSignificant(token1.decimals), token1.decimals);
 
-    return [ reserve0BN, reserve1BN ];
+    return token0.sortsBefore(token1) ? [ reserve0BN, reserve1BN ] : [ reserve1BN, reserve0BN ];
   }
 
   // Faucet
