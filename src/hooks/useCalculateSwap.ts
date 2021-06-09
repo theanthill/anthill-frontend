@@ -27,6 +27,9 @@ const useCalculateSwap = (bank: Bank, token0In: boolean, amountIn: BigNumber) =>
     if (antToken && bank && amountIn) {
       fetchSwapAmount().catch((err) => console.log(`Failed to calculate swap amount out: ${err.stack}`));
     }
+    else{
+      setAmountOut(null);
+    }
   }, [bank, amountIn, token0In, antToken]);
 
   return amountOut;
