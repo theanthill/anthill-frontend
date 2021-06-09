@@ -16,7 +16,10 @@ import useAntToken from '../../../hooks/useAntToken';
 import TokenSwapInput from './TokenSwapInput'
 import TokenSwapValue from './TokenSwapValue';
 import useSwapTokens from '../../../hooks/useSwapTokens';
-
+import InfoButton from '../../../components/InfoButton';
+import useModal from '../../../hooks/useModal';
+import SwapInfoModal from './SwapInfoModal';
+import { getDisplayBalance } from '../../../utils/formatBalance';
 
 interface SwapTokensProps {
   bank: Bank;
@@ -39,7 +42,9 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
       setAmountIn(amountIn);
     }
     catch(err)
-    {}
+    {
+      setAmountIn(null);
+    }
     
   }, [token0In])
 
@@ -51,10 +56,19 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
     onSwapTokens(token0In, amountIn, amountOut);
   }, [token0In, amountIn, amountOut])
 
+  const [onPresentInfo] = useModal(
+    <SwapInfoModal bank={bank}/>,
+  );
+
+  const providerFee = amountIn?.mul(2).div(1000);
+
   return (
       <Card>
         <CardContent>
           <StyledCardContentInner>
+              <StyledInfoButton>
+                <InfoButton onClick={onPresentInfo} size='25px'/>
+              </StyledInfoButton>
               <CardIcon>
                 <TokenSymbol symbol={token0In ? bank.token0.symbol : bank.token1.symbol} size={54} /><Arrow>➔</Arrow><TokenSymbol symbol={token0In ? bank.token1.symbol : bank.token0.symbol} size={54} />
               </CardIcon>
@@ -72,6 +86,9 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                       tokenName={bank.token1Name}
                       value={amountOut ? formatUnits(amountOut) : ''}
                     />
+                    <StyledMaxText>
+                      {( providerFee ? `Provider fee: ${getDisplayBalance(providerFee, 18, 6)} ${bank.token0Name}` : ``)}
+                    </StyledMaxText>
                   </StyledCardHeader>
                   :
                   <StyledCardHeader>
@@ -86,10 +103,12 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                       tokenName={bank.token0Name}
                       value={amountOut ? formatUnits(amountOut) : ''}
                     />
+                    <StyledMaxText>
+                      {( providerFee ? `Provider fee: ${getDisplayBalance(providerFee, 18, 6)} ${bank.token1Name}` : ``)}
+                    </StyledMaxText>
                   </StyledCardHeader>
               )}
-              {
-               (
+              {(
                   // Approval buttons
                   <StyledContent>
                     <StyledActionSpacer />
@@ -173,5 +192,21 @@ const StyledApproveButton = styled.div`
   justify-content: center;
   margin-bottom: 10px;
 `;
+
+const StyledInfoButton = styled.div`
+  margin-left: auto; 
+  margin-right: 0;
+`;
+
+const StyledMaxText = styled.div`
+  align-items: center;
+  color: ${props => props.theme.color.grey[400]};
+  display: flex;
+  font-size: 12px;
+  font-weight: 700;
+  height: 44px;
+  justify-content: flex-end;
+`
+
 
 export default SwapTokens;

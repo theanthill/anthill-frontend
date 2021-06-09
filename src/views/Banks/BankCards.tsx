@@ -11,7 +11,8 @@ import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
 import useAntToken from '../../hooks/useAntToken';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
-import { Plus } from 'react-feather';
+import usePoolAPRAPY from '../../hooks/usePoolAPRAPY';
+import { formatNumber } from '../../utils/formatBalance';
 
 const BankCards: React.FC = () => {
   const [banks] = useBanks();
@@ -83,6 +84,8 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
   const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts[bank.providerHelperName].address);
   const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts[bank.providerHelperName].address);
 
+  const [APR, APY] = usePoolAPRAPY(bank.contract);
+
   return (
     <StyledCardWrapper>
       <StyledCardSuperAccent />
@@ -96,6 +99,9 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
             <StyledDetails>
               <StyledDetail>Deposit {bank.token0.symbol}/{bank.token1.symbol}</StyledDetail>
               <StyledDetail>Earn {`${bank.earnTokenName}`}</StyledDetail>
+              <StyledSpacer/>
+              <StyledAPRAPY>APR: {`${formatNumber(APR)}%`}</StyledAPRAPY>
+              <StyledAPRAPY>APY: {`${formatNumber(APY)}%`}</StyledAPRAPY>
             </StyledDetails>
             {
             (approveStatusToken0 !== ApprovalState.APPROVED ||
@@ -220,13 +226,19 @@ const StyledSpacer = styled.div`
 `;
 
 const StyledDetails = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[6]}px;
+  margin-bottom: ${(props) => props.theme.spacing[4]}px;
   margin-top: ${(props) => props.theme.spacing[2]}px;
   text-align: center;
 `;
 
 const StyledDetail = styled.div`
   color: ${(props) => props.theme.color.grey[300]};
+`;
+
+const StyledAPRAPY = styled.div`
+  color: ${(props) => props.theme.color.grey[500]};
+  font-weight: 700;
+  font-size: 12px;
 `;
 
 const StyledDisclaimers = styled.div`

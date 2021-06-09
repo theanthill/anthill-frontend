@@ -6,48 +6,30 @@ import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
 import TokenInput from '../../../components/TokenInput'
 
-import { formatNumber, getDisplayBalance, getFullDisplayBalance } from '../../../utils/formatBalance'
-import { BigNumber } from 'ethers';
+import { getDisplayBalance, getFullDisplayBalance } from '../../../utils/formatBalance'
 import { Bank } from '../../../anthill/types'
-import useUserLiquidityAmounts from '../../../hooks/useLiquidityAmounts'
 import Value from '../../../components/Value'
 import Label from '../../../components/Label'
 import styled from 'styled-components'
 import useTotalLiquidityAmounts from '../../../hooks/useTotalLiquidityAmounts'
-import { tokenEarnedPerThousandDollarsCompounding } from '../../../utils/compoundApyHelper'
-import usePoolAPRAPY from '../../../hooks/usePoolAPRAPY'
 
-interface LiquidityInfoModalProps extends ModalProps {
+interface SwapInfoModalProps extends ModalProps {
   bank: Bank,
 }
 
-const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank }) => {
-  const [token0UserBalance, token1UserBalance] = useUserLiquidityAmounts(bank);
+const SwapInfoModal: React.FC<SwapInfoModalProps> = ({ onDismiss, bank }) => {
   const [token0TotalBalance, token1TotalBalance] = useTotalLiquidityAmounts(bank);
   
-  const userToken0Amount = getDisplayBalance(token0UserBalance, bank.token0.decimal);
-  const userToken1Amount = getDisplayBalance(token1UserBalance, bank.token1.decimal);
-
   const totalToken0Amount = getDisplayBalance(token0TotalBalance, bank.token0.decimal);
   const totalToken1Amount = getDisplayBalance(token1TotalBalance, bank.token0.decimal);
 
-  const [APR, APY] = usePoolAPRAPY(bank.contract);
-  
   return (
     <Modal>
-      <ModalTitle text={`Liquidity Info ${bank.token0Name} + ${bank.token1Name}`} />
+      <ModalTitle text={`Swap Info ${bank.token0Name} ⇄ ${bank.token1Name}`} />
       <StyledCardHeader>
         <StyledText>
-            The amounts that you can redeem depend directly on your share in the pool and the
-            total liquidity locked in the pool for each token.
+            Exchange tokens from a liquidity pool pair. A fee of 0.20% is paid when swapping tokens.
         </StyledText>
-        <StyledActionSpacer/>
-        <StyledValues>
-          <Value size='24px' value={`${userToken0Amount} ${bank.token0.symbol}`}/>
-          <StyledActionSpacer/>
-          <Value size='24px' value={`${userToken1Amount} ${bank.token1.symbol}`}/>
-        </StyledValues>
-        <Label text={`Reedemable tokens`} />
         <StyledActionSpacer/>
         <StyledValues>
           <Value size='24px' value={`${totalToken0Amount} ${bank.token0.symbol}`}/>
@@ -56,17 +38,6 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
         </StyledValues>
         <Label text={`Total liquidity in pool`} />
         <StyledActionSpacer/>
-        <StyledValues>
-          <StyledColumn>
-            <Value size='14px' value={`${formatNumber(APR)}%`}/>
-            <Label text={`APR`} />
-          </StyledColumn>
-          <StyledActionSpacer/>
-          <StyledColumn>
-            <Value size='14px' value={`${formatNumber(APY)}%`}/>
-            <Label text={`APY`} />
-          </StyledColumn>
-        </StyledValues>
       </StyledCardHeader>
     </Modal>
     
@@ -89,12 +60,6 @@ const StyledValues = styled.div`
   flex-direction: row;
 `;
 
-const StyledColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const StyledText = styled.div`
   align-items: center;
   color: ${props => props.theme.color.grey[600]};
@@ -106,4 +71,4 @@ const StyledText = styled.div`
   margin-bottom: 20px;
 `;
 
-export default LiquidityInfoModal
+export default SwapInfoModal
