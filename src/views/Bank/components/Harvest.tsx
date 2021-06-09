@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Contract } from 'ethers';
+import { tokens } from '../../../config';
 
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
@@ -16,6 +16,10 @@ import useHarvest from '../../../hooks/useHarvest';
 import { getDisplayBalance } from '../../../utils/formatBalance';
 import TokenSymbol from '../../../components/TokenSymbol';
 import { Bank } from '../../../anthill';
+import useStakedBalance from '../../../hooks/useStakedBalance';
+import InfoButton from '../../../components/InfoButton';
+import useModal from '../../../hooks/useModal';
+import LiquidityInfoModal from './LiquidityInfoModal';
 
 interface HarvestProps {
   bank: Bank;
@@ -24,16 +28,28 @@ interface HarvestProps {
 const Harvest: React.FC<HarvestProps> = ({ bank }) => {
   const earnings = useEarnings(bank.contract);
   const { onReward } = useHarvest(bank);
-
+  const stakedBalance = useStakedBalance(bank.contract);
+  
   const tokenName = bank.earnTokenName === 'ANTS' ? 'Ant Share' : 'Ant Token';
+
+  const [onPresentInfo] = useModal(
+    <LiquidityInfoModal bank={bank}/>,
+  );
+  
   return (
     <Card>
       <CardContent>
         <StyledCardContentInner>
+          <StyledInfoButton>
+            <InfoButton onClick={onPresentInfo} size='25px'/>
+          </StyledInfoButton>
           <StyledCardHeader>
             <CardIcon>
               <TokenSymbol symbol={bank.earnToken.symbol} />
             </CardIcon>
+            <Value value={getDisplayBalance(stakedBalance, bank.depositToken.decimal)} />
+            <Label text={`${tokens[bank.depositTokenName].titleName} Tokens`} />
+            <StyledSpacer/>
             <Value value={getDisplayBalance(earnings, 18, 6)} />
             <Label text={`${tokenName} Earned`} />
           </StyledCardHeader>
@@ -51,6 +67,7 @@ const StyledCardHeader = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const StyledCardActions = styled.div`
   display: flex;
   justify-content: center;
@@ -69,6 +86,11 @@ const StyledCardContentInner = styled.div`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const StyledInfoButton = styled.div`
+  margin-left: auto; 
+  margin-right: 0;
 `;
 
 export default Harvest;
