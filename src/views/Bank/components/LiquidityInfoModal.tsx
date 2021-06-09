@@ -1,20 +1,15 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import Button from '../../../components/Button'
 import Modal, { ModalProps } from '../../../components/Modal'
-import ModalActions from '../../../components/ModalActions'
 import ModalTitle from '../../../components/ModalTitle'
-import TokenInput from '../../../components/TokenInput'
 
-import { formatNumber, getDisplayBalance, getFullDisplayBalance } from '../../../utils/formatBalance'
-import { BigNumber } from 'ethers';
+import { formatNumber, getDisplayBalance, } from '../../../utils/formatBalance'
 import { Bank } from '../../../anthill/types'
 import useUserLiquidityAmounts from '../../../hooks/useLiquidityAmounts'
 import Value from '../../../components/Value'
 import Label from '../../../components/Label'
 import styled from 'styled-components'
 import useTotalLiquidityAmounts from '../../../hooks/useTotalLiquidityAmounts'
-import { tokenEarnedPerThousandDollarsCompounding } from '../../../utils/compoundApyHelper'
 import usePoolAPRAPY from '../../../hooks/usePoolAPRAPY'
 
 interface LiquidityInfoModalProps extends ModalProps {

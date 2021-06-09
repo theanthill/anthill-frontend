@@ -11,7 +11,6 @@ import Harvest from './components/Harvest';
 import AddLiquidity from './components/AddLiquidity';
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
-import { Bank as BankEntity } from '../../anthill';
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
