@@ -24,7 +24,7 @@ import { Bank } from '../../../anthill';
 import useAddLiquidity from '../../../hooks/useAddLiquidity';
 import useRemoveLiquidity from '../../../hooks/useRemoveLiquidity';
 import useAntToken from '../../../hooks/useAntToken';
-import useLiquidityAmounts from '../../../hooks/useLiquidityAmounts';
+import useUserLiquidityAmounts from '../../../hooks/useLiquidityAmounts';
 import TokenSwapInput from '../../Swap/components/TokenSwapInput';
 import TokenSwapValue from '../../Swap/components/TokenSwapValue';
 import useCalculateLiquidity from '../../../hooks/useCalculateLiquidity';
@@ -92,11 +92,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
   return (
       <Card>
         <CardContent>
-          <StyledInfoButton>
-            <InfoButton onClick={onPresentInfo} size='25px'/>
-          </StyledInfoButton>
           <StyledCardContentInner>
-
             <StyledCardHeader>
               <CardIcon>
                 <TokenSymbol symbol={token0In ? bank.token0.symbol : bank.token1.symbol} size={54} /><Plus>+</Plus><TokenSymbol symbol={token0In ? bank.token1.symbol : bank.token0.symbol} size={54} />
@@ -131,10 +127,6 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                     />
                   </StyledInputHeader>
               )}
-              <StyledActionSpacer />
-              <StyledActionSpacer />
-              <Value value={getDisplayBalance(stakedBalance, bank.depositToken.decimal)} />
-              <Label text={`${tokens[bank.depositTokenName].titleName} Tokens`} />
             </StyledCardHeader>
 
               {
@@ -210,7 +202,7 @@ const StyledInputHeader = styled.div`
 const StyledCardActions = styled.div`
   display: flex;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
   margin-top: ${(props) => props.theme.spacing[6]}px;
   width: 100%;
 `;

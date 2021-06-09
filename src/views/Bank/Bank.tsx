@@ -25,7 +25,7 @@ const Bank: React.FC = () => {
   return account && bank ? (
     <>
       <PageHeader
-        subtitle={`Deposit ${bank?.token0.symbol}/${bank?.token1.symbol} and earn ${bank?.earnTokenName}`}
+        subtitle={`Deposit ${bank?.token0.symbol} + ${bank?.token1.symbol} and earn ${bank?.earnTokenName}`}
         title={bank?.name}
       />
       <StyledBank>
@@ -33,17 +33,16 @@ const Bank: React.FC = () => {
           <StyledCardWrapper>
             <AddLiquidity bank={bank} />
           </StyledCardWrapper>
+          <Spacer/>
           <StyledCardWrapper>
             <Harvest bank={bank} />
           </StyledCardWrapper>
           <Spacer />
         </StyledCardsWrapper>
         <Spacer size="lg" />
-        {bank.depositTokenName.includes('LP') && <LPTokenHelpText bank={bank} />}
-        <Spacer size="lg" />
-        <div>
+        <Center>
           <Button onClick={onRedeem} text="Settle & Withdraw" />
-        </div>
+        </Center>
         <Spacer size="lg" />
       </StyledBank>
     </>
@@ -51,23 +50,6 @@ const Bank: React.FC = () => {
     <BankNotFound />
   ) : (
     <UnlockWallet />
-  );
-};
-
-const LPTokenHelpText: React.FC<{ bank: BankEntity }> = ({ bank }) => {
-  let pairName: string;
-  let uniswapUrl: string;
-  if (bank.depositTokenName.includes('ANT')) {
-    pairName = 'ANT-BUSD pair';
-    uniswapUrl = 'https://app.uniswap.org/#/add/0x6b175474e89094c44da98b954eedeac495271d0f/0xb34ab2f65c6e4f764ffe740ab83f982021faed6d';
-  } else {
-    pairName = 'ANTS-BUSD pair';
-    uniswapUrl = 'https://app.uniswap.org/#/add/0x6b175474e89094c44da98b954eedeac495271d0f/0xa9d232cc381715ae791417b624d7c4509d2c28db';
-  }
-  return (
-    <StyledLink href={uniswapUrl} target="_blank">
-      {`🦄  Provide liquidity to ${pairName} on Uniswap  🦄`}
-    </StyledLink>
   );
 };
 
@@ -98,16 +80,6 @@ const StyledBank = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
-`;
-
-const StyledUniswapLPGuide = styled.div`
-  margin: -24px auto 48px;
-`;
-
-const StyledLink = styled.a`
-  font-weight: 700;
-  text-decoration: none;
-  color: ${(props) => props.theme.color.primary.main};
 `;
 
 const StyledCardsWrapper = styled.div`

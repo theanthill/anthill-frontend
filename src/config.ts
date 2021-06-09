@@ -125,7 +125,7 @@ const configurations: { [env: string]: Configuration } = {
 
 export const bankDefinitions: { [contractName: string]: BankInfo } = {
   BUSDANTLPTokenANTPool: {
-    name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol}/BUSD`,
+    name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol} + BUSD`,
     swapTitle: `Swap ${tokens['AntToken'].inlineName} and BUSD`,
     contract: 'BUSDANTLPTokenANTPool',
     depositTokenName: 'ANT-BUSD',
@@ -137,7 +137,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     sort: 1,
   },
   BNBANTLPTokenANTPool: {
-    name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol}/BNB`,
+    name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol} + BNB`,
     swapTitle: `Swap ${tokens['AntToken'].inlineName} and BNB`,
     contract: 'BNBANTLPTokenANTPool',
     depositTokenName: 'ANT-BNB',
