@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0x22BdB0248C16dCE4Bc1e3f19456ab68572b06A97",
+    "address": "0x85149922C3f6091445237B4BAE16F13A89292A24",
     "abi": [
       {
         "inputs": [
@@ -463,7 +463,7 @@
     ]
   },
   "AntToken": {
-    "address": "0x8622Cbfb9F37327bAe411536b99591b288f795a3",
+    "address": "0x55B17431119eb21827b3d87F446a5De33B7965A2",
     "abi": [
       {
         "inputs": [
@@ -923,7 +923,7 @@
     ]
   },
   "AntBond": {
-    "address": "0x31b22856A451d6b18c90B00C64f0D273c3f4964A",
+    "address": "0xF02052Fa958171da251168F49Bd7953aE0C57289",
     "abi": [
       {
         "inputs": [],
@@ -1377,7 +1377,7 @@
     ]
   },
   "AntShare": {
-    "address": "0x1f43F5cd56AfE6442567065D1afb5C2342174176",
+    "address": "0xEc3BD421e4fDE99D643f135d9351D7BaBfDEA479",
     "abi": [
       {
         "inputs": [
@@ -1813,7 +1813,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0x58800Fb7fE44995D1780dadCE0A93ed689BB0fc5",
+    "address": "0xc3487A3394235ec18F1F14F7883922A8b3750cfd",
     "abi": [
       {
         "inputs": [
@@ -2192,7 +2192,7 @@
     ]
   },
   "Treasury": {
-    "address": "0x6763538Aed423312d1dE8582B02EB67162D81419",
+    "address": "0x57C3ae7BbC166EBC9F859BBd538117068DeF36A5",
     "abi": [
       {
         "inputs": [
@@ -2837,7 +2837,7 @@
     ]
   },
   "BNBANTLPHelper": {
-    "address": "0x8CE95c4d748c260cb04835c8d10bB2451554aA21",
+    "address": "0xb434BbABb3988b653D7d4bdb0CC46027796B827F",
     "abi": [
       {
         "inputs": [
@@ -2947,7 +2947,7 @@
     ]
   },
   "BNBANTLPTokenANTPool": {
-    "address": "0x483a5D9992b872556A7eB3F81E7cBA099A69BF33",
+    "address": "0x875db72B7d981bf8176Af68eFd28afEc0370a42D",
     "abi": [
       {
         "inputs": [
@@ -3445,7 +3445,7 @@
     ]
   },
   "BUSDANTLPHelper": {
-    "address": "0x9844B33683a905eba8E992652CB765343A3a381e",
+    "address": "0x22Ca767841bc13C6Cf84cbFa8ccC1120D182e777",
     "abi": [
       {
         "inputs": [
@@ -3555,7 +3555,7 @@
     ]
   },
   "BUSDANTLPTokenANTPool": {
-    "address": "0x89208725bca44394AC833E538D00B735018A70A2",
+    "address": "0xEBe56590d180333090779432CD522c321456d887",
     "abi": [
       {
         "inputs": [
@@ -4053,7 +4053,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0x745f647211d72813f31f6e966B3cE942fF713805",
+    "address": "0x779241112AD95d28E05a3Ef730DEEe2dA77C2866",
     "abi": [
       {
         "inputs": [
@@ -4197,6 +4197,108 @@
       {
         "inputs": [],
         "name": "refill",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ]
+  },
+  "MockStdReference": {
+    "address": "0xfEA4C4ea293e2215F5B93370fD09a83A4569CF88",
+    "abi": [
+      {
+        "inputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "name": "getReferenceData",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "rate",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdatedBase",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdatedQuote",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IStdReference.ReferenceData",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "string[]",
+            "name": "_bases",
+            "type": "string[]"
+          },
+          {
+            "internalType": "string[]",
+            "name": "",
+            "type": "string[]"
+          }
+        ],
+        "name": "getReferenceDataBulk",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "rate",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdatedBase",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "lastUpdatedQuote",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct IStdReference.ReferenceData[]",
+            "name": "",
+            "type": "tuple[]"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "rate",
+            "type": "uint256"
+          }
+        ],
+        "name": "setTestRate",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
