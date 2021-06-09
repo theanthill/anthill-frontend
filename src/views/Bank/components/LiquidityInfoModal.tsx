@@ -21,7 +21,7 @@ interface LiquidityInfoModalProps extends ModalProps {
 }
 
 const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank }) => {
-    const [token0UserBalance, token1UserBalance] = useUserLiquidityAmounts(bank);
+  const [token0UserBalance, token1UserBalance] = useUserLiquidityAmounts(bank);
   const [token0TotalBalance, token1TotalBalance] = useTotalLiquidityAmounts(bank);
   
   const userToken0Amount = getDisplayBalance(token0UserBalance, bank.token0.decimal);
@@ -35,14 +35,24 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
       <ModalTitle text={`Liquidity Info ${bank.token0Name} + ${bank.token1Name}`} />
       <StyledCardHeader>
         <StyledText>
-            Tokens in the pool that are currently redeemable. The amounts that you can
-            redeem will change if the total amount of tokens in the liquidity pool change.
+            The amounts that you can redeem depend directly on your share in the pool and the
+            total liquidity locked in the pool for each token.
         </StyledText>
-        <Value size='24px' value={`${userToken0Amount} ${bank.token0.symbol} / ${userToken1Amount} ${bank.token1.symbol}`}/>
+        <StyledActionSpacer/>
+        <StyledValues>
+          <Value size='24px' value={`${userToken0Amount} ${bank.token0.symbol}`}/>
+          <StyledActionSpacer/>
+          <Value size='24px' value={`${userToken1Amount} ${bank.token1.symbol}`}/>
+        </StyledValues>
         <Label text={`Reedemable tokens`} />
         <StyledActionSpacer/>
-        <Value size='24px' value={`${totalToken0Amount} ${bank.token0.symbol} / ${totalToken1Amount} ${bank.token1.symbol}`}/>
+        <StyledValues>
+          <Value size='24px' value={`${totalToken0Amount} ${bank.token0.symbol}`}/>
+          <StyledActionSpacer/>
+          <Value size='24px' value={`${totalToken1Amount} ${bank.token1.symbol}`}/>
+        </StyledValues>
         <Label text={`Total liquidity in pool`} />
+        <StyledActionSpacer/>
       </StyledCardHeader>
     </Modal>
     
@@ -60,11 +70,16 @@ const StyledActionSpacer = styled.div`
   width: ${(props) => props.theme.spacing[4]}px;
 `;
 
+const StyledValues = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const StyledText = styled.div`
   align-items: center;
-  color: ${props => props.theme.color.grey[400]};
+  color: ${props => props.theme.color.grey[600]};
   display: flex;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   height: 44px;
   justify-content: flex-end;
