@@ -2,7 +2,6 @@ import { useCallback, useState, useEffect } from 'react';
 
 import useAntToken from './useAntToken';
 import { Bank } from '../anthill';
-import { BigNumber } from 'ethers';
 
 const useCalculateLiquidity = (bank: Bank, token0In: boolean, amountIn: number) => {
   const antToken = useAntToken();
@@ -12,7 +11,6 @@ const useCalculateLiquidity = (bank: Bank, token0In: boolean, amountIn: number) 
       const pairPrice = await antToken.getPairPrice(bank, token0In);
 
       const price = Number(pairPrice.toSignificant(bank.token0.decimal));
-      console.log("PRICE!!" + price);
 
       setAmountOut(amountIn * price)
       
