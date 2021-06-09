@@ -419,7 +419,7 @@ export class AntToken {
     const token0AmountBN = BigNumber.from(token0Amount.raw.toString());
     const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
 
-    return [token0AmountBN, token1AmountBN];
+    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];
   }
 
   async getTotalLiquidity(bank: BankInfo, alreadyStakedAmount: BigNumber): Promise<Array<BigNumber>>
@@ -430,22 +430,11 @@ export class AntToken {
     const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
 
     const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
-    
-    let pairLiquidity =  await this.contracts[bank.depositTokenName].balanceOf(this.myAccount);
-    pairLiquidity = pairLiquidity.add(alreadyStakedAmount);
 
-    const pairTotalSupply = await this.contracts[bank.depositTokenName].totalSupply();
-    
-    const liquidityAmount = new TokenAmount(pair.liquidityToken, pairLiquidity);
-    const totalSupplyAmount = new TokenAmount(pair.liquidityToken, pairTotalSupply);
+    const token0AmountBN = BigNumber.from(pair.reserve0.raw.toString());
+    const token1AmountBN = BigNumber.from(pair.reserve1.raw.toString());
 
-    const token0Amount = pair.reserve0;
-    const token1Amount = pair.reserve1;
-
-    const token0AmountBN = BigNumber.from(token0Amount.raw.toString());
-    const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
-
-    return [token0AmountBN, token1AmountBN];
+    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];    
   }
 
   async getPairPrice(bank: BankInfo, token0In: boolean): Promise<Price>
@@ -459,11 +448,11 @@ export class AntToken {
     
     if (token0In) 
     {
-      return pair.priceOf(token0);
+      return token0.sortsBefore(token1) ? pair.priceOf(token0) : pair.priceOf(token1);
     }
     else
     {
-      return pair.priceOf(token1);
+      return token0.sortsBefore(token1) ? pair.priceOf(token1) : pair.priceOf(token0); 
     }
   }
 
