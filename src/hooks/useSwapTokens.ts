@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
-import { formatUnits } from 'ethers/lib/utils';
 
 import useAntToken from './useAntToken';
 import { Bank } from '../anthill';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useWallet } from '@binance-chain/bsc-use-wallet';
+import { getDisplayBalance } from '../utils/formatBalance';
 
 const useSwapTokens = (bank: Bank) => {
   const antToken = useAntToken();
@@ -15,19 +15,22 @@ const useSwapTokens = (bank: Bank) => {
 
   const handleSwapTokens = useCallback((token0In: boolean, amountIn: BigNumber, amountOutMin: BigNumber) => {
         var path;
-              
+            
+        const amountInDisplay = getDisplayBalance(amountIn);
+        const amountOutMinDisplay = getDisplayBalance(amountOutMin);
+
         if (token0In) {
             path = [ bank.token0.address, bank.token1.address ];
 
             handleTransactionReceipt(
                 antToken.contracts.PancakeRouter.swapExactTokensForTokens(amountIn, amountOutMin, path, account, deadline()),
-                `Swapping ${formatUnits(amountIn)} ${bank.token0Name} for at least ${formatUnits(amountOutMin)} ${bank.token1Name} tokens `);
+                `Swapping ${amountInDisplay} ${bank.token0Name} for at least ${amountOutMinDisplay} ${bank.token1Name} tokens `);
         } else  {
             path = [ bank.token1.address, bank.token0.address ];
 
             handleTransactionReceipt(
                 antToken.contracts.PancakeRouter.swapExactTokensForTokens(amountIn, amountOutMin, path, account, deadline()),
-                `Swapping ${formatUnits(amountIn)} ${bank.token1Name} for at least ${formatUnits(amountOutMin)} ${bank.token0Name} tokens `);
+                `Swapping ${amountInDisplay} ${bank.token1Name} for at least ${amountOutMinDisplay} ${bank.token0Name} tokens `);
         }
     },
     [bank, antToken, account],

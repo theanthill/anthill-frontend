@@ -4,7 +4,7 @@ import { parseUnits } from 'ethers/lib/utils';
 import useAntToken from './useAntToken';
 import { Bank } from '../anthill';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
-import { parse } from '@fortawesome/fontawesome-svg-core';
+import { getDisplayBalance } from '../utils/formatBalance';
 
 const useAddLiquidity = (bank: Bank) => {
   const antToken = useAntToken();
@@ -22,7 +22,7 @@ const useAddLiquidity = (bank: Bank) => {
 
         handleTransactionReceipt(
             liquidityHelper.stake(token0Amount, token1Amount, 0, 0, deadline()),
-            `Adding ${amountToken0}/${amountToken1} ${bank.token0Name}/${bank.token1Name} to liquidity pool`,
+            `Adding ${getDisplayBalance(token0Amount)}/${getDisplayBalance(token1Amount)} ${bank.token0Name}/${bank.token1Name} to liquidity pool`,
         );
     },
     [bank, antToken],
