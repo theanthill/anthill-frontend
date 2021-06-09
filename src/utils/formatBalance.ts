@@ -12,3 +12,12 @@ export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
 export function getBalance(balance: BigNumber, decimals = 18) : number {
   return balance.div(BigNumber.from(10).pow(decimals)).toNumber();
 }
+
+export function formatNumber(number: number) : string {
+
+  if (!isFinite(number)) {
+    return '- '
+  }
+
+  return number.toFixed(2);
+}
