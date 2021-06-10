@@ -13,7 +13,7 @@ const TxButton: React.FC<TxButtonProps> = () => {
   const allTransactions = useAllTransactions();
 
   const pendingTransactions = useMemo(
-    () => Object.values(allTransactions).filter((tx) => !tx.receipt).length,
+    () => Object.values(allTransactions).filter((tx) => !tx.receipt && tx.from == account).length,
     [allTransactions],
   );
 
