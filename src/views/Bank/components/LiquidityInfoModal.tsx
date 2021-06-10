@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React from 'react'
+import Humanize from 'humanize-plus';
 
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalTitle from '../../../components/ModalTitle'
 
-import { formatNumber, getDisplayBalance, } from '../../../utils/formatBalance'
+import { formatNumber, getBalance, getDisplayBalance, } from '../../../utils/formatBalance'
 import { Bank } from '../../../anthill/types'
 import useUserLiquidityAmounts from '../../../hooks/useLiquidityAmounts'
 import Value from '../../../components/Value'
@@ -11,6 +12,7 @@ import Label from '../../../components/Label'
 import styled from 'styled-components'
 import useTotalLiquidityAmounts from '../../../hooks/useTotalLiquidityAmounts'
 import usePoolAPRAPY from '../../../hooks/usePoolAPRAPY'
+import useBankTVL from '../../../hooks/useBankTVL'
 
 interface LiquidityInfoModalProps extends ModalProps {
   bank: Bank,
@@ -27,6 +29,7 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
   const totalToken1Amount = getDisplayBalance(token1TotalBalance, bank.token0.decimal);
 
   const [APR, APY] = usePoolAPRAPY(bank.contract);
+  const TVL = useBankTVL(bank); 
   
   return (
     <Modal>
@@ -50,6 +53,11 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
           <Value size='24px' value={`${totalToken1Amount} ${bank.token1.symbol}`}/>
         </StyledValues>
         <Label text={`Total liquidity in pool`} />
+        <StyledActionSpacer/>
+        <StyledValues>
+          <Value size='24px' value={`$${Humanize.formatNumber(getBalance(TVL), 2)}`}/>
+        </StyledValues>
+        <Label text={`Total Value Locked`} />
         <StyledActionSpacer/>
         <StyledValues>
           <StyledColumn>
@@ -94,7 +102,7 @@ const StyledText = styled.div`
   align-items: center;
   color: ${props => props.theme.color.grey[600]};
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   height: 44px;
   justify-content: flex-end;

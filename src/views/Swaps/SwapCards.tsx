@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Humanize from 'humanize-plus';
 
 import { Bank } from '../../anthill';
 import Button from '../../components/Button';
@@ -9,7 +10,8 @@ import CardIcon from '../../components/CardIcon';
 import useBanks from '../../hooks/useBanks';
 import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
-import { ArrowDown } from 'react-feather';
+import useLiquidityPoolTVL from '../../hooks/usePoolTVL';
+import { getBalance } from '../../utils/formatBalance';
 
 const SwapCards: React.FC = () => {
   const [banks] = useBanks();
@@ -75,6 +77,8 @@ interface SwapCardProps {
 }
 
 const SwapCard: React.FC<SwapCardProps> = ({ bank }) => {
+  const TVL = useLiquidityPoolTVL(bank); 
+  
   return (
     <StyledCardWrapper>
       <StyledCardSuperAccent />
@@ -87,8 +91,10 @@ const SwapCard: React.FC<SwapCardProps> = ({ bank }) => {
             <StyledTitle>{bank.swapTitle}</StyledTitle>
             <StyledDetails>
               <StyledDetail>Exchange either way</StyledDetail>
+              <StyledSpacer/>
+              <StyledStats>TVL: {`~$${Humanize.compactInteger(getBalance(TVL))}`}</StyledStats>
             </StyledDetails>
-              <Button text="Select" to={`/swap/${bank.contract}`} />
+            <Button text="Select" to={`/swap/${bank.contract}`} />
           </StyledContent>
         </CardContent>
       </Card>
@@ -164,7 +170,7 @@ const StyledSpacer = styled.div`
 `;
 
 const StyledDetails = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[6]}px;
+  margin-bottom: ${(props) => props.theme.spacing[4]}px;
   margin-top: ${(props) => props.theme.spacing[2]}px;
   text-align: center;
 `;
@@ -203,6 +209,12 @@ const StyledApproveButton = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
+`;
+
+const StyledStats = styled.div`
+  color: ${(props) => props.theme.color.grey[500]};
+  font-weight: 700;
+  font-size: 12px;
 `;
 
 export default SwapCards;

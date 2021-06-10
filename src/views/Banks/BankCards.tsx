@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Humanize from 'humanize-plus';
 
 import { Bank } from '../../anthill';
 import Button from '../../components/Button';
@@ -12,7 +13,8 @@ import Notice from '../../components/Notice';
 import useAntToken from '../../hooks/useAntToken';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
 import usePoolAPRAPY from '../../hooks/usePoolAPRAPY';
-import { formatNumber } from '../../utils/formatBalance';
+import { formatNumber, getBalance, getDisplayBalance } from '../../utils/formatBalance';
+import useBankTVL from '../../hooks/useBankTVL';
 
 const BankCards: React.FC = () => {
   const [banks] = useBanks();
@@ -85,6 +87,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
   const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts[bank.providerHelperName].address);
 
   const [APR, APY] = usePoolAPRAPY(bank.contract);
+  const TVL = useBankTVL(bank); 
 
   return (
     <StyledCardWrapper>
@@ -100,40 +103,43 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
               <StyledDetail>Deposit {bank.token0.symbol}/{bank.token1.symbol}</StyledDetail>
               <StyledDetail>Earn {`${bank.earnTokenName}`}</StyledDetail>
               <StyledSpacer/>
-              <StyledAPRAPY>APR: {`${formatNumber(APR)}%`}</StyledAPRAPY>
-              <StyledAPRAPY>APY: {`${formatNumber(APY)}%`}</StyledAPRAPY>
+              <StyledStats>APR: {`${formatNumber(APR)}%`}</StyledStats>
+              <StyledStats>APY: {`${formatNumber(APY)}%`}</StyledStats>
+              <StyledStats>TVL: {`~$${Humanize.compactInteger(getBalance(TVL))}`}</StyledStats>
             </StyledDetails>
-            {
+          </StyledContent>
+          {
             (approveStatusToken0 !== ApprovalState.APPROVED ||
              approveStatusToken1 !== ApprovalState.APPROVED) ? (
               // Approval buttons
               <StyledContent>
-                  <StyledDisclaimers>
-                    <StyledDisclaimerSmall>You only need to approve the tokens once to use the bank</StyledDisclaimerSmall>
-                  </StyledDisclaimers>
-                  <StyledApproveButton>
-                    <Button
-                      disabled={
-                        approveStatusToken0 !== ApprovalState.NOT_APPROVED
-                      }
-                      onClick={approveToken0}
-                      text={ (approveStatusToken0 == ApprovalState.APPROVED) ? `${bank.token0.symbol} approved!` : `Approve ${bank.token0.symbol}`}
-                    />
-                  </StyledApproveButton>
-                  <StyledApproveButton>
-                    <Button
-                      disabled={
-                        approveStatusToken1 !== ApprovalState.NOT_APPROVED
-                      }
-                      onClick={approveToken1}
-                      text={ (approveStatusToken1 == ApprovalState.APPROVED) ? `${bank.token1.symbol} approved!` : `Approve ${bank.token1.symbol}`}
-                    />
-                  </StyledApproveButton>
-                </StyledContent>
+                <StyledDisclaimers>
+                  <StyledDisclaimerSmall>You only need to approve the tokens once to use the bank</StyledDisclaimerSmall>
+                </StyledDisclaimers>
+                <StyledApproveButton>
+                  <Button
+                    disabled={
+                      approveStatusToken0 !== ApprovalState.NOT_APPROVED
+                    }
+                    onClick={approveToken0}
+                    text={ (approveStatusToken0 == ApprovalState.APPROVED) ? `${bank.token0.symbol} approved!` : `Approve ${bank.token0.symbol}`}
+                  />
+                </StyledApproveButton>
+                <StyledApproveButton>
+                  <Button
+                    disabled={
+                      approveStatusToken1 !== ApprovalState.NOT_APPROVED
+                    }
+                    onClick={approveToken1}
+                    text={ (approveStatusToken1 == ApprovalState.APPROVED) ? `${bank.token1.symbol} approved!` : `Approve ${bank.token1.symbol}`}
+                  />
+                </StyledApproveButton>
+              </StyledContent>
             ) : (
-              <Button text="Select" to={`/bank/${bank.contract}`} />
+              <StyledSelectButton>
+                <Button text="Select" to={`/bank/${bank.contract}`} />
+              </StyledSelectButton>
             )}
-          </StyledContent>
         </CardContent>
       </Card>
     </StyledCardWrapper>
@@ -145,17 +151,6 @@ const PlusText = styled.div`
   padding: 10px;
   margin-bottom: 10px;
   justify-content: center;
-`;
-
-const StyledCardAccent = styled.div`
-  border-radius: 12px;
-  filter: blur(4px);
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  bottom: -2px;
-  left: -2px;
-  z-index: -1;
 `;
 
 const StyledCardSuperAccent = styled.div`
@@ -177,13 +172,6 @@ const StyledCards = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
-`;
-
-const StyledLoadingWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  flex: 1;
-  justify-content: center;
 `;
 
 const StyledRow = styled.div`
@@ -217,6 +205,7 @@ const StyledTitle = styled.h4`
 const StyledContent = styled.div`
   align-items: center;
   display: flex;
+  flex: 1;
   flex-direction: column;
 `;
 
@@ -235,7 +224,7 @@ const StyledDetail = styled.div`
   color: ${(props) => props.theme.color.grey[300]};
 `;
 
-const StyledAPRAPY = styled.div`
+const StyledStats = styled.div`
   color: ${(props) => props.theme.color.grey[500]};
   font-weight: 700;
   font-size: 12px;
@@ -268,9 +257,16 @@ const StyledInactiveBankTitle = styled.p`
 const StyledApproveButton = styled.div`
   display: block;
   flex: 1;
+  width: 100%;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-top: 10px;
+`;
+
+const StyledSelectButton = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-self: flex-end;
 `;
 
 export default BankCards;
