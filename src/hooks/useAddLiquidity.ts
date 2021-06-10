@@ -22,7 +22,7 @@ const useAddLiquidity = (bank: Bank) => {
 
         handleTransactionReceipt(
             liquidityHelper.stake(token0Amount, token1Amount, 0, 0, deadline()),
-            `Adding ${getDisplayBalance(token0Amount)}/${getDisplayBalance(token1Amount)} ${bank.token0Name}/${bank.token1Name} to liquidity pool`,
+            `Adding ${getDisplayBalance(token0Amount)} ${bank.token0Name} + ${getDisplayBalance(token1Amount)} ${bank.token1Name} to liquidity pool`,
         );
     },
     [bank, antToken],
