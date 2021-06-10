@@ -26,12 +26,12 @@ const AntBond: React.FC = () => {
   const antBondStat = useAntBondStats();
   const antTokenPrice = useAntBondOraclePriceInLastTWAP();
   const realAntTokenPrice = useRealAntTokenPrice();
+  const antTokenPriceFloat = Number(antTokenPrice) / 10**18
 
   const antBondBalance = useTokenBalance(antToken?.tokens.ANTB);
 
   const handleBuyAntBonds = useCallback(
     async (amount: string) => {
-      var antTokenPriceFloat = Number(antTokenPrice) / 10**18
       const tx = await antToken.buyAntBonds(amount, antTokenPrice.toString());
       const antBondAmount = Number(amount) / Number(antTokenPriceFloat);
       addTransaction(tx, {
@@ -88,14 +88,14 @@ const AntBond: React.FC = () => {
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
-                  tokenName="ANT / XAU"
-                  description="ANT / XAU (Last-Day TWAP)"
-                  price={String((Number(antTokenPrice) / Number(realAntTokenPrice)).toFixed(antToken.priceDecimals))}
+                  tokenName="ANT / BUSD"
+                  description="ANT / BUSD (Last-Day TWAP)"
+                  price={String((Number(antTokenPriceFloat) / Number(realAntTokenPrice)).toFixed(antToken.priceDecimals))}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
                   tokenName="ANT"
-                  description="ANTB = 1 / (ANT/XAU)"
+                  description="ANTB = 1 / (ANT/BUSD)"
                   price={ parseFloat(antBondStat?.priceInBUSD) > 1 ? antBondStat?.priceInBUSD + ' ANTB' : '-' }
                 />
               </StyledStatsWrapper>
