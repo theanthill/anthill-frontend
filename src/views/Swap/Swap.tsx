@@ -10,7 +10,6 @@ import Spacer from '../../components/Spacer';
 import SwapTokens from './components/SwapTokens';
 import useBank from '../../hooks/useBank';
 import useRedeem from '../../hooks/useRedeem';
-import { Bank as BankEntity } from '../../anthill';
 
 const Swap: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -32,7 +31,6 @@ const Swap: React.FC = () => {
           <StyledCardWrapper>
             <SwapTokens bank={bank} /> 
           </StyledCardWrapper>
-          <Spacer />
         </StyledCardsWrapper>
         <Spacer size="lg" />
       </StyledSwap>
@@ -68,34 +66,16 @@ const StyledSwap = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const StyledLink = styled.a`
-  font-weight: 700;
-  text-decoration: none;
-  color: ${(props) => props.theme.color.primary.main};
 `;
 
 const StyledCardsWrapper = styled.div`
   display: flex;
-  width: 800px;
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-flow: column nowrap;
-    align-items: center;
-  }
 `;
 
 const StyledCardWrapper = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  @media (max-width: 768px) {
-    width: 80%;
-  }
 `;
 
 const Center = styled.div`

@@ -133,8 +133,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                 (approveStatusToken0 !== ApprovalState.APPROVED ||
                 approveStatusToken1 !== ApprovalState.APPROVED) ? (
                   // Approval buttons
-                  <StyledContent>
-                    <StyledActionSpacer />
+                  <StyledCardActions>
                     <StyledApproveButton>
                       <Button
                         disabled={
@@ -145,6 +144,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                         text={`Approve ${bank.token0.symbol}`}
                       />
                       </StyledApproveButton>
+                      <StyledActionSpacer/>
                       <StyledApproveButton>
                       <Button
                         disabled={
@@ -155,7 +155,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                         text={`Approve ${bank.token1.symbol}`}
                       />
                     </StyledApproveButton>
-                  </StyledContent>
+                  </StyledCardActions>
                 ) : (
                   <StyledCardActions>
                     <>
@@ -220,15 +220,16 @@ const StyledCardContentInner = styled.div`
   justify-content: space-between;
 `;
 
-const StyledInfoButton = styled.div`
-  margin-left: auto; 
-  margin-right: 0;
-`;
-
 const StyledContent = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+`;
+
+const StyledButtons = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: row;
 `;
 
 const StyledApproveButton = styled.div`
@@ -237,6 +238,7 @@ const StyledApproveButton = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
+  width: 100%;
 `;
 
 export default AddLiquidity;

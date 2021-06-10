@@ -36,7 +36,6 @@ const Bank: React.FC = () => {
           <StyledCardWrapper>
             <Harvest bank={bank} />
           </StyledCardWrapper>
-          <Spacer />
         </StyledCardsWrapper>
         <Spacer size="lg" />
         <Center>
