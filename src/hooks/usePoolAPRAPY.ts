@@ -11,12 +11,11 @@ const usePoolAPRAPY = (poolName: ContractName) => {
 
   const fetchRewardRate = useCallback(async () => {
     const rewardRatePerSecond = await antToken.getBankRewardRate(poolName);
-    const totalSupply = await antToken.getBankTotalSupply(poolName);
+    let totalSupply = await antToken.getBankTotalSupply(poolName);
 
     if (totalSupply.isZero())
     {
-      setAPRAPY([Infinity, Infinity]);
-      return;
+      totalSupply = BigNumber.from(10).pow(18);
     }
     
     const secondsInYear = BigNumber.from(60*60*24*365);
