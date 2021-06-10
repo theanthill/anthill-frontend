@@ -1,18 +1,18 @@
 {
   "ANT-BUSD": {
-    "address": "0xb710633f9F0a707468d0a45428A616A009dfD182",
+    "address": "0x34eAeb4448724867fb2cDB4B5e926a965f4961De",
     "decimals": 18
   },
   "BUSD": {
-    "address": "0xC97aBf43b57474179d2c75395d92309d2a4B77c3",
+    "address": "0xCfBc0DA734ca12c6A6081E9fdEd5b96DCAeCd865",
     "decimals": 18
   },
   "ANT-BNB": {
-    "address": "0x81d4CB957A7af5899B515f6B75F3300A9F53D280",
+    "address": "0x407109f0eFF6b5B3BBc107ebbF9eECFBF62D38C2",
     "decimals": 18
   },
   "BNB": {
-    "address": "0xCB21Df17d84aAf6FceFd7bc0B8386fd0a00de290",
+    "address": "0xF03688b3d029BA998Fd7f1ad62278222f503Ce00",
     "decimals": 18
   },
   "PancakeRouter": {

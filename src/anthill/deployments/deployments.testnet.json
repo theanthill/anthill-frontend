@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0x85149922C3f6091445237B4BAE16F13A89292A24",
+    "address": "0x837f78186ceFacc875cA1727d37687F51E175aB6",
     "abi": [
       {
         "inputs": [
@@ -463,7 +463,7 @@
     ]
   },
   "AntToken": {
-    "address": "0x55B17431119eb21827b3d87F446a5De33B7965A2",
+    "address": "0x5e607d9FfC44a01cF6516a209d0680eCd1Ec5649",
     "abi": [
       {
         "inputs": [
@@ -923,7 +923,7 @@
     ]
   },
   "AntBond": {
-    "address": "0xF02052Fa958171da251168F49Bd7953aE0C57289",
+    "address": "0x7190d0dbF0780fd56C1F9D3d79680B13f0Ec7BF1",
     "abi": [
       {
         "inputs": [],
@@ -1377,7 +1377,7 @@
     ]
   },
   "AntShare": {
-    "address": "0xEc3BD421e4fDE99D643f135d9351D7BaBfDEA479",
+    "address": "0x919a8fC953405E22Ed730395fAD1deAb4d1a51dD",
     "abi": [
       {
         "inputs": [
@@ -1813,7 +1813,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0xc3487A3394235ec18F1F14F7883922A8b3750cfd",
+    "address": "0xCFD75C83346F1F5b1cE7ecEd489809a607BE72D3",
     "abi": [
       {
         "inputs": [
@@ -2192,7 +2192,7 @@
     ]
   },
   "Treasury": {
-    "address": "0x57C3ae7BbC166EBC9F859BBd538117068DeF36A5",
+    "address": "0xf80cb1B2baBC59F04D2e4C524AD9268f55aF9832",
     "abi": [
       {
         "inputs": [
@@ -2837,7 +2837,7 @@
     ]
   },
   "BNBANTLPHelper": {
-    "address": "0xb434BbABb3988b653D7d4bdb0CC46027796B827F",
+    "address": "0x99069A346863316f9336CDfEBE2863cFAADa23DF",
     "abi": [
       {
         "inputs": [
@@ -2947,7 +2947,7 @@
     ]
   },
   "BNBANTLPTokenANTPool": {
-    "address": "0x875db72B7d981bf8176Af68eFd28afEc0370a42D",
+    "address": "0x8BC498104b40D6EdFc6dD6949275B551C0179281",
     "abi": [
       {
         "inputs": [
@@ -3445,7 +3445,7 @@
     ]
   },
   "BUSDANTLPHelper": {
-    "address": "0x22Ca767841bc13C6Cf84cbFa8ccC1120D182e777",
+    "address": "0x7C42135942E7Fea4d80a084426A772F87ecbee93",
     "abi": [
       {
         "inputs": [
@@ -3555,7 +3555,7 @@
     ]
   },
   "BUSDANTLPTokenANTPool": {
-    "address": "0xEBe56590d180333090779432CD522c321456d887",
+    "address": "0x5901de37483C68b2bBaf79de591E4F8E012d93B2",
     "abi": [
       {
         "inputs": [
@@ -4053,7 +4053,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0x779241112AD95d28E05a3Ef730DEEe2dA77C2866",
+    "address": "0xa72309127B640aea2D16C1b08C3bf690Ba37bc10",
     "abi": [
       {
         "inputs": [
@@ -4204,13 +4204,18 @@
     ]
   },
   "MockStdReference": {
-    "address": "0xfEA4C4ea293e2215F5B93370fD09a83A4569CF88",
+    "address": "0x66873F33D5cc9088DF9e4Fbc288df81246EA090a",
     "abi": [
+      {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
       {
         "inputs": [
           {
             "internalType": "string",
-            "name": "",
+            "name": "_base",
             "type": "string"
           },
           {
@@ -4257,7 +4262,7 @@
           },
           {
             "internalType": "string[]",
-            "name": "",
+            "name": "_quotes",
             "type": "string[]"
           }
         ],
