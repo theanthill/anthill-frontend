@@ -17,7 +17,7 @@ import { Configuration } from './config';
 import { bankDefinitions } from '../config'
 
 import ERC20 from './ERC20';
-import { BankInfo, ContractName, TokenStat, TreasuryAllocationTime } from './types';
+import { Bank, BankInfo, ContractName, TokenStat, TreasuryAllocationTime } from './types';
 import { getDefaultProvider } from '../utils/provider';
 
 /**
@@ -136,12 +136,12 @@ export class AntToken {
   async getAntTokenStatFromPancakeSwap(): Promise<TokenStat> {
     const supply = await this.tokens.ANT.displayedTotalSupply();
     const antTokenPrice = Number(await this.getTokenPriceFromPancakeSwap(this.tokens.ANT))
-    const realAntTokenPrice = Number(await this.getRealAntTokenPrice()) / 10**18
+    const realAntTokenPrice = Number(await this.getRealAntTokenPrice())
 
     return {
       // [workerant] TODO: review this
-      //priceInBUSD: String((antTokenPrice / realAntTokenPrice).toFixed(priceDecimals)),
-      priceInBUSD: String((realAntTokenPrice).toFixed(this.priceDecimals)),
+      //priceInBUSD: String((antTokenPrice / realAntTokenPrice).toFixed(2)),
+      priceInBUSD: String((antTokenPrice).toFixed(this.priceDecimals)),
       totalSupply: supply,
     };
   }
@@ -410,13 +410,20 @@ export class AntToken {
     return MockStdReference.setTestRate(amount);
   }
 
+  async getTokenPriceInBUSD(tokenName: string): Promise<BigNumber> {
+    const { MockStdReference } = this.contracts;
+    const priceData = await MockStdReference.getReferenceData(tokenName, "BUSD");
+    
+    return priceData.rate;
+  }
+
   async allocateSeigniorage(): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
     return await Treasury.allocateSeigniorage();
   }
 
   // Liquidity
-  async getUserLiquidity(bank: BankInfo, alreadyStakedAmount: BigNumber): Promise<Array<BigNumber>>
+  async getUserLiquidity(bank: BankInfo): Promise<Array<BigNumber>>
   {
     const { chainId } = this.config;
 
@@ -425,8 +432,9 @@ export class AntToken {
 
     const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
     
-    let pairLiquidity =  await this.contracts[bank.depositTokenName].balanceOf(this.myAccount);
-    pairLiquidity = pairLiquidity.add(alreadyStakedAmount);
+    const stakedLiquidity = await this.stakedBalanceOnBank(bank.contract, this.myAccount);
+    let pairLiquidity =  await this.contracts[bank.depositTokenName].balanceOf(this.myAccount); 
+    pairLiquidity = pairLiquidity.add(stakedLiquidity);
 
     const pairTotalSupply = await this.contracts[bank.depositTokenName].totalSupply();
     
@@ -442,7 +450,31 @@ export class AntToken {
     return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];
   }
 
-  async getTotalLiquidity(bank: BankInfo, alreadyStakedAmount: BigNumber): Promise<Array<BigNumber>>
+  async getLockedLiquidity(bank: BankInfo): Promise<Array<BigNumber>>
+  {
+    const { chainId } = this.config;
+
+    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
+    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
+
+    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
+    
+    const stakedLiquidity = await this.getBankTotalSupply(bank.contract);
+    const pairTotalSupply = await this.contracts[bank.depositTokenName].totalSupply();
+    
+    const liquidityAmount = new TokenAmount(pair.liquidityToken, stakedLiquidity.toString());
+    const totalSupplyAmount = new TokenAmount(pair.liquidityToken, pairTotalSupply);
+
+    const token0Amount = pair.getLiquidityValue(pair.token0, totalSupplyAmount, liquidityAmount, false);
+    const token1Amount = pair.getLiquidityValue(pair.token1, totalSupplyAmount, liquidityAmount, false);
+
+    const token0AmountBN = BigNumber.from(token0Amount.raw.toString());
+    const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
+
+    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];
+  }
+
+  async getTotalLiquidity(bank: Bank): Promise<Array<BigNumber>>
   {
     const { chainId } = this.config;
 
@@ -454,7 +486,7 @@ export class AntToken {
     const token0AmountBN = BigNumber.from(pair.reserve0.raw.toString());
     const token1AmountBN = BigNumber.from(pair.reserve1.raw.toString());
 
-    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];    
+    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];
   }
 
   async getPairPrice(bank: BankInfo, token0In: boolean): Promise<Price>
@@ -474,21 +506,6 @@ export class AntToken {
     {
       return token0.sortsBefore(token1) ? pair.priceOf(token1) : pair.priceOf(token0); 
     }
-  }
-
-  async getPairReserves(bank: BankInfo): Promise<[BigNumber, BigNumber]>
-  {
-    const { chainId } = this.config;
-
-    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
-    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
-
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
-    
-    const reserve0BN = parseUnits(pair.reserve0.toSignificant(token0.decimals), token0.decimals);
-    const reserve1BN = parseUnits(pair.reserve1.toSignificant(token1.decimals), token1.decimals);
-
-    return token0.sortsBefore(token1) ? [ reserve0BN, reserve1BN ] : [ reserve1BN, reserve0BN ];
   }
 
   // Faucet
