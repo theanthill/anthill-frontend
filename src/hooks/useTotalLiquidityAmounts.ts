@@ -2,17 +2,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 
 import useAntToken from './useAntToken';
-import { BankInfo } from '../anthill';
+import { Bank } from '../anthill';
 import config from '../config';
 
-const useTotalLiquidityAmounts = (bank: BankInfo) => {
+const useTotalLiquidityAmounts = (bank: Bank) => {
   const [balances, setBalance] = useState([BigNumber.from(0), BigNumber.from(0)]);
   const antToken = useAntToken();
 
   const fetchBalances = useCallback(async () => {
-    const stakedBalance = await antToken.stakedBalanceOnBank(bank.contract, antToken.myAccount);
-
-    setBalance(await antToken.getTotalLiquidity(bank, stakedBalance));
+    setBalance(await antToken.getTotalLiquidity(bank));
   }, [antToken?.isUnlocked]);
 
   useEffect(() => {
