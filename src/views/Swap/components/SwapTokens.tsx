@@ -87,7 +87,7 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                       value={amountOut ? formatUnits(amountOut) : ''}
                     />
                     <StyledMaxText>
-                      {( providerFee ? `Provider fee: ${getDisplayBalance(providerFee, 18, 6)} ${bank.token0Name}` : ``)}
+                      {( providerFee ? `Service fee: ${getDisplayBalance(providerFee, 18, 6)} ${bank.token0Name}` : ``)}
                     </StyledMaxText>
                   </StyledCardHeader>
                   :
@@ -104,7 +104,7 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                       value={amountOut ? formatUnits(amountOut) : ''}
                     />
                     <StyledMaxText>
-                      {( providerFee ? `Provider fee: ${getDisplayBalance(providerFee, 18, 6)} ${bank.token1Name}` : ``)}
+                      {( providerFee ? `Service fee: ${getDisplayBalance(providerFee, 18, 6)} ${bank.token1Name}` : ``)}
                     </StyledMaxText>
                   </StyledCardHeader>
               )}

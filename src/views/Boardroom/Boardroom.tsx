@@ -18,8 +18,7 @@ import ProgressCountdown from './components/ProgressCountdown';
 import useAntTokenPriceInEstimatedTWAP from '../../hooks/useAntTokenPriceInEstimatedTWAP';
 import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 import useAntToken from '../../hooks/useAntToken';
-import Humanize from 'humanize-plus';
-import { getBalance } from '../../utils/formatBalance';
+import { getBalance, getCompactDisplayBalance } from '../../utils/formatBalance';
 import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import Notice from '../../components/Notice';
 import useBoardroomVersion from '../../hooks/useBoardroomVersion';
@@ -100,7 +99,7 @@ const Boardroom: React.FC = () => {
               <Stat
                 title={
                   treasuryAmount
-                    ? `~${Humanize.compactInteger(getBalance(treasuryAmount), 0)} ANT`
+                    ? `~${getCompactDisplayBalance(treasuryAmount, 0)} ANT`
                     : '-'
                 }
                 description="Treasury Amount"
@@ -132,7 +131,7 @@ const Boardroom: React.FC = () => {
                     <Button
                       disabled={stakedBalance.eq(0)}
                       onClick={onRedeem}
-                      text="Settle & Withdraw"
+                      text="Exit: Claim & Withdraw"
                     />
                   </div>
                   <Spacer size="lg" />

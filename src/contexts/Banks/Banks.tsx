@@ -27,7 +27,7 @@ const Banks: React.FC = ({ children }) => {
         depositToken: antToken.tokens[bankInfo.depositTokenName],
         token0: antToken.tokens[bankInfo.token0Name],
         token1: antToken.tokens[bankInfo.token1Name],
-        earnToken: bankInfo.earnTokenName == 'ANT' ? antToken.tokens.ANT : antToken.tokens.ANTS,
+        earnToken: bankInfo.earnTokenSymbol == 'ANT' ? antToken.tokens.ANT : antToken.tokens.ANTS,
       });
     }
     banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));

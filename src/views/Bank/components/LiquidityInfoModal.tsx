@@ -1,10 +1,9 @@
 import React from 'react'
-import Humanize from 'humanize-plus';
 
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalTitle from '../../../components/ModalTitle'
 
-import { formatNumber, getBalance, getDisplayBalance, } from '../../../utils/formatBalance'
+import { formatNumber, getDisplayBalance, getHumanizedDisplayBalance, } from '../../../utils/formatBalance'
 import { Bank } from '../../../anthill/types'
 import useUserLiquidityAmounts from '../../../hooks/useLiquidityAmounts'
 import Value from '../../../components/Value'
@@ -22,14 +21,14 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
   const [token0UserBalance, token1UserBalance] = useUserLiquidityAmounts(bank);
   const [token0TotalBalance, token1TotalBalance] = useTotalLiquidityAmounts(bank);
   
-  const userToken0Amount = getDisplayBalance(token0UserBalance, bank.token0.decimal);
-  const userToken1Amount = getDisplayBalance(token1UserBalance, bank.token1.decimal);
+  const userToken0Amount = getHumanizedDisplayBalance(token0UserBalance, bank.token0.decimal);
+  const userToken1Amount = getHumanizedDisplayBalance(token1UserBalance, bank.token1.decimal);
 
-  const totalToken0Amount = getDisplayBalance(token0TotalBalance, bank.token0.decimal);
-  const totalToken1Amount = getDisplayBalance(token1TotalBalance, bank.token0.decimal);
+  const totalToken0Amount = getHumanizedDisplayBalance(token0TotalBalance, bank.token0.decimal);
+  const totalToken1Amount = getHumanizedDisplayBalance(token1TotalBalance, bank.token0.decimal);
 
   const [APR, APY] = usePoolAPRAPY(bank.contract);
-  const TVL = useBankTVL(bank); 
+  const TVL = getHumanizedDisplayBalance(useBankTVL(bank)); 
   
   return (
     <Modal>
@@ -55,7 +54,7 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
         <Label text={`Total liquidity in pool`} />
         <StyledActionSpacer/>
         <StyledValues>
-          <Value size='24px' value={`$${Humanize.formatNumber(getBalance(TVL), 2)}`}/>
+          <Value size='24px' value={`$${TVL}`}/>
         </StyledValues>
         <Label text={`Total Value Locked`} />
         <StyledActionSpacer/>

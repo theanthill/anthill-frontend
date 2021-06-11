@@ -38,14 +38,14 @@ const App: React.FC = () => {
           <Route path="/" exact>
             <Home />
           </Route>
-          <Route path="/bank">
-            <Banks />
-          </Route>
           <Route path="/swap">
             <Swaps />
           </Route>
           <Route path="/bonds">
             <AntBond />
+          </Route>
+          <Route path="/liquidity">
+            <Banks />
           </Route>
           <Route path="/boardroom">
             <Boardroom />

@@ -489,7 +489,7 @@ export class AntToken {
     return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];
   }
 
-  async getPairPrice(bank: BankInfo, token0In: boolean): Promise<Price>
+  async getPairPrice(bank: BankInfo): Promise<[Price, Price]>
   {
     const { chainId } = this.config;
 
@@ -498,14 +498,7 @@ export class AntToken {
 
     const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
     
-    if (token0In) 
-    {
-      return token0.sortsBefore(token1) ? pair.priceOf(token0) : pair.priceOf(token1);
-    }
-    else
-    {
-      return token0.sortsBefore(token1) ? pair.priceOf(token1) : pair.priceOf(token0); 
-    }
+    return [pair.priceOf(token0), pair.priceOf(token1)];
   }
 
   // Faucet

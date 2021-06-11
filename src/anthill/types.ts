@@ -9,6 +9,7 @@ export interface BankInfo {
   depositTokenName: ContractName;
   token0Name: ContractName,
   token1Name: ContractName,
+  earnTokenSymbol: string;
   earnTokenName: ContractName;
   providerHelperName: ContractName;
   sort: number;

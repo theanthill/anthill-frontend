@@ -1,10 +1,9 @@
 import React from 'react'
-import Humanize from 'humanize-plus';
 
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalTitle from '../../../components/ModalTitle'
 
-import { getBalance, getDisplayBalance } from '../../../utils/formatBalance'
+import { getDisplayBalance, getHumanizedDisplayBalance } from '../../../utils/formatBalance'
 import { Bank } from '../../../anthill/types'
 import Value from '../../../components/Value'
 import Label from '../../../components/Label'
@@ -19,10 +18,10 @@ interface SwapInfoModalProps extends ModalProps {
 const SwapInfoModal: React.FC<SwapInfoModalProps> = ({ onDismiss, bank }) => {
   const [token0TotalBalance, token1TotalBalance] = useTotalLiquidityAmounts(bank);
   
-  const totalToken0Amount = getDisplayBalance(token0TotalBalance, bank.token0.decimal);
-  const totalToken1Amount = getDisplayBalance(token1TotalBalance, bank.token0.decimal);
+  const totalToken0Amount = getHumanizedDisplayBalance(token0TotalBalance, bank.token0.decimal);
+  const totalToken1Amount = getHumanizedDisplayBalance(token1TotalBalance, bank.token0.decimal);
 
-  const TVL = useLiquidityPoolTVL(bank); 
+  const TVL = getHumanizedDisplayBalance(useLiquidityPoolTVL(bank)); 
   
   return (
     <Modal>
@@ -40,7 +39,7 @@ const SwapInfoModal: React.FC<SwapInfoModalProps> = ({ onDismiss, bank }) => {
         <Label text={`Total liquidity in pool`} />
         <StyledActionSpacer/>
         <StyledValues>
-          <Value size='24px' value={`$${Humanize.formatNumber(getBalance(TVL), 2)}`}/>
+          <Value size='24px' value={`$${TVL}`}/>
         </StyledValues>
         <Label text={`Total Value Locked`} />
         <StyledActionSpacer/>

@@ -25,7 +25,7 @@ const Harvest: React.FC = ({}) => {
               <TokenSymbol symbol="ANT" />
             </CardIcon>
             <Value value={getDisplayBalance(earnings)} />
-            <Label text="Ant Tokens Earned" />
+            <Label text="Ant Tokens Rewarded" />
           </StyledCardHeader>
           <StyledCardActions>
             <Button onClick={onReward} text="Claim Reward" disabled={earnings.eq(0)} />

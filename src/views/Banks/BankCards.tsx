@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Humanize from 'humanize-plus';
 
 import { Bank } from '../../anthill';
 import Button from '../../components/Button';
@@ -13,7 +12,7 @@ import Notice from '../../components/Notice';
 import useAntToken from '../../hooks/useAntToken';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
 import usePoolAPRAPY from '../../hooks/usePoolAPRAPY';
-import { formatNumber, getBalance, getDisplayBalance } from '../../utils/formatBalance';
+import { formatNumber, getCompactDisplayBalance } from '../../utils/formatBalance';
 import useBankTVL from '../../hooks/useBankTVL';
 
 const BankCards: React.FC = () => {
@@ -105,7 +104,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
               <StyledSpacer/>
               <StyledStats>APR: {`${formatNumber(APR)}%`}</StyledStats>
               <StyledStats>APY: {`${formatNumber(APY)}%`}</StyledStats>
-              <StyledStats>TVL: {`~$${Humanize.compactInteger(getBalance(TVL))}`}</StyledStats>
+              <StyledStats>TVL: {`~$${getCompactDisplayBalance(TVL)}`}</StyledStats>
             </StyledDetails>
           </StyledContent>
           {
@@ -137,7 +136,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
               </StyledContent>
             ) : (
               <StyledSelectButton>
-                <Button text="Select" to={`/bank/${bank.contract}`} />
+                <Button text="Select" to={`/liquidity/${bank.contract}`} />
               </StyledSelectButton>
             )}
         </CardContent>

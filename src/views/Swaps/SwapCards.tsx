@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Humanize from 'humanize-plus';
 
 import { Bank } from '../../anthill';
 import Button from '../../components/Button';
@@ -11,7 +10,7 @@ import useBanks from '../../hooks/useBanks';
 import TokenSymbol from '../../components/TokenSymbol';
 import Notice from '../../components/Notice';
 import useLiquidityPoolTVL from '../../hooks/usePoolTVL';
-import { getBalance } from '../../utils/formatBalance';
+import { getCompactDisplayBalance } from '../../utils/formatBalance';
 
 const SwapCards: React.FC = () => {
   const [banks] = useBanks();
@@ -92,7 +91,7 @@ const SwapCard: React.FC<SwapCardProps> = ({ bank }) => {
             <StyledDetails>
               <StyledDetail>Exchange either way</StyledDetail>
               <StyledSpacer/>
-              <StyledStats>TVL: {`~$${Humanize.compactInteger(getBalance(TVL))}`}</StyledStats>
+              <StyledStats>TVL: {`~$${getCompactDisplayBalance(TVL)}`}</StyledStats>
             </StyledDetails>
             <Button text="Select" to={`/swap/${bank.contract}`} />
           </StyledContent>

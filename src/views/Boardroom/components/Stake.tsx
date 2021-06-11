@@ -87,7 +87,7 @@ const Stake: React.FC = () => {
                 <Button
                   onClick={onRedeem}
                   variant="secondary"
-                  text="Settle & Withdraw"
+                  text="Exit: Claim & Withdraw"
                 />
               </>
             ) : (

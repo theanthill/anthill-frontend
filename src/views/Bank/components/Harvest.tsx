@@ -20,6 +20,8 @@ import useStakedBalance from '../../../hooks/useStakedBalance';
 import InfoButton from '../../../components/InfoButton';
 import useModal from '../../../hooks/useModal';
 import LiquidityInfoModal from './LiquidityInfoModal';
+import useRemoveLiquidity from '../../../hooks/useRemoveLiquidity';
+import WithdrawModal from './WithdrawModal';
 
 interface HarvestProps {
   bank: Bank;
@@ -30,12 +32,24 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
   const { onReward } = useHarvest(bank);
   const stakedBalance = useStakedBalance(bank.contract);
   
-  const tokenName = bank.earnTokenName === 'ANTS' ? 'Ant Share' : 'Ant Token';
-
   const [onPresentInfo] = useModal(
     <LiquidityInfoModal bank={bank}/>,
   );
   
+  const { onRemoveLiquidity } = useRemoveLiquidity(bank);
+
+  const [onPresentWithdraw, onDismissWithdraw] = useModal(
+    <WithdrawModal
+      max={stakedBalance}
+      decimals={bank.depositToken.decimal}
+      onConfirm={(amount) => {
+        onRemoveLiquidity(amount);
+        onDismissWithdraw();
+      }}
+      tokenName={`${bank.depositToken.symbol}`}
+    />,
+  );
+
   return (
     <Card>
       <CardContent>
@@ -48,13 +62,19 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
               <TokenSymbol symbol={bank.earnToken.symbol} />
             </CardIcon>
             <Value value={getDisplayBalance(stakedBalance, bank.depositToken.decimal)} />
-            <Label text={`${tokens[bank.depositTokenName].titleName} Tokens`} />
+            <Label text={`${tokens[bank.depositTokenName].titleName} Tokens Staked`} />
             <StyledSpacer/>
             <Value value={getDisplayBalance(earnings, 18, 6)} />
-            <Label text={`${tokenName} Earned`} />
+            <Label text={`${bank.earnTokenName} Rewarded`} />
           </StyledCardHeader>
           <StyledCardActions>
-            <Button onClick={onReward} disabled={earnings.eq(0)} text="Settle"  />
+            <Button
+                        disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)=='0.00'}
+                        onClick={onPresentWithdraw}
+                        text={`Remove Liquidity`}
+                      />
+            <StyledActionSpacer/>
+            <Button onClick={onReward} disabled={earnings.eq(0)} text="Claim Rewards"  />
           </StyledCardActions>
         </StyledCardContentInner>
       </CardContent>
@@ -70,6 +90,7 @@ const StyledCardHeader = styled.div`
 
 const StyledCardActions = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin-top: ${(props) => props.theme.spacing[6]}px;
   width: 100%;
@@ -91,6 +112,11 @@ const StyledCardContentInner = styled.div`
 const StyledInfoButton = styled.div`
   margin-left: auto; 
   margin-right: 0;
+`;
+
+const StyledActionSpacer = styled.div`
+  height: ${(props) => props.theme.spacing[4]}px;
+  width: ${(props) => props.theme.spacing[4]}px;
 `;
 
 export default Harvest;

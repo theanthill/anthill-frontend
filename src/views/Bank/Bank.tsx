@@ -39,7 +39,7 @@ const Bank: React.FC = () => {
         </StyledCardsWrapper>
         <Spacer size="lg" />
         <Center>
-          <Button onClick={onRedeem} text="Settle & Withdraw" />
+          <Button onClick={onRedeem} text="Exit: Claim & Withdraw" />
         </Center>
         <Spacer size="lg" />
       </StyledBank>
