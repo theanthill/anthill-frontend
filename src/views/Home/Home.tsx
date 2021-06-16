@@ -78,7 +78,7 @@ const Home: React.FC = () => {
             address={antBondAddr}
             priceInBUSD={ antBond?.priceInBUSD }
             totalSupply={ antBond?.totalSupply }
-            priceText="ANTS / ANT"
+            priceText="ANTB / ANT"
           />
         </CardWrapper>
       ]}
