@@ -17,6 +17,7 @@ import config from '../../config';
 import ExchangeStat from './components/ExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
+import { BigNumber } from '@ethersproject/bignumber';
 
 const AntBond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -25,8 +26,9 @@ const AntBond: React.FC = () => {
   const addTransaction = useTransactionAdder();
   const antBondStat = useAntBondStats();
   const antTokenPrice = useAntBondOraclePriceInLastTWAP();
+  const antTokenPriceFloat = Number(antTokenPrice) / 10**18;
   const realAntTokenPrice = useRealAntTokenPrice();
-  const antTokenPriceFloat = Number(antTokenPrice) / 10**18
+  const realAntTokenPriceFloat = Number(realAntTokenPrice) / 10**18;
 
   const antBondBalance = useTokenBalance(antToken?.tokens.ANTB);
 
@@ -90,7 +92,7 @@ const AntBond: React.FC = () => {
                 <ExchangeStat
                   tokenName="ANT / BUSD"
                   description="ANT / BUSD (Last-Day TWAP)"
-                  price={String((Number(antTokenPriceFloat) / Number(realAntTokenPrice)).toFixed(antToken.priceDecimals))}
+                  price={(antTokenPriceFloat/realAntTokenPriceFloat).toFixed(2)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat

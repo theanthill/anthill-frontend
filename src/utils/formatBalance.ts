@@ -11,7 +11,8 @@ export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
 };
 
 export const getHumanizedDisplayBalance = (balance: BigNumber, decimals = 18, fractionDigits = 2) => {
-    return Humanize.formatNumber(getBalance(balance, decimals), fractionDigits);
+  const number = getBalance(balance, decimals-fractionDigits);
+  return Humanize.formatNumber(number / 10 ** fractionDigits, fractionDigits);
 }
 
 export const getCompactDisplayBalance = (balance: BigNumber, decimals = 18, fractionDigits = 0) => {

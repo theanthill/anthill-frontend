@@ -141,7 +141,7 @@ export class AntToken {
     return {
       // [workerant] TODO: review this
       //priceInBUSD: String((antTokenPrice / realAntTokenPrice).toFixed(2)),
-      priceInBUSD: String((antTokenPrice).toFixed(this.priceDecimals)),
+      priceInBUSD: String(antTokenPrice.toFixed(this.priceDecimals)),
       totalSupply: supply,
     };
   }
@@ -164,13 +164,13 @@ export class AntToken {
   }
 
   async getAntTokenPriceInLastTWAP(): Promise<BigNumber> {
-    const { Treasury } = this.contracts;
-    return Treasury.getAntTokenPrice();
+    const { Oracle } = this.contracts;
+    return Oracle.priceAverage(this.tokens.ANT.address);
   }
 
   async getRealAntTokenPrice(): Promise<BigNumber> {
     const { Oracle } = this.contracts;
-    return Oracle.antTokenPriceOne();
+    return Oracle.priceExternal(this.tokens.ANT.address);
   }
 
   async getAntBondStat(): Promise<TokenStat> {

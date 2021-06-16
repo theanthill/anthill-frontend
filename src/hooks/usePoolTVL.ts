@@ -13,9 +13,20 @@ const useLiquidityPoolTVL = (bank: Bank) => {
 
     const token0Price = await antToken.getTokenPriceInBUSD(bank.token0.symbol);
     const token1Price = await antToken.getTokenPriceInBUSD(bank.token1.symbol);
-    
-    let TVL = token0TotalLiquidity.mul(token0Price);
-    TVL = TVL.add(token1TotalLiquidity.mul(token1Price));
+    const decimalsDivisor = BigNumber.from(10).pow(18);
+
+    let TVL = token0TotalLiquidity.mul(token0Price).div(decimalsDivisor);
+
+    console.log(TVL.toString());
+
+    TVL = TVL.add(token1TotalLiquidity.mul(token1Price).div(decimalsDivisor));
+
+    console.log(token0Price.toString());
+    console.log(token1Price.toString());
+    console.log(token0TotalLiquidity.toString());
+    console.log(token1TotalLiquidity.toString());
+    console.log(TVL.toString());
+
 
     setTVL(TVL);
   }, [antToken?.isUnlocked, bank]);
