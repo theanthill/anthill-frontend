@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0xCD7FBCd0d7b174643140581AF5A316A653B8fD26",
+    "address": "0x8A32C538c59dA0b73fE689167213035FD613F11b",
     "abi": [
       {
         "inputs": [
@@ -490,7 +490,7 @@
     ]
   },
   "AntToken": {
-    "address": "0x7bfa6cDda3b125c1205323a659d4c51d6771F25f",
+    "address": "0x1Da7676E7a001C172eA44d282AF52759B3a6E763",
     "abi": [
       {
         "inputs": [
@@ -944,7 +944,7 @@
     ]
   },
   "AntBond": {
-    "address": "0xD4A7267ADAe06872e01D2d2d45AE28001722ACF2",
+    "address": "0xFB968f2E33a21C0bFa20fDB280E033E0Ae792984",
     "abi": [
       {
         "inputs": [],
@@ -1392,7 +1392,7 @@
     ]
   },
   "AntShare": {
-    "address": "0xB23df8eb909C542d02C6259BDB2da56eD5343DdB",
+    "address": "0x062082Fc130399fE87B10C05124e0D72207fDDDE",
     "abi": [
       {
         "inputs": [
@@ -1846,7 +1846,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0x60cf5C6b88832397EB3910a1AE1058cD31f77a09",
+    "address": "0x7FA104AAEC54F3c432262762BE7870a55ff5561A",
     "abi": [
       {
         "inputs": [
@@ -2225,7 +2225,7 @@
     ]
   },
   "Treasury": {
-    "address": "0xD2F53886d40Dec3aF866CE27CE979CA33A7FD68A",
+    "address": "0x183d1e339F12C1d9994dE1A24af74c8D0Aebc1A5",
     "abi": [
       {
         "inputs": [
@@ -2844,7 +2844,7 @@
     ]
   },
   "BNBANTLPHelper": {
-    "address": "0x93d96488966BFCCB195975b7F398e07e2f0F77Cb",
+    "address": "0x6D140a4f6B7f4803d7f79dEfdc732d964871Bccc",
     "abi": [
       {
         "inputs": [
@@ -2864,7 +2864,7 @@
             "type": "address"
           },
           {
-            "internalType": "contract StakingPoolDelegated",
+            "internalType": "contract IStakingPoolDelegated",
             "name": "lpTokenPool",
             "type": "address"
           },
@@ -2954,7 +2954,7 @@
     ]
   },
   "BNBANTLPTokenANTPool": {
-    "address": "0x32481b30aDd24Fa6D5034b7EA69F8ee633d76027",
+    "address": "0x67F31A98d9A492539Be0B86896905c70C167432d",
     "abi": [
       {
         "inputs": [
@@ -3452,7 +3452,7 @@
     ]
   },
   "BUSDANTLPHelper": {
-    "address": "0x2c643C59cB3F87Ff9b0d02f1B1255A5f81958E88",
+    "address": "0x9065F1Fe0C498cB7B9045F87a89acA38cCd99cE3",
     "abi": [
       {
         "inputs": [
@@ -3472,7 +3472,7 @@
             "type": "address"
           },
           {
-            "internalType": "contract StakingPoolDelegated",
+            "internalType": "contract IStakingPoolDelegated",
             "name": "lpTokenPool",
             "type": "address"
           },
@@ -3562,7 +3562,7 @@
     ]
   },
   "BUSDANTLPTokenANTPool": {
-    "address": "0x44eEe32b2e1EE0a9371F4d88f7E7824D09A9A66A",
+    "address": "0xd4Ad098f9F7b10834ee6BEfcA8f81B787405F67C",
     "abi": [
       {
         "inputs": [
@@ -4060,7 +4060,7 @@
     ]
   },
   "InitialAntTokenDistributor": {
-    "address": "0x920f8192cE1CeF004cA7566fDa3a353353478F64",
+    "address": "0x1480F26cCF8B4096313e16F2015d7a1DeCd9c7B8",
     "abi": [
       {
         "inputs": [
@@ -4174,7 +4174,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0x8e0aeeD18bc5e212e7BB0C5Cc1Ed812A8aDF471c",
+    "address": "0x423f98B2C63415EeC89eDD9DF4ebbF016E069A61",
     "abi": [
       {
         "inputs": [
@@ -4325,7 +4325,7 @@
     ]
   },
   "MockStdReference": {
-    "address": "0x9238FBF84E469DF443116a62aA9d2E59D76F02Eb",
+    "address": "0x191217f9399dbF944a55635bbfd7CC31144A8A56",
     "abi": [
       {
         "inputs": [],
