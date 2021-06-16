@@ -153,7 +153,7 @@ export class AntToken {
   async getAntTokenStatInEstimatedTWAP(): Promise<TokenStat> {
     const { Oracle } = this.contracts;
 
-    const estimatedAntTokenPrice = await Oracle.price1Current();
+    const estimatedAntTokenPrice = await Oracle.priceAverage(this.tokens.ANT.address);
     const realAntTokenPrice = await this.getRealAntTokenPrice()
     const totalSupply = await this.tokens.ANT.displayedTotalSupply();
 
