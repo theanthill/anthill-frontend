@@ -7,7 +7,7 @@ const Nav: React.FC = () => {
     <StyledNav>
       {}
       <StyledLink href="https://github.com/theanthill/anthill-contracts" target="_blank">GitHub</StyledLink>
-      <StyledLink href="https://wwww.theanthill.io" target="_blank">Community</StyledLink>
+      <StyledLink href="https://www.theanthill.io" target="_blank">Community</StyledLink>
       <StyledLinkHidden exact to="/boardroom">Boardroom</StyledLinkHidden>
     </StyledNav>
   )
