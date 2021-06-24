@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'
-import { ThemeContext } from 'styled-components'
+import React from 'react'
 
-import Icon, { IconProps } from '../Icon'
+import Icon from '../Icon'
 import InfoImage from '../../assets/img/info_icon.png'
 
 interface InfoIconProps {
@@ -11,7 +10,7 @@ interface InfoIconProps {
 const InfoIcon: React.FC<InfoIconProps> = ({ size }) => {
   return (
     <Icon>
-      <img src={InfoImage} width={size} height={size}/>
+      <img src={InfoImage} alt="" width={size} height={size}/>
     </Icon>
   )
 }

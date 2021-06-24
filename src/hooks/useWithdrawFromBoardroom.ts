@@ -1,8 +1,5 @@
 import { useCallback } from 'react';
 import useAntToken from './useAntToken';
-import { Bank } from '../anthill';
-import { useTransactionAdder } from '../state/transactions/hooks';
-import { BigNumber } from 'ethers';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 
 const useWithdrawFromBoardroom = () => {
@@ -16,7 +13,7 @@ const useWithdrawFromBoardroom = () => {
         `Withdraw ${amount} ANTS from the boardroom`,
       );
     },
-    [antToken],
+    [antToken, handleTransactionReceipt],
   );
   return { onWithdraw: handleWithdraw };
 };

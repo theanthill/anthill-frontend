@@ -21,7 +21,7 @@ const useRemoveLiquidity = (bank: Bank) => {
             `Removing ${amount} ${bank.depositToken.symbol} from liquidity pool`,
         );
     },
-    [bank, antToken],
+    [bank, antToken, handleTransactionReceipt],
   );
   return { onRemoveLiquidity: handleRemoveLiquidity };
 };

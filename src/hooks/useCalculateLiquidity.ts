@@ -23,7 +23,7 @@ const useCalculateLiquidity = (bank: Bank, token0In: boolean, amountIn: number) 
     if (antToken && bank && amountIn) {
       fetchLiquidityAmount().catch((err) => console.log(`Failed to calculate liquidity amount out: ${err.stack}`));
     }
-  }, [bank, amountIn, token0In, antToken]);
+  }, [bank, amountIn, antToken, fetchLiquidityAmount]);
 
   return amountOut;
 };

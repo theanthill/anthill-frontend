@@ -8,7 +8,7 @@ const useHarvestFromBoardroom = () => {
 
   const handleReward = useCallback(() => {
     handleTransactionReceipt(antToken.harvestAntTokenFromBoardroom(), 'Claim ANT from Boardroom');
-  }, [antToken]);
+  }, [antToken, handleTransactionReceipt]);
 
   return { onReward: handleReward };
 };

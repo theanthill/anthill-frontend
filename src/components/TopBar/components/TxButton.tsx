@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useWallet } from '@binance-chain/bsc-use-wallet';
 import Button from '../../Button';
-import { isTransactionRecent, useAllTransactions } from '../../../state/transactions/hooks';
+import { useAllTransactions } from '../../../state/transactions/hooks';
 import useModal from '../../../hooks/useModal';
 import TxModal from './TxModal';
 
@@ -13,8 +13,8 @@ const TxButton: React.FC<TxButtonProps> = () => {
   const allTransactions = useAllTransactions();
 
   const pendingTransactions = useMemo(
-    () => Object.values(allTransactions).filter((tx) => !tx.receipt && tx.from == account).length,
-    [allTransactions],
+    () => Object.values(allTransactions).filter((tx) => !tx.receipt && tx.from === account).length,
+    [allTransactions, account],
   );
 
   const [onPresentTransactionModal, onDismissTransactionModal] = useModal(

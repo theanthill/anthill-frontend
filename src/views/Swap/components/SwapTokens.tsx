@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { BigNumber } from 'ethers';
 import { parseUnits, formatUnits } from 'ethers/lib/utils';
@@ -46,7 +46,7 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
       setAmountIn(null);
     }
     
-  }, [token0In])
+  }, [bank])
 
   const handleChangeSwapDirection = useCallback(() => {
     setToken0In(!token0In)
@@ -54,7 +54,7 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
   
   const handleSwapTokens = useCallback(() => {
     onSwapTokens(token0In, amountIn, amountOut);
-  }, [token0In, amountIn, amountOut])
+  }, [token0In, amountIn, amountOut, onSwapTokens])
 
   const [onPresentInfo] = useModal(
     <SwapInfoModal bank={bank}/>,
@@ -113,12 +113,12 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                   <StyledContent>
                     <StyledActionSpacer />
                     {(token0In ?                     
-                        (approveStatusToken0 != ApprovalState.APPROVED ?
+                        (approveStatusToken0 !== ApprovalState.APPROVED ?
                           <StyledApproveButton>
                             <Button
                               disabled={
-                                approveStatusToken0 == ApprovalState.PENDING ||
-                                approveStatusToken0 == ApprovalState.UNKNOWN
+                                approveStatusToken0 === ApprovalState.PENDING ||
+                                approveStatusToken0 === ApprovalState.UNKNOWN
                               }
                               onClick={approveToken0}
                               text={`Approve ${bank.token0.symbol}`}
@@ -129,12 +129,12 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                           <Button text="Swap" onClick={handleSwapTokens} disabled={!amountIn || amountIn?.isZero()}/>
                         )
                       :
-                      (approveStatusToken1 != ApprovalState.APPROVED ?
+                      (approveStatusToken1 !== ApprovalState.APPROVED ?
                         <StyledApproveButton>
                           <Button
                             disabled={
-                              approveStatusToken1 == ApprovalState.PENDING ||
-                              approveStatusToken1 == ApprovalState.UNKNOWN
+                              approveStatusToken1 === ApprovalState.PENDING ||
+                              approveStatusToken1 === ApprovalState.UNKNOWN
                             }
                             onClick={approveToken1}
                             text={`Approve ${bank.token1.symbol}`}

@@ -15,7 +15,7 @@ const useAntBondOraclePriceInLastTWAP = () => {
     fetchAntTokenPrice().catch((err) => console.error(`Failed to fetch ANTB price: ${err.stack}`));
     const refreshInterval = setInterval(fetchAntTokenPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
-  }, [setPrice, antToken]);
+  }, [setPrice, antToken, fetchAntTokenPrice]);
 
   return price;
 };

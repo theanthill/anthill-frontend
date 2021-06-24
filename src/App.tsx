@@ -8,7 +8,6 @@ import {
 } from '@binance-chain/bsc-connector'
 import {
   ConnectionRejectedError,
-  useWallet,
   UseWalletProvider,
 } from '@binance-chain/bsc-use-wallet'
 import { ChainId } from '@pancakeswap-libs/sdk';

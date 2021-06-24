@@ -1,7 +1,6 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { isTemplateExpression } from 'typescript';
 
 interface ListProps {
     elements?: { header?: string, content?: string }[];

@@ -3,11 +3,11 @@ import { BigNumber } from 'ethers';
 import useAntToken from './useAntToken';
 import { ContractName } from '../anthill';
 import config from '../config';
-import { getDisplayBalance } from '../utils/formatBalance';
 
 const usePoolAPRAPY = (poolName: ContractName) => {
   const [APRAPY, setAPRAPY] = useState([0, 0]);
   const antToken = useAntToken();
+  const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchRewardRate = useCallback(async () => {
     const rewardRatePerSecond = await antToken.getBankRewardRate(poolName);
@@ -26,7 +26,7 @@ const usePoolAPRAPY = (poolName: ContractName) => {
     const APY = (1 + APR/365)**365 - 1;
 
     setAPRAPY([APR, APY]);
-  }, [antToken?.isUnlocked, poolName]);
+  }, [antToken, poolName]);
 
   useEffect(() => {
     if (antToken?.isUnlocked) {
@@ -35,7 +35,7 @@ const usePoolAPRAPY = (poolName: ContractName) => {
       const refreshBalance = setInterval(fetchRewardRate, config.refreshInterval);
       return () => clearInterval(refreshBalance);
     }
-  }, [antToken?.isUnlocked, poolName, antToken]);
+  }, [antTokenUnlocked, poolName, antToken, fetchRewardRate]);
 
   return APRAPY;
 };

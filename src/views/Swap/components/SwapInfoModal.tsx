@@ -3,7 +3,7 @@ import React from 'react'
 import Modal, { ModalProps } from '../../../components/Modal'
 import ModalTitle from '../../../components/ModalTitle'
 
-import { getDisplayBalance, getHumanizedDisplayBalance } from '../../../utils/formatBalance'
+import { getHumanizedDisplayBalance } from '../../../utils/formatBalance'
 import { Bank } from '../../../anthill/types'
 import Value from '../../../components/Value'
 import Label from '../../../components/Label'

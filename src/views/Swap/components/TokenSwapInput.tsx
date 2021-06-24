@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import ERC20 from '../../../anthill/ERC20';
-import { BigNumber } from 'ethers';
 import { getFullDisplayBalance } from '../../../utils/formatBalance';
 
 import useTokenBalance from '../../../hooks/useTokenBalance';
@@ -23,17 +22,17 @@ const TokenSwapInput: React.FC<SwapTokensProps> = ({ token, tokenName, onChange=
     
   const balanceMax = useMemo(() => {
     return getFullDisplayBalance(tokenBalance, token.decimal)
-  }, [tokenBalance])
+  }, [tokenBalance, token])
 
   const handleSelectMax = useCallback(() => {
     setVal(balanceMax)
     if (onChange) onChange(balanceMax)
-  }, [balanceMax, setVal])
+  }, [balanceMax, setVal, onChange])
 
   const handleTokenChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
     if (onChange) onChange(e.currentTarget.value)
-  }, [setVal])
+  }, [setVal, onChange])
 
   return (
         <StyledCardHeader>

@@ -12,7 +12,7 @@ const useHarvest = (bank: Bank) => {
       antToken.harvest(bank.contract),
       `Claim ${bank.earnTokenName} from ${bank.contract}`,
     );
-  }, [bank, antToken]);
+  }, [bank, antToken, handleTransactionReceipt]);
 
   return { onReward: handleReward };
 };

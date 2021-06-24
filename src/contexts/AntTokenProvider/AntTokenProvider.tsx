@@ -24,7 +24,7 @@ export const AntTokenProvider: React.FC = ({ children }) => {
     } else if (account) {
       antToken.unlockWallet(ethereum, account);
     }
-  }, [account]);
+  }, [account, antToken, ethereum]);
 
   return <Context.Provider value={{ antToken }}>{children}</Context.Provider>;
 };

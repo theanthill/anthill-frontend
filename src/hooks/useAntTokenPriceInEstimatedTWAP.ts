@@ -15,7 +15,7 @@ const useAntTokenPriceInEstimatedTWAP = () => {
     fetchAntTokenPrice().catch((err) => console.error(`Failed to fetch ANT price: ${err.stack}`));
     const refreshInterval = setInterval(fetchAntTokenPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
-  }, [setStat, antToken]);
+  }, [setStat, antToken, fetchAntTokenPrice]);
 
   return stat;
 };

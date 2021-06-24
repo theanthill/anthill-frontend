@@ -16,13 +16,13 @@ interface TokenSwapValueProps {
 }
 
 const TokenSwapValue: React.FC<TokenSwapValueProps> = ({ token, tokenName, value }) => {
-  const [val, setVal] = useState('')
+  const [, setVal] = useState('')
 
   const tokenBalance = useTokenBalance(token);
     
   const balanceMax = useMemo(() => {
     return getFullDisplayBalance(tokenBalance, token.decimal)
-  }, [tokenBalance])
+  }, [token, tokenBalance])
 
   const handleSelectMax = useCallback(() => {
     setVal(balanceMax)

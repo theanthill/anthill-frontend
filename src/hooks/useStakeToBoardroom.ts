@@ -13,7 +13,7 @@ const useStakeToBoardroom = () => {
         `Stake ${amount} ANTS to the boardroom`,
       );
     },
-    [antToken],
+    [antToken, handleTransactionReceipt],
   );
   return { onStake: handleStake };
 };

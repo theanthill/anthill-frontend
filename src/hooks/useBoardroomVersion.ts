@@ -1,21 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 import useAntToken from './useAntToken';
-import useStakedBalanceOnBoardroom from './useStakedBalanceOnBoardroom';
 
 const useBoardroomVersion = () => {
   const [boardroomVersion, setBoardroomVersion] = useState('latest');
   const antToken = useAntToken();
-  const stakedBalance = useStakedBalanceOnBoardroom();
+  const antTokenUnlocked = antToken?.isUnlocked;
 
   const updateState = useCallback(async () => {
     setBoardroomVersion(await antToken.fetchBoardroomVersionOfUser());
-  }, [antToken?.isUnlocked, stakedBalance]);
+  }, [antToken]);
 
   useEffect(() => {
-    if (antToken?.isUnlocked) {
+    if (antTokenUnlocked) {
       updateState().catch((err) => console.error(err.stack));
     }
-  }, [antToken?.isUnlocked, stakedBalance]);
+  }, [antTokenUnlocked, updateState]);
 
   return boardroomVersion;
 };

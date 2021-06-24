@@ -6,7 +6,7 @@ import anthill from '../../assets/img/anthill-logo.png';
 const Logo: React.FC = () => {
   return (
     <StyledLogo>
-      <img src={anthill} height="50" style={{ marginTop: 0 }} />
+      <img src={anthill} height="50" alt="" style={{ marginTop: 0 }} />
       <StyledLink href="/">Testnet</StyledLink>
     </StyledLogo>
   );

@@ -33,7 +33,7 @@ const useSwapTokens = (bank: Bank) => {
                 `Swapping ${amountInDisplay} ${bank.token1Name} for at least ${amountOutMinDisplay} ${bank.token0Name} tokens `);
         }
     },
-    [bank, antToken, account],
+    [bank, antToken, account, handleTransactionReceipt],
   );
   return { onSwapTokens: handleSwapTokens };
 };

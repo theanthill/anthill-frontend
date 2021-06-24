@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import useAntToken from './useAntToken';
-import config from '../config';
 import { TreasuryAllocationTime } from '../anthill/types';
 
 const useTreasuryAllocationTimes = () => {

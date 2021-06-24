@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import config from '../../config';
 import Dial from '../Dial';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
-import Button from '../Button';
 
 interface LaunchCountdownProps {
   deadline: Date;

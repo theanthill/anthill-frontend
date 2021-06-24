@@ -25,7 +25,7 @@ const useAddLiquidity = (bank: Bank) => {
             `Adding ${getDisplayBalance(token0Amount)} ${bank.token0Name} + ${getDisplayBalance(token1Amount)} ${bank.token1Name} to liquidity pool`,
         );
     },
-    [bank, antToken],
+    [bank, antToken, handleTransactionReceipt],
   );
   return { onAddLiquidity: handleAddLiquidity };
 };

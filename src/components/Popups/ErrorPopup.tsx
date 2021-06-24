@@ -1,10 +1,8 @@
-import React, { useCallback, useContext } from 'react';
-import { AlertCircle, CheckCircle } from 'react-feather';
-import styled, { ThemeContext } from 'styled-components';
+import React, { useCallback } from 'react';
+import { AlertCircle } from 'react-feather';
+import styled from 'styled-components';
 import { AutoColumn } from '../Column';
 import { AutoRow } from '../Row';
-import { useWallet } from '@binance-chain/bsc-use-wallet';
-import config from '../../config';
 
 const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;
@@ -13,7 +11,7 @@ const RowNoFlex = styled(AutoRow)`
 export default function ErrorPopup({ message, stack }: { message: string; stack: string }) {
   const copyErrorDetails = useCallback(async () => {
     await navigator.clipboard.writeText(`${message}\n${stack}`);
-  }, []);
+  }, [message, stack]);
 
   return (
     <RowNoFlex>

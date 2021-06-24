@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import useAntToken from './useAntToken';
-import { Bank } from '../anthill';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 import { parseUnits } from 'ethers/lib/utils';
 
@@ -17,7 +16,7 @@ const useChangeDollarPrice = () => {
         `Change Ant Token dollar price to ${amount}`,
       );
     },
-    [antToken],
+    [antToken, handleTransactionReceipt],
   );
   return { onChangeDollarPrice: handleChangeDollarPrice };
 };

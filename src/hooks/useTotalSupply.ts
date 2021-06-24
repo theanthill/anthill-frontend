@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
-import useAntToken from './useAntToken';
 import ERC20 from '../anthill/ERC20';
 
 const useTotalSupply = (token: ERC20) => {

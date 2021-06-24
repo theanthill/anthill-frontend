@@ -1,8 +1,6 @@
 import { useCallback } from 'react';
 import useAntToken from './useAntToken';
-import { Bank } from '../anthill';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
-import { parseUnits } from 'ethers/lib/utils';
 
 const useAllocateSeigniorage = () => {
   const antToken = useAntToken();
@@ -16,7 +14,7 @@ const useAllocateSeigniorage = () => {
         `Triggering seigniorage`,
       );
     },
-    [antToken],
+    [antToken, handleTransactionReceipt],
   );
   return { onAllocateSeigniorage: handleAllocateSeigniorage };
 };

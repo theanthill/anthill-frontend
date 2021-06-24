@@ -7,20 +7,21 @@ import config from '../config';
 const useTokenBalance = (token: ERC20) => {
   const [balance, setBalance] = useState(BigNumber.from(0));
   const antToken = useAntToken();
+  const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchBalance = useCallback(async () => {
     setBalance(await token.balanceOf(antToken.myAccount));
-  }, [antToken?.isUnlocked, token]);
+  }, [antToken, token]);
 
   useEffect(() => {
-    if (antToken?.isUnlocked) {
+    if (antTokenUnlocked) {
       fetchBalance().catch((err) =>
         console.error(`Failed to fetch token balance: ${err.stack}`),
       );
       let refreshInterval = setInterval(fetchBalance, config.refreshInterval);
       return () => clearInterval(refreshInterval);
     }
-  }, [antToken?.isUnlocked, token]);
+  }, [antTokenUnlocked, token, fetchBalance]);
 
   return balance;
 };

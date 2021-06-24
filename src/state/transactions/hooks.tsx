@@ -93,8 +93,8 @@ export function useClearAllTransactions(): { clearAllTransactions: () => void } 
   const { chainId } = useWallet();
   const dispatch = useDispatch<AppDispatch>();
   return {
-    clearAllTransactions: useCallback(() => dispatch(clearAllTransactions({ chainId })), [
-      dispatch,
+    clearAllTransactions: useCallback(() => dispatch(clearAllTransactions({ chainId })),[
+      dispatch, chainId
     ]),
   };
 }

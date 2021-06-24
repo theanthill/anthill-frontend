@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import Label from '../../../components/Label';
-import { TokenStat } from '../../../anthill/types';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import TokenSymbol from '../../../components/TokenSymbol';
 import { commify } from 'ethers/lib/utils';
@@ -112,17 +111,5 @@ const ValueSkeleton = () => {
     </SkeletonTheme>
   );
 };
-
-const GuideText = styled.span`
-  color: ${(props) => props.theme.color.primary.main};
-  font-size: 0.8rem;
-`;
-
-const ValueText = styled.p`
-  color: ${(props) => props.theme.color.white};
-  font-weight: bold;
-  font-size: 1.25rem;
-  margin: ${(props) => props.theme.spacing[1]}px 0;
-`;
 
 export default HomeCard;

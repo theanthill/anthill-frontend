@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { NavLink} from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useWallet } from '@binance-chain/bsc-use-wallet';
@@ -92,15 +91,4 @@ const Center = styled.div`
   margin-bottom: 40px;
 `;
 
-const StyledLink = styled(NavLink)`
-  color: ${props => props.theme.color.grey[400]};
-  font-weight: 700;
-  text-decoration: none;
-  &:hover {
-    color: ${props => props.theme.color.grey[500]};
-  }
-  &.active {
-    color: ${props => props.theme.color.primary.main};
-  }
-`
 export default Help;

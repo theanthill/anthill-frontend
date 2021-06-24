@@ -12,7 +12,6 @@ import Page from '../../components/Page';
 import useRedeemOnBoardroom from '../../hooks/useRedeemOnBoardroom';
 import useStakedBalanceOnBoardroom from '../../hooks/useStakedBalanceOnBoardroom';
 
-import config from '../../config';
 import Stat from './components/Stat';
 import ProgressCountdown from './components/ProgressCountdown';
 import useAntTokenPriceInEstimatedTWAP from '../../hooks/useAntTokenPriceInEstimatedTWAP';
@@ -38,7 +37,7 @@ const Boardroom: React.FC = () => {
 
   const scalingFactor = useMemo(
     () => (antTokenStat ? Number(antTokenStat.priceInBUSD).toFixed(antToken.priceDecimals) : null),
-    [antTokenStat],
+    [antTokenStat, antToken],
   );
   const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
 
@@ -69,8 +68,6 @@ const Boardroom: React.FC = () => {
     }
     return <></>;
   }, [boardroomVersion]);
-
-  const isLaunched = Date.now() >= config.boardroomLaunchesAt.getTime();
 
   return (
     <Switch>

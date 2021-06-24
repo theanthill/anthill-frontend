@@ -14,7 +14,7 @@ const useFaucet = () => {
             `Refilling tokens from faucet`,
         );
     },
-    [antToken],
+    [antToken, handleTransactionReceipt],
   );
   return { onGetFreeTokens: handleGetFreeTokens };
 };

@@ -10,15 +10,9 @@ const useRedeem = (bank: Bank) => {
 
   const handleRedeem = useCallback(() => {
     handleTransactionReceipt(antToken.settleWithdraw(bank.providerHelperName), `Claim & Withdraw ${bank.contract}`);
-  }, [bank, antToken]);
+  }, [bank, antToken, handleTransactionReceipt]);
 
   return { onRedeem: handleRedeem };
 };
-
-function deadline()
-{
-    // 30 minutes
-    return Math.floor(new Date().getTime() / 1000) + 1800;
-}
 
 export default useRedeem;

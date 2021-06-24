@@ -178,17 +178,6 @@ const StyledDetail = styled.div`
   color: ${(props) => props.theme.color.grey[300]};
 `;
 
-const StyledDisclaimers = styled.div`
-  margin-bottom: ${(props) => props.theme.spacing[3]}px;
-  margin-top: ${(props) => props.theme.spacing[1]}px;
-  text-align: center;
-`;
-
-const StyledDisclaimerSmall = styled.div`
-  color: ${(props) => props.theme.color.grey[300]};
-  font-size: 14px;
-`;
-
 const StyledInactiveNoticeContainer = styled.div`
   width: 598px;
   margin-bottom: ${(props) => props.theme.spacing[6]}px;
@@ -200,14 +189,6 @@ const StyledInactiveBankTitle = styled.p`
   color: ${(props) => props.theme.color.grey[400]};
   margin-top: ${(props) => props.theme.spacing[5]}px;
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
-`;
-
-const StyledApproveButton = styled.div`
-  display: block;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
 `;
 
 const StyledStats = styled.div`

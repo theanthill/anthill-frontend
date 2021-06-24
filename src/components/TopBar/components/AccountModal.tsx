@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import useTokenBalance from '../../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
-import Button from '../../Button';
 import Label from '../../Label';
 import Modal, { ModalProps } from '../../Modal';
 import ModalTitle from '../../ModalTitle';
@@ -79,17 +78,6 @@ const StyledBalanceWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 ${props => props.theme.spacing[3]}px;
-`
-
-const StyledBalanceIcon = styled.div`
-  font-size: 36px;
-  margin-right: ${props => props.theme.spacing[3]}px;
-`
-
-const StyledBalanceActions = styled.div`
-  align-items: center;
-  display: flex;
-  margin-top: ${props => props.theme.spacing[4]}px;
 `
 
 export default AccountModal

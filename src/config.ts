@@ -1,7 +1,6 @@
 import { ChainId } from '@pancakeswap-libs/sdk';
 import { Configuration } from './anthill/config';
 import { BankInfo, TokenInfo } from './anthill';
-import { runInThisContext } from 'vm';
 
 export const tokens: { [tokenName: string]: TokenInfo } =
 {

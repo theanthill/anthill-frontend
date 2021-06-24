@@ -1,5 +1,4 @@
-import React, { useContext, useMemo } from 'react'
-import { ThemeContext } from 'styled-components'
+import React from 'react'
 import IconButton from '../IconButton'
 import { InfoIcon } from '../icons'
 
@@ -12,8 +11,6 @@ const InfoButton: React.FC<InfoButtonProps> = ({
   onClick,
   size
 }) => {
-  const { color, spacing } = useContext(ThemeContext)
-
   return (
     <IconButton onClick={onClick} size={size}>
       <InfoIcon size={size}/>

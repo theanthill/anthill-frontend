@@ -29,7 +29,7 @@ const useLiquidityPoolTVL = (bank: Bank) => {
 
 
     setTVL(TVL);
-  }, [antToken?.isUnlocked, bank]);
+  }, [antToken, bank]);
 
   useEffect(() => {
     if (antToken?.isUnlocked) {
@@ -38,7 +38,7 @@ const useLiquidityPoolTVL = (bank: Bank) => {
       const refreshBalance = setInterval(fetchRewardRate, config.refreshInterval);
       return () => clearInterval(refreshBalance);
     }
-  }, [antToken?.isUnlocked, bank, antToken]);
+  }, [bank, antToken, fetchRewardRate]);
 
   return TVL;
 };

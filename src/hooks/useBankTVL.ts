@@ -7,6 +7,7 @@ import config from '../config';
 const useBankTVL = (bank: Bank) => {
   const [TVL, setTVL] = useState(BigNumber.from(0));
   const antToken = useAntToken();
+  const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchRewardRate = useCallback(async () => {
     const [token0TotalLiquidity, token1TotalLiquidity] = await antToken.getLockedLiquidity(bank);
@@ -19,16 +20,16 @@ const useBankTVL = (bank: Bank) => {
     TVL = TVL.add(token1TotalLiquidity.mul(token1Price).div(decimalsDivisor));
 
     setTVL(TVL);
-  }, [antToken?.isUnlocked, bank]);
+  }, [antToken, bank]);
 
   useEffect(() => {
-    if (antToken?.isUnlocked) {
+    if (antTokenUnlocked) {
       fetchRewardRate().catch((err) => console.error(err.stack));
 
       const refreshBalance = setInterval(fetchRewardRate, config.refreshInterval);
       return () => clearInterval(refreshBalance);
     }
-  }, [antToken?.isUnlocked, bank, antToken]);
+  }, [antTokenUnlocked, bank, fetchRewardRate]);
 
   return TVL;
 };

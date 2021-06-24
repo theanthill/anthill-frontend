@@ -13,11 +13,9 @@ import useAntToken from '../../hooks/useAntToken';
 import useAntBondOraclePriceInLastTWAP from '../../hooks/useAntBondOraclePriceInLastTWAP';
 import useRealAntTokenPrice from '../../hooks/useRealAntTokenPrice';
 import { useTransactionAdder } from '../../state/transactions/hooks';
-import config from '../../config';
 import ExchangeStat from './components/ExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
-import { BigNumber } from '@ethersproject/bignumber';
 
 const AntBond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -40,7 +38,7 @@ const AntBond: React.FC = () => {
         summary: `Buy ${antBondAmount.toFixed(antToken.priceDecimals)} ANTB with ${amount} ANT`,
       });
     },
-    [antToken, addTransaction, antTokenPrice],
+    [antToken, addTransaction, antTokenPrice, antTokenPriceFloat],
   );
 
   const handleRedeemAntBonds = useCallback(
@@ -50,10 +48,8 @@ const AntBond: React.FC = () => {
     },
     [antToken, addTransaction],
   );
-  const antTokenIsOverpriced = useMemo(() => antTokenPrice.gt(realAntTokenPrice), [antTokenPrice]);
-  const antTokenIsUnderPriced = useMemo(() => antTokenPrice.lt(realAntTokenPrice), [antBondStat]);
 
-  const isLaunched = Date.now() >= config.antBondLaunchesAt.getTime();
+  const antTokenIsUnderPriced = useMemo(() => antTokenPrice.lt(realAntTokenPrice), [antTokenPrice, realAntTokenPrice]);
 
   return (
     <Switch>

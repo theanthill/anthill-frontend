@@ -8,20 +8,21 @@ import config from '../config';
 const useTotalLiquidityAmounts = (bank: Bank) => {
   const [balances, setBalance] = useState([BigNumber.from(0), BigNumber.from(0)]);
   const antToken = useAntToken();
+  const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchBalances = useCallback(async () => {
     setBalance(await antToken.getTotalLiquidity(bank));
-  }, [antToken?.isUnlocked]);
+  }, [antToken, bank]);
 
   useEffect(() => {
-    if (antToken?.isUnlocked) {
+    if (antTokenUnlocked) {
       fetchBalances().catch((err) =>
         console.error(`Failed to fetch tokens liquidity: ${err.stack}`),
       );
       let refreshInterval = setInterval(fetchBalances, config.refreshInterval);
       return () => clearInterval(refreshInterval);
     }
-  }, [antToken?.isUnlocked]);
+  }, [antTokenUnlocked, fetchBalances]);
 
   return balances;
 };

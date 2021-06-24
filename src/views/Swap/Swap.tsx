@@ -9,7 +9,6 @@ import PageHeader from '../../components/PageHeader';
 import Spacer from '../../components/Spacer';
 import SwapTokens from './components/SwapTokens';
 import useBank from '../../hooks/useBank';
-import useRedeem from '../../hooks/useRedeem';
 
 const Swap: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -18,7 +17,6 @@ const Swap: React.FC = () => {
   const bank = useBank(bankId);
 
   const { account } = useWallet();
-  const { onRedeem } = useRedeem(bank);
 
   return account && bank ? (
     <>

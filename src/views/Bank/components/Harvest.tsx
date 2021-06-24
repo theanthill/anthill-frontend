@@ -69,7 +69,7 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
           </StyledCardHeader>
           <StyledCardActions>
             <Button
-                        disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)=='0.00'}
+                        disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)==='0.00'}
                         onClick={onPresentWithdraw}
                         text={`Remove Liquidity`}
                       />

@@ -8,7 +8,7 @@ import CardIcon from '../../../components/CardIcon';
 
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 
-import { getBalance, getDisplayBalance } from '../../../utils/formatBalance';
+import { getBalance } from '../../../utils/formatBalance';
 
 import TokenSymbol from '../../../components/TokenSymbol';
 import { Bank } from '../../../anthill';
@@ -46,7 +46,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
     {
       onAddLiquidity(amountTokenB, amountTokenA);
     }
-  }, [token0In, amountTokenA, amountTokenB]);
+  }, [token0In, amountTokenA, amountTokenB, onAddLiquidity]);
 
   const handleTokenChange = useCallback((amount: string) => {
     try{
@@ -112,8 +112,8 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                     <StyledApproveButton>
                       <Button
                         disabled={
-                          approveStatusToken0 == ApprovalState.PENDING ||
-                          approveStatusToken0 == ApprovalState.UNKNOWN
+                          approveStatusToken0 === ApprovalState.PENDING ||
+                          approveStatusToken0 === ApprovalState.UNKNOWN
                         }
                         onClick={approveToken0}
                         text={`Approve ${bank.token0.symbol}`}
@@ -123,8 +123,8 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                       <StyledApproveButton>
                       <Button
                         disabled={
-                          approveStatusToken1 == ApprovalState.PENDING ||
-                          approveStatusToken1 == ApprovalState.UNKNOWN
+                          approveStatusToken1 === ApprovalState.PENDING ||
+                          approveStatusToken1 === ApprovalState.UNKNOWN
                         }
                         onClick={approveToken1}
                         text={`Approve ${bank.token1.symbol}`}
@@ -135,7 +135,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                   <StyledCardActions>
                     <>
                       <Button
-                        disabled={amountTokenA == 0 || amountTokenB == 0 || amountTokenA > getBalance(tokenABalance) || amountTokenB > getBalance(tokenBBalance)}
+                        disabled={amountTokenA === 0 || amountTokenB === 0 || amountTokenA > getBalance(tokenABalance) || amountTokenB > getBalance(tokenBBalance)}
                         onClick={handleAddLiquidity}
                         text={`Add Liquidity`}
                       />
@@ -188,18 +188,6 @@ const StyledCardContentInner = styled.div`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-`;
-
-const StyledContent = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledButtons = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: row;
 `;
 
 const StyledApproveButton = styled.div`

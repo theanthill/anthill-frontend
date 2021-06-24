@@ -1,14 +1,10 @@
-import { useContext } from 'react'
-import { ThemeContext } from 'styled-components'
-
 import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
-import { parseUnits } from 'ethers/lib/utils';
 
 // [workerant] ADD BACK for real deploy
 //import { Fetcher, Route, Token } from '@pancakeswap-libs/sdk';
-import { Pair, TokenAmount, ChainId, Price } from '@pancakeswap-libs/sdk';
+import { TokenAmount, ChainId, Price } from '@pancakeswap-libs/sdk';
 import { Fetcher, Route, Token } from '@theanthill/pancakeswap-sdk-v1';
 import { abi as IPancakeRouter02ABI } from '@theanthill/pancake-swap-periphery/build/IPancakeRouter02.json'
 import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
@@ -136,7 +132,7 @@ export class AntToken {
   async getAntTokenStatFromPancakeSwap(): Promise<TokenStat> {
     const supply = await this.tokens.ANT.displayedTotalSupply();
     const antTokenPrice = Number(await this.getTokenPriceFromPancakeSwap(this.tokens.ANT))
-    const realAntTokenPrice = Number(await this.getRealAntTokenPrice())
+    //const realAntTokenPrice = Number(await this.getRealAntTokenPrice())
 
     return {
       // [workerant] TODO: review this
@@ -201,7 +197,7 @@ export class AntToken {
     const token = new Token(chainId, tokenContract.address, 18);
 
     try {
-      const busdToToken = await Fetcher.fetchPairData(busd, token, this.provider, this.ChainId == ChainId.MAINNET);
+      const busdToToken = await Fetcher.fetchPairData(busd, token, this.provider, this.ChainId === ChainId.MAINNET);
       const priceInBUSD = new Route([busdToToken], token);
       return priceInBUSD.midPrice.toSignificant(3);
     } catch (err) {
@@ -215,7 +211,8 @@ export class AntToken {
    */
   async buyAntBonds(amount: string | number, targetPrice: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.buyAntBonds(decimalToBalance(amount), targetPrice);
+    const balance = decimalToBalance(amount);
+    return await Treasury.buyAntBonds(balance, targetPrice);
   }
 
   /**
@@ -224,7 +221,8 @@ export class AntToken {
    */
   async redeemAntBonds(amount: string): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    return await Treasury.redeemAntBonds(decimalToBalance(amount));
+    const balance = decimalToBalance(amount);
+    return await Treasury.redeemAntBonds(balance);
   }
 
   async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
@@ -314,21 +312,6 @@ export class AntToken {
   }
 
   async fetchBoardroomVersionOfUser(): Promise<string> {
-    const { Boardroom } = this.contracts;
-    // const balance1 = await Boardroom.getAntShareOf(this.myAccount);
-    // if (balance1.gt(0)) {
-    //   console.log(
-    //     `👀 The user is using Boardroom v1. (Staked ${getDisplayBalance(balance1)} ANTS)`,
-    //   );
-    //   return 'v1';
-    // }
-    // const balance2 = await Boardroom2.balanceOf(this.myAccount);
-    // if (balance2.gt(0)) {
-    //   console.log(
-    //     `👀 The user is using Boardroom v2. (Staked ${getDisplayBalance(balance2)} ANTS)`,
-    //   );
-    //   return 'v2';
-    // }
     return 'latest';
   }
 
@@ -430,7 +413,7 @@ export class AntToken {
     const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
     const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
 
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
+    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
     
     const stakedLiquidity = await this.stakedBalanceOnBank(bank.contract, this.myAccount);
     let pairLiquidity =  await this.contracts[bank.depositTokenName].balanceOf(this.myAccount); 
@@ -457,7 +440,7 @@ export class AntToken {
     const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
     const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
 
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
+    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
     
     const stakedLiquidity = await this.getBankTotalSupply(bank.contract);
     const pairTotalSupply = await this.contracts[bank.depositTokenName].totalSupply();
@@ -481,7 +464,7 @@ export class AntToken {
     const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
     const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
 
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
+    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
 
     const token0AmountBN = BigNumber.from(pair.reserve0.raw.toString());
     const token1AmountBN = BigNumber.from(pair.reserve1.raw.toString());
@@ -496,7 +479,7 @@ export class AntToken {
     const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
     const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
 
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId == ChainId.MAINNET);
+    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
     
     return [pair.priceOf(token0), pair.priceOf(token1)];
   }

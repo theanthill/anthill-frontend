@@ -15,7 +15,7 @@ const useAntBondStats = () => {
     fetchAntBondPrice().catch((err) => console.error(`Failed to fetch ANTB price: ${err.stack}`));
     const refreshInterval = setInterval(fetchAntBondPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
-  }, [setStat, antToken]);
+  }, [setStat, antToken, fetchAntBondPrice]);
 
   return stat;
 };

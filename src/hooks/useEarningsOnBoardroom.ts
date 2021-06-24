@@ -6,19 +6,20 @@ import config from '../config';
 const useEarningsOnBoardroom = () => {
   const [balance, setBalance] = useState(BigNumber.from(0));
   const antToken = useAntToken();
+  const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchBalance = useCallback(async () => {
     setBalance(await antToken.getEarningsOnBoardroom());
-  }, [antToken?.isUnlocked]);
+  }, [antToken, setBalance]);
 
   useEffect(() => {
-    if (antToken?.isUnlocked) {
+    if (antTokenUnlocked) {
       fetchBalance().catch((err) => console.error(err.stack));
 
       const refreshBalance = setInterval(fetchBalance, config.refreshInterval);
       return () => clearInterval(refreshBalance);
     }
-  }, [antToken?.isUnlocked, setBalance]);
+  }, [antTokenUnlocked, fetchBalance]);
 
   return balance;
 };

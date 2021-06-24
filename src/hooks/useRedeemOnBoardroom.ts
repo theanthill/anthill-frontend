@@ -9,7 +9,7 @@ const useRedeemOnBoardroom = (description?: string) => {
   const handleRedeem = useCallback(() => {
     const alertDesc = description || 'Redeem ANTS from Boardroom';
     handleTransactionReceipt(antToken.exitFromBoardroom(), alertDesc);
-  }, [antToken]);
+  }, [antToken, description, handleTransactionReceipt]);
   return { onRedeem: handleRedeem };
 };
 

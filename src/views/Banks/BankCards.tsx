@@ -121,7 +121,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
                       approveStatusToken0 !== ApprovalState.NOT_APPROVED
                     }
                     onClick={approveToken0}
-                    text={ (approveStatusToken0 == ApprovalState.APPROVED) ? `${bank.token0.symbol} approved!` : `Approve ${bank.token0.symbol}`}
+                    text={ (approveStatusToken0 === ApprovalState.APPROVED) ? `${bank.token0.symbol} approved!` : `Approve ${bank.token0.symbol}`}
                   />
                 </StyledApproveButton>
                 <StyledApproveButton>
@@ -130,7 +130,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
                       approveStatusToken1 !== ApprovalState.NOT_APPROVED
                     }
                     onClick={approveToken1}
-                    text={ (approveStatusToken1 == ApprovalState.APPROVED) ? `${bank.token1.symbol} approved!` : `Approve ${bank.token1.symbol}`}
+                    text={ (approveStatusToken1 === ApprovalState.APPROVED) ? `${bank.token1.symbol} approved!` : `Approve ${bank.token1.symbol}`}
                   />
                 </StyledApproveButton>
               </StyledContent>

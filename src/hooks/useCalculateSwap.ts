@@ -30,7 +30,7 @@ const useCalculateSwap = (bank: Bank, token0In: boolean, amountIn: BigNumber) =>
     else{
       setAmountOut(null);
     }
-  }, [bank, amountIn, token0In, antToken]);
+  }, [bank, amountIn, token0In, antToken, fetchSwapAmount]);
 
   return amountOut;
 };
