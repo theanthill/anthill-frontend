@@ -11,6 +11,7 @@ import config, { tokens } from '../../config';
 
 const Home: React.FC = () => {
   const ant = useAntToken();
+  const antUnlocked = ant?.isUnlocked;
 
   const [{ antToken, antBond, antShare }, setStats] = useState<OverviewData>({});
   const fetchStats = useCallback(async () => {
@@ -26,10 +27,10 @@ const Home: React.FC = () => {
   }, [ant, setStats]);
 
   useEffect(() => {
-    if (ant) {
+    if (antUnlocked) {
       fetchStats().catch((err) => console.error(err.stack));
     }
-  }, [ant, fetchStats]);
+  }, [antUnlocked, fetchStats]);
 
   const antTokenAddr = useMemo(() => ant?.tokens.ANT.address, [ant]);
   const antShareAddr = useMemo(() => ant?.tokens.ANTS.address, [ant]);
