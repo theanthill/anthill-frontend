@@ -10,7 +10,8 @@ const useChangeDollarPrice = () => {
 
   const handleChangeDollarPrice = useCallback(
     (amount: string) => {
-      const amountBn = parseUnits(amount);
+      const amountInverse = 1.0/Number(amount);
+      const amountBn = parseUnits(amountInverse.toString());
       handleTransactionReceipt(
         antToken.changeDollarPrice(amountBn),
         `Change Ant Token dollar price to ${amount}`,
