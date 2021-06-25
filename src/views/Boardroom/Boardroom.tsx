@@ -96,7 +96,7 @@ const Boardroom: React.FC = () => {
               <Stat
                 title={
                   treasuryAmount
-                    ? `~${getCompactDisplayBalance(treasuryAmount, 0)} ANT`
+                    ? `~${getCompactDisplayBalance(treasuryAmount, antToken.tokens.ANT.decimal, 0)} ANT`
                     : '-'
                 }
                 description="Treasury Amount"
