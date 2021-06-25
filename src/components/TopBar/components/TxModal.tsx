@@ -31,7 +31,8 @@ const TxModal: React.FC<ModalProps> = ({ onDismiss }) => {
     <StyledModal>
       <StyledTitleArea>
         <StyledModalTitle>Transactions</StyledModalTitle>
-        {confirmed?.length > 0 && (
+        {// [workerant] Leave it enabled for now
+         /*confirmed?.length > 0 &&*/ (
           <StyledClearIconWrapper>
             <Trash onClick={clearAllTransactions} size="16" />
           </StyledClearIconWrapper>
