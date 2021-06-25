@@ -1,9 +1,6 @@
 import { BigNumber, Contract, ethers, Overrides } from 'ethers';
-import { decimalToBalance } from './ether-utils';
+import { decimalToBalance, balanceToDecimal } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
-
-// [workerant] ADD BACK for real deploy
-//import { Fetcher, Route, Token } from '@pancakeswap-libs/sdk';
 import { TokenAmount, ChainId, Price } from '@pancakeswap-libs/sdk';
 import { Fetcher, Route, Token } from '@theanthill/pancakeswap-sdk-v1';
 import { abi as IPancakeRouter02ABI } from '@theanthill/pancake-swap-periphery/build/IPancakeRouter02.json'
@@ -132,12 +129,13 @@ export class AntToken {
   async getAntTokenStatFromPancakeSwap(): Promise<TokenStat> {
     const supply = await this.tokens.ANT.displayedTotalSupply();
     const antTokenPrice = Number(await this.getTokenPriceFromPancakeSwap(this.tokens.ANT))
-    //const realAntTokenPrice = Number(await this.getRealAntTokenPrice())
+    const realAntTokenPriceBN = await this.getRealAntTokenPrice()
+    const realAntTokenPrice = Number(balanceToDecimal(realAntTokenPriceBN.toString()))
 
     return {
       // [workerant] TODO: review this
-      //priceInBUSD: String((antTokenPrice / realAntTokenPrice).toFixed(2)),
-      priceInBUSD: String(antTokenPrice.toFixed(this.priceDecimals)),
+      priceInBUSD: String((antTokenPrice / realAntTokenPrice).toFixed(2)),
+      //priceInBUSD: String(antTokenPrice.toFixed(this.priceDecimals)),
       totalSupply: supply,
     };
   }
@@ -194,7 +192,7 @@ export class AntToken {
     const { chainId } = this.config;
 
     const busd = new Token(chainId, this.tokens.BUSD.address, this.tokens.BUSD.decimal);
-    const token = new Token(chainId, tokenContract.address, 18);
+    const token = new Token(chainId, tokenContract.address, tokenContract.decimal);
 
     try {
       const busdToToken = await Fetcher.fetchPairData(busd, token, this.provider, this.ChainId === ChainId.MAINNET);
@@ -219,10 +217,10 @@ export class AntToken {
    * Redeem Ant Bonds for Ant Token.
    * @param amount amount of Ant Bonds to redeem.
    */
-  async redeemAntBonds(amount: string): Promise<TransactionResponse> {
+  async redeemAntBonds(amount: string | number, targetPrice: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
     const balance = decimalToBalance(amount);
-    return await Treasury.redeemAntBonds(balance);
+    return await Treasury.redeemAntBonds(balance, targetPrice);
   }
 
   async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
