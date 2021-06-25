@@ -24,6 +24,7 @@ interface ExchangeCardProps {
   toTokenName: string;
   priceDesc: string;
   onExchange: (amount: string) => void;
+  reverseDirection?: boolean;
   disabled?: boolean;
 }
 
@@ -33,6 +34,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
   fromTokenName,
   toToken,
   toTokenName,
+  reverseDirection,
   priceDesc,
   onExchange,
   disabled = false,
@@ -44,7 +46,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
   const balance = useTokenBalance(fromToken);
   const [onPresent, onDismiss] = useModal(
     <ExchangeModal
-      title={action}
+      title={`${action} ${reverseDirection ? fromTokenName : toTokenName}`}
       description={priceDesc}
       max={balance}
       onConfirm={(value) => {
@@ -59,7 +61,7 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
     <Card>
       <CardContent>
         <StyledCardContentInner>
-          <StyledCardTitle>{`${action} ${toTokenName}`}</StyledCardTitle>
+          <StyledCardTitle>{`${action} ${reverseDirection ? fromTokenName : toTokenName}`}</StyledCardTitle>
           <StyledExchanger>
             <StyledToken>
               <StyledCardIcon>
@@ -150,6 +152,7 @@ const StyledCardActions = styled.div`
 
 const StyledDesc = styled.span`
   color: ${(props) => props.theme.color.grey[300]};
+  font-size: 12px;
 `;
 
 const StyledCardContentInner = styled.div`

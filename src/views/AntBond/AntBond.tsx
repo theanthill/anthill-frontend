@@ -43,12 +43,13 @@ const AntBond: React.FC = () => {
 
   const handleRedeemAntBonds = useCallback(
     async (amount: string) => {
-      const tx = await antToken.redeemAntBonds(amount);
+      const tx = await antToken.redeemAntBonds(amount, antTokenPrice.toString());
       addTransaction(tx, { summary: `Redeem ${amount} ANTB` });
     },
-    [antToken, addTransaction],
+    [antToken, antTokenPrice, addTransaction],
   );
 
+  const antTokenIsOverPriced = useMemo(() => antTokenPrice.gt(realAntTokenPrice), [antTokenPrice, realAntTokenPrice]);
   const antTokenIsUnderPriced = useMemo(() => antTokenPrice.lt(realAntTokenPrice), [antTokenPrice, realAntTokenPrice]);
 
   return (
@@ -70,18 +71,15 @@ const AntBond: React.FC = () => {
                   fromTokenName="Ant Token"
                   toToken={antToken.tokens.ANTB}
                   toTokenName="Ant Bond"
-                  // priceDesc={
-                  //   antTokenIsOverpriced
-                  //     ? 'ANT is over AntToken Price'
-                  //     : antTokenIsUnderPriced
-                  //     ? `${Math.floor(
-                  //         100 / Number(antTokenPrice) - 100,
-                  //       )}% return when ANT > AntToken Price`
-                  //     : '-'
-                  // }
-                  priceDesc='Buy Ant Bonds'
+                   priceDesc={
+                      antTokenIsOverPriced
+                       ? 'Ant Token price is over target price'
+                       : antTokenIsUnderPriced
+                       ? `Ant Token price is below target price`
+                       : 'AAnt Token price is exactly target price'
+                  }
                   onExchange={handleBuyAntBonds}
-                  disabled={ parseFloat(antBondStat?.priceInBUSD) < 1 }
+                  disabled={ parseFloat(antBondStat?.priceInBUSD) <= 1 }
                 />
               </StyledCardWrapper>
               <StyledStatsWrapper>
@@ -104,6 +102,7 @@ const AntBond: React.FC = () => {
                   fromTokenName="Ant Bond"
                   toToken={antToken.tokens.ANT}
                   toTokenName="Ant Token"
+                  reverseDirection={true}
                   priceDesc={`${getDisplayBalance(antBondBalance)} ANTB Available`}
                   onExchange={handleRedeemAntBonds}
                   disabled={!antBondStat || antBondBalance.eq(0) || antTokenIsUnderPriced}
