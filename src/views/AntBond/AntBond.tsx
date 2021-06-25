@@ -12,16 +12,16 @@ import useAntBondStats from '../../hooks/useAntBondStats';
 import useAntToken from '../../hooks/useAntToken';
 import useAntBondOraclePriceInLastTWAP from '../../hooks/useAntBondOraclePriceInLastTWAP';
 import useRealAntTokenPrice from '../../hooks/useRealAntTokenPrice';
-import { useTransactionAdder } from '../../state/transactions/hooks';
 import ExchangeStat from './components/ExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
+import useHandleTransactionReceipt from '../../hooks/useHandleTransactionReceipt';
 
 const AntBond: React.FC = () => {
   const { path } = useRouteMatch();
   const { account, connect } = useWallet();
   const antToken = useAntToken();
-  const addTransaction = useTransactionAdder();
+  const handleTransactionReceipt = useHandleTransactionReceipt();
   const antBondStat = useAntBondStats();
   const antTokenPrice = useAntBondOraclePriceInLastTWAP();
   const antTokenPriceFloat = Number(antTokenPrice) / 10**18;
@@ -32,25 +32,28 @@ const AntBond: React.FC = () => {
 
   const handleBuyAntBonds = useCallback(
     async (amount: string) => {
-      const tx = await antToken.buyAntBonds(amount, antTokenPrice.toString());
       const antBondAmount = Number(amount) / Number(antTokenPriceFloat);
-      addTransaction(tx, {
-        summary: `Buy ${antBondAmount.toFixed(antToken.priceDecimals)} ANTB with ${amount} ANT`,
-      });
+      handleTransactionReceipt(
+        antToken.buyAntBonds(amount, antTokenPrice.toString()),
+        `Buy ${antBondAmount.toFixed(antToken.priceDecimals)} ANTB with ${amount} ANT`
+      );
     },
-    [antToken, addTransaction, antTokenPrice, antTokenPriceFloat],
+    [antToken, handleTransactionReceipt, antTokenPrice, antTokenPriceFloat],
   );
 
   const handleRedeemAntBonds = useCallback(
     async (amount: string) => {
-      const tx = await antToken.redeemAntBonds(amount, antTokenPrice.toString());
-      addTransaction(tx, { summary: `Redeem ${amount} ANTB` });
+      handleTransactionReceipt(
+        antToken.redeemAntBonds(amount, antTokenPrice.toString()),
+        `Redeeming ${amount} Ant Bonds`
+      );  
     },
-    [antToken, antTokenPrice, addTransaction],
+    [antToken, antTokenPrice, handleTransactionReceipt],
   );
 
   const antTokenIsOverPriced = useMemo(() => antTokenPrice.gt(realAntTokenPrice), [antTokenPrice, realAntTokenPrice]);
   const antTokenIsUnderPriced = useMemo(() => antTokenPrice.lt(realAntTokenPrice), [antTokenPrice, realAntTokenPrice]);
+  const antTokenIsUnderPriceCeiling = useMemo(() => antTokenPrice.lt(realAntTokenPrice.mul(105).div(100)), [antTokenPrice, realAntTokenPrice]);
 
   return (
     <Switch>
@@ -76,7 +79,7 @@ const AntBond: React.FC = () => {
                        ? 'Ant Token price is over target price'
                        : antTokenIsUnderPriced
                        ? `Ant Token price is below target price`
-                       : 'AAnt Token price is exactly target price'
+                       : 'Ant Token price is exactly target price'
                   }
                   onExchange={handleBuyAntBonds}
                   disabled={ parseFloat(antBondStat?.priceInBUSD) <= 1 }
@@ -105,7 +108,7 @@ const AntBond: React.FC = () => {
                   reverseDirection={true}
                   priceDesc={`${getDisplayBalance(antBondBalance)} ANTB Available`}
                   onExchange={handleRedeemAntBonds}
-                  disabled={!antBondStat || antBondBalance.eq(0) || antTokenIsUnderPriced}
+                  disabled={!antBondStat || getDisplayBalance(antBondBalance) === '0.00' || antTokenIsUnderPriceCeiling}
                 />
               </StyledCardWrapper>
             </StyledAntBond>
