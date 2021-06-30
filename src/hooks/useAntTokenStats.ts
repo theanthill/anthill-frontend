@@ -8,14 +8,14 @@ const useAntTokenStats = () => {
   const antToken = useAntToken();
 
   const fetchAntTokenPrice = useCallback(async () => {
-    setStat(await antToken.getAntTokenStatFromPancakeSwap());
+    setStat(await antToken.getAntTokenStat());
   }, [antToken]);
 
   useEffect(() => {
     fetchAntTokenPrice().catch((err) => console.error(`Failed to fetch ANT price: ${err.stack}`));
     const refreshInterval = setInterval(fetchAntTokenPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
-  }, [setStat, antToken]);
+  }, [setStat, fetchAntTokenPrice, antToken]);
 
   return stat;
 };

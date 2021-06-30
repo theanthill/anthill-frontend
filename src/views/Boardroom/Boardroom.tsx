@@ -14,7 +14,6 @@ import useStakedBalanceOnBoardroom from '../../hooks/useStakedBalanceOnBoardroom
 
 import Stat from './components/Stat';
 import ProgressCountdown from './components/ProgressCountdown';
-import useAntTokenPriceInEstimatedTWAP from '../../hooks/useAntTokenPriceInEstimatedTWAP';
 import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 import useAntToken from '../../hooks/useAntToken';
 import { getBalance, getCompactDisplayBalance } from '../../utils/formatBalance';
@@ -23,6 +22,7 @@ import Notice from '../../components/Notice';
 import useBoardroomVersion from '../../hooks/useBoardroomVersion';
 import moment from 'moment';
 import useTotalSupply from '../../hooks/useTotalSupply';
+import useAntTokenStats from '../../hooks/useAntTokenStats';
 
 const Boardroom: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -31,12 +31,12 @@ const Boardroom: React.FC = () => {
   const stakedBalance = useStakedBalanceOnBoardroom();
   
   const antToken = useAntToken();
-  const antTokenStat = useAntTokenPriceInEstimatedTWAP();
+  const antTokenStat = useAntTokenStats();
   const treasuryAmount = useTreasuryAmount();
   const antTokenTotalSupply = useTotalSupply(antToken?.tokens.ANT);
 
   const scalingFactor = useMemo(
-    () => (antTokenStat ? Number(antTokenStat.priceInBUSD).toFixed(antToken.priceDecimals) : null),
+    () => (antTokenStat ? Number(antTokenStat.priceInBUSDLastEpoch).toFixed(antToken.priceDecimals) : null),
     [antTokenStat, antToken],
   );
   const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
@@ -48,7 +48,7 @@ const Boardroom: React.FC = () => {
         : prevAllocation,
     [prevAllocation, nextAllocation],
   );
-  const nextEpoch = useMemo(() => moment(prevEpoch).add(1, 'days').toDate(), [prevEpoch]);
+  const nextEpoch = useMemo(() => moment(prevEpoch).add(10, 'minutes').toDate(), [prevEpoch]);
 
   const boardroomVersion = useBoardroomVersion();
   const usingOldBoardroom = boardroomVersion !== 'latest';
@@ -86,8 +86,8 @@ const Boardroom: React.FC = () => {
                 description="Next Epoch"
               />
               <Stat
-                title={antTokenStat ? `${antTokenStat.priceInBUSD}` : '-'}
-                description="Next ANT/XAU (TWAP)"
+                title={antTokenStat ? `${antTokenStat.priceInBUSDLastEpoch}` : '-'}
+                description="Last TWAP"
               />
               <Stat
                 title={parseFloat(scalingFactor) > 1 ? `x${scalingFactor}` : '-'}

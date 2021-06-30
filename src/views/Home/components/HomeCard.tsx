@@ -12,7 +12,8 @@ interface HomeCardProps {
   color: string;
   supplyLabel?: string;
   address: string;
-  priceInBUSD?: string;
+  priceInBUSDLastEpoch?: string;
+  priceInBUSDRealTime?: string;
   totalSupply?: string;
   priceText?: string;
   showSimplified?: boolean;
@@ -24,7 +25,8 @@ const HomeCard: React.FC<HomeCardProps> = ({
   color,
   address,
   supplyLabel = 'Total Supply',
-  priceInBUSD,
+  priceInBUSDLastEpoch,
+  priceInBUSDRealTime,
   totalSupply,
   priceText,
   showSimplified
@@ -35,15 +37,28 @@ const HomeCard: React.FC<HomeCardProps> = ({
       <CardHeader>{title}</CardHeader>
       <StyledCards>
         <TokenSymbol symbol={symbol} />
-        <CardSection>
-          {priceInBUSD ? (
-            <StyledValue>{priceInBUSD}</StyledValue>
+        {priceInBUSDLastEpoch ? (
+            <CardSection>
+              <StyledValue>{priceInBUSDLastEpoch}</StyledValue>
+              <Label text={priceText ? priceText + " TWAP" : "TWAP"} color={color} />
+            </CardSection>
           ) : (
-            !showSimplified && <ValueSkeleton />
-          )}
-          {!showSimplified && <Label text={priceText} color={color} />}
-        </CardSection>
-
+            <CardSection>
+              {!showSimplified && <ValueSkeleton />}
+              {!showSimplified && <Label text={priceText ? priceText + " TWAP" : "TWAP"} color={color} />}
+            </CardSection>
+          )}          
+        {priceInBUSDRealTime ? (
+            <CardSection>
+              <StyledValue>{priceInBUSDRealTime}</StyledValue>
+              <Label text={priceText ? priceText + " Current" : "PancakeSwap"} color={color} />
+            </CardSection>
+          ) : (
+            <CardSection>
+              {!showSimplified && <ValueSkeleton />}
+              {!showSimplified && <Label text={priceText ? priceText + " Current" : "PancakeSwap"} color={color} />}
+            </CardSection>
+          )}  
         <CardSection>
           {totalSupply ? <StyledValue>{commify(totalSupply)}</StyledValue> : <ValueSkeleton />}
           <StyledSupplyLabel href={tokenUrl} target="_blank" color={color}>

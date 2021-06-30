@@ -10,9 +10,8 @@ import TokenSymbol from '../../../components/TokenSymbol';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import useModal from '../../../hooks/useModal';
-import ExchangeModal from './ExchangeModal';
+import BondExchangeModal from './BondExchangeModal';
 import ERC20 from '../../../anthill/ERC20';
-import useTokenBalance from '../../../hooks/useTokenBalance';
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 import useCatchError from '../../../hooks/useCatchError';
 
@@ -22,19 +21,21 @@ interface ExchangeCardProps {
   fromTokenName: string;
   toToken: ERC20;
   toTokenName: string;
+  exchangeRate: number;
   priceDesc: string;
-  onExchange: (amount: string) => void;
+  onExchange: (amount: number) => void;
   reverseDirection?: boolean;
   disabled?: boolean;
 }
 
-const ExchangeCard: React.FC<ExchangeCardProps> = ({
+const BondExchangeCard: React.FC<ExchangeCardProps> = ({
   action,
   fromToken,
   fromTokenName,
   toToken,
   toTokenName,
   reverseDirection,
+  exchangeRate,
   priceDesc,
   onExchange,
   disabled = false,
@@ -43,18 +44,20 @@ const ExchangeCard: React.FC<ExchangeCardProps> = ({
   const { contracts: { Treasury } } = useAntToken();
   const [approveStatus, approve] = useApprove(fromToken, Treasury.address);
 
-  const balance = useTokenBalance(fromToken);
   const [onPresent, onDismiss] = useModal(
-    <ExchangeModal
+    <BondExchangeModal
       title={`${action} ${reverseDirection ? fromTokenName : toTokenName}`}
       description={priceDesc}
-      max={balance}
       onConfirm={(value) => {
         onExchange(value);
         onDismiss();
       }}
       action={action}
-      tokenName={fromTokenName}
+      tokenIn={fromToken}
+      tokenInName={fromTokenName}
+      tokenOut={toToken}
+      tokenOutName={toTokenName}
+      exchangeRate={exchangeRate}
     />,
   );
   return (
@@ -163,4 +166,4 @@ const StyledCardContentInner = styled.div`
   justify-content: space-between;
 `;
 
-export default ExchangeCard;
+export default BondExchangeCard;

@@ -6,13 +6,14 @@ interface ExchangeStatProps {
   tokenName: string;
   description: string;
   price: string;
+  currencySymbol?: string;
 }
 
-const ExchangeStat: React.FC<ExchangeStatProps> = ({ tokenName, description, price }) => {
+const BondExchangeStat: React.FC<ExchangeStatProps> = ({ tokenName, description, price, currencySymbol }) => {
   return (
     <Card>
       <StyledCardContentInner>
-        <StyledCardTitle>{`💰 ${tokenName} = ${price}`}</StyledCardTitle>
+        <StyledCardTitle>{`💰 ${tokenName} = ${currencySymbol ? currencySymbol : ''}${price}`}</StyledCardTitle>
         <StyledDesc>{description}</StyledDesc>
       </StyledCardContentInner>
     </Card>
@@ -28,6 +29,7 @@ const StyledCardTitle = styled.div`
 
 const StyledDesc = styled.span`
   color: ${(props) => props.theme.color.grey[300]};
+  font-size: 14px;
   text-align: center;
 `;
 
@@ -40,4 +42,4 @@ const StyledCardContentInner = styled.div`
   padding: ${(props) => props.theme.spacing[2]}px;
 `;
 
-export default ExchangeStat;
+export default BondExchangeStat;

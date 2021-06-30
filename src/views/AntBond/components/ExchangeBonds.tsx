@@ -13,19 +13,16 @@ import useCalculateSwap from '../../../hooks/useCalculateSwap'
 
 import { Bank, } from '../../../anthill';
 import useAntToken from '../../../hooks/useAntToken';
-import TokenSwapInput from '../../../components/TokenExchangeInput';
-import TokenSwapValue from '../../../components/TokenExchangeValue';
+import TokenExchangeInput from '../../../components/TokenExchangeInput';
+import TokenExchangeValue from '../../../components/TokenExchangeValue';
 import useSwapTokens from '../../../hooks/useSwapTokens';
-import InfoButton from '../../../components/InfoButton';
-import useModal from '../../../hooks/useModal';
-import SwapInfoModal from './SwapInfoModal';
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
 interface SwapTokensProps {
   bank: Bank;
 }
 
-const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
+const ExchangeBonds: React.FC<SwapTokensProps> = ({ bank }) => {
   const [amountIn, setAmountIn] = useState<BigNumber>(null);
   const [token0In, setToken0In] = useState<boolean>(true);
   const antToken = useAntToken();
@@ -56,19 +53,12 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
     onSwapTokens(token0In, amountIn, amountOut);
   }, [token0In, amountIn, amountOut, onSwapTokens])
 
-  const [onPresentInfo] = useModal(
-    <SwapInfoModal bank={bank}/>,
-  );
-
   const providerFee = amountIn?.mul(2).div(1000);
 
   return (
       <Card>
         <CardContent>
           <StyledCardContentInner>
-              <StyledInfoButton>
-                <InfoButton onClick={onPresentInfo} size='25px'/>
-              </StyledInfoButton>
               <CardIcon>
                 <TokenSymbol symbol={token0In ? bank.token0.symbol : bank.token1.symbol} size={54} /><Arrow>➔</Arrow><TokenSymbol symbol={token0In ? bank.token1.symbol : bank.token0.symbol} size={54} />
               </CardIcon>
@@ -76,12 +66,12 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                   token0In ?
                   <StyledCardHeader>
                     <Button size="sm" text={`${bank.token0.symbol} ➔ ${bank.token1.symbol}`} onClick={handleChangeSwapDirection}/>
-                    <TokenSwapInput
+                    <TokenExchangeInput
                       token={bank.token0}
                       tokenName={bank.token0Name}
                       onChange={handleTokenChange}
                     />
-                    <TokenSwapValue
+                    <TokenExchangeValue
                       token={bank.token1}
                       tokenName={bank.token1Name}
                       value={amountOut ? formatUnits(amountOut) : ''}
@@ -93,12 +83,12 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                   :
                   <StyledCardHeader>
                     <Button size="sm" text={`${bank.token1.symbol} ➔ ${bank.token0.symbol}`} onClick={handleChangeSwapDirection}/>
-                    <TokenSwapInput
+                    <TokenExchangeInput
                       token={bank.token1}
                       tokenName={bank.token1Name}
                       onChange={handleTokenChange}
                     />
-                    <TokenSwapValue
+                    <TokenExchangeValue
                       token={bank.token0}
                       tokenName={bank.token0Name}
                       value={amountOut ? formatUnits(amountOut) : ''}
@@ -164,7 +154,6 @@ const StyledCardHeader = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  flex:1;
 `;
 
 const StyledActionSpacer = styled.div`
@@ -210,4 +199,4 @@ const StyledMaxText = styled.div`
 `
 
 
-export default SwapTokens;
+export default ExchangeBonds;

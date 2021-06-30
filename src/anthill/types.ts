@@ -25,8 +25,9 @@ export interface Bank extends  BankInfo {
 }
 
 export type TokenStat = {
-  priceInBUSD: string;
-  totalSupply: string;
+  priceInBUSDLastEpoch: string; // Price in BUSD from the last seigniorage
+  priceInBUSDRealTime: string;  // Price in BUSD form PancakeSwap
+  totalSupply: string;          // Total current supply
 };
 
 export type TreasuryAllocationTime = {

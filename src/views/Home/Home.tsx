@@ -16,12 +16,13 @@ const Home: React.FC = () => {
   const [{ antToken, antBond, antShare }, setStats] = useState<OverviewData>({});
   const fetchStats = useCallback(async () => {
     const [antToken, antBond, antShare] = await Promise.all([
-      ant.getAntTokenStatFromPancakeSwap(),
+      ant.getAntTokenStat(),
       ant.getAntBondStat(),
       ant.getAntShareStat(),
     ]);
-    if (Date.now() < config.antBondLaunchesAt.getTime() || parseFloat(antBond.priceInBUSD) < 1 ) {
-      antBond.priceInBUSD = '-';
+    if (Date.now() < config.antBondLaunchesAt.getTime() || parseFloat(antBond.priceInBUSDLastEpoch) < 1 ) {
+      antBond.priceInBUSDLastEpoch = '-';
+      antBond.priceInBUSDRealTime = '-';
     }
     setStats({ antToken, antBond, antShare });
   }, [ant, setStats]);
@@ -57,9 +58,10 @@ const Home: React.FC = () => {
             color={tokens['AntToken'].color}
             supplyLabel="Circulating Supply"
             address={antTokenAddr}
-            priceInBUSD={'$' + antToken?.priceInBUSD}
+            priceInBUSDLastEpoch={'$' + antToken?.priceInBUSDLastEpoch}
+            priceInBUSDRealTime={'$' + antToken?.priceInBUSDRealTime}
             totalSupply={antToken?.totalSupply}
-            priceText={`${tokens['AntToken'].symbol} Price`}
+            showSimplified={true}
           />
           <Spacer size="lg" />
           <HomeCard
@@ -77,9 +79,10 @@ const Home: React.FC = () => {
             symbol={tokens['AntBond'].symbol}
             color={tokens['AntBond'].color}
             address={antBondAddr}
-            priceInBUSD={ antBond?.priceInBUSD }
+            priceInBUSDLastEpoch={ antBond?.priceInBUSDLastEpoch }
             totalSupply={ antBond?.totalSupply }
             priceText="ANTB / ANT"
+            showSimplified={true}
           />
         </CardWrapper>
       ]}

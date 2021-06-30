@@ -122,73 +122,32 @@ export class AntToken {
     };
   }
 
+  /* =========== Price functions ============== */
+  
   /**
-   * @returns Ant Token (ANT) stats from Uniswap.
-   * It may differ from the ANT price used on Treasury (which is calculated in TWAP)
+   * @returns Ant Token price from last seigniorage update
    */
-  async getAntTokenStatFromPancakeSwap(): Promise<TokenStat> {
-    const supply = await this.tokens.ANT.displayedTotalSupply();
-    const antTokenPrice = Number(await this.getTokenPriceFromPancakeSwap(this.tokens.ANT))
-    const realAntTokenPriceBN = await this.getRealAntTokenPrice()
-    const realAntTokenPrice = Number(balanceToDecimal(realAntTokenPriceBN.toString()))
-
-    return {
-      // [workerant] TODO: review this
-      priceInBUSD: String((antTokenPrice / realAntTokenPrice).toFixed(2)),
-      //priceInBUSD: String(antTokenPrice.toFixed(this.priceDecimals)),
-      totalSupply: supply,
-    };
+  async getTokenPriceEpoch(tokenContract: ERC20): Promise<number> {
+    const { Oracle } = this.contracts;
+    return balanceToDecimal(await Oracle.priceTWAP(tokenContract.address));
+  }
+  
+  /**
+   * @returns Get exchange rate for bonds in BN format
+   */
+  async getAntBondExchangeRate(): Promise<BigNumber> {
+    const { Oracle } = this.contracts;
+    return await Oracle.priceTWAP(this.tokens.ANT.address);
   }
 
   /**
-   * @returns Estimated Ant Token (ANT) price data,
-   * calculated by 1-day Time-Weight Averaged Price (TWAP).
+   * 
+   * @param tokenContract ERC20 token for which to get the price against BUSD
+   * 
+   * @returns The price of the requested token as given by PancakeSwap in real time
    */
-  async getAntTokenStatInEstimatedTWAP(): Promise<TokenStat> {
-    const { Oracle } = this.contracts;
-
-    const estimatedAntTokenPrice = await Oracle.priceAverage(this.tokens.ANT.address);
-    const realAntTokenPrice = await this.getRealAntTokenPrice()
-    const totalSupply = await this.tokens.ANT.displayedTotalSupply();
-
-    return {
-      priceInBUSD: String((Number(estimatedAntTokenPrice) / Number(realAntTokenPrice)).toFixed(this.priceDecimals)),
-      totalSupply,
-    };
-  }
-
-  async getAntTokenPriceInLastTWAP(): Promise<BigNumber> {
-    const { Oracle } = this.contracts;
-    return Oracle.priceAverage(this.tokens.ANT.address);
-  }
-
-  async getRealAntTokenPrice(): Promise<BigNumber> {
-    const { Oracle } = this.contracts;
-    return Oracle.priceExternal(this.tokens.ANT.address);
-  }
-
-  async getAntBondStat(): Promise<TokenStat> {
-    const realAntTokenPrice = Number(await this.getRealAntTokenPrice());
-    const antTokenPrice = Number(await this.getAntTokenPriceInLastTWAP());
-
-    const antBondPrice = 1 / (antTokenPrice / realAntTokenPrice)
-
-    return {
-      priceInBUSD: String(antBondPrice.toFixed(this.priceDecimals)),
-      totalSupply: await this.tokens.ANTB.displayedTotalSupply(),
-    };
-  }
-
-  async getAntShareStat(): Promise<TokenStat> {
-    return {
-      priceInBUSD: '0',
-      totalSupply: await this.tokens.ANTS.displayedTotalSupply(),
-    };
-  }
-
-  async getTokenPriceFromPancakeSwap(tokenContract: ERC20): Promise<string> {
+  async getTokenPriceRealTime(tokenContract: ERC20): Promise<number> {
     await this.provider.ready;
-
     const { chainId } = this.config;
 
     const busd = new Token(chainId, this.tokens.BUSD.address, this.tokens.BUSD.decimal);
@@ -197,30 +156,100 @@ export class AntToken {
     try {
       const busdToToken = await Fetcher.fetchPairData(busd, token, this.provider, this.ChainId === ChainId.MAINNET);
       const priceInBUSD = new Route([busdToToken], token);
-      return priceInBUSD.midPrice.toSignificant(3);
+      return Number(priceInBUSD.midPrice.toSignificant(3));
     } catch (err) {
       console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
     }
   }
 
   /**
+   * @returns Ant Token current target price
+   */  
+  async getAntTokenTargetPrice(): Promise<number> {
+    const { Oracle } = this.contracts;
+    const price = await Oracle.priceDollar();
+    return balanceToDecimal(price);
+  }
+
+  /**
+   * @returns 
+   */
+  async getAntTokenCalculatedPriceEpoch(): Promise<number> {
+    const antTokenCurrentPrice = await this.getTokenPriceEpoch(this.tokens.ANT);
+    const antTokenTargetPrice = await this.getAntTokenTargetPrice();
+
+    return antTokenCurrentPrice / antTokenTargetPrice;
+  }
+
+  async getAntTokenCalculatedPriceRealTime(): Promise<number> {
+    const antTokenCurrentPrice = await this.getTokenPriceRealTime(this.tokens.ANT);
+    const antTokenTargetPrice = await this.getAntTokenTargetPrice();
+
+    return antTokenCurrentPrice / antTokenTargetPrice;
+  }
+
+  /**
+   * @returns Price in BUSD from last seigniorage, price in BUSD from PancakeSwap and
+   *          current total supply
+   */
+  async getAntTokenStat(): Promise<TokenStat> {
+    const estimatedPriceEpoch = await this.getAntTokenCalculatedPriceEpoch();
+    const estimatedPriceRalTime = await this.getAntTokenCalculatedPriceRealTime();
+
+    return {
+      priceInBUSDLastEpoch: estimatedPriceEpoch.toFixed(this.priceDecimals),
+      priceInBUSDRealTime: estimatedPriceRalTime.toFixed(this.priceDecimals),
+      totalSupply: await this.tokens.ANT.displayedTotalSupply(),
+    };
+  }
+
+  /**
+   * @returns Ant Bond price in BUSD and total supply
+   */
+  async getAntBondStat(): Promise<TokenStat> {
+    const antTokenPriceEpoch = await this.getAntTokenCalculatedPriceEpoch();
+    const antTokenPriceRealTime = await this.getAntTokenCalculatedPriceRealTime();
+    const antBondPriceEpoch = 1.0 / antTokenPriceEpoch;
+    const antBondPriceRealTime = 1.0 / antTokenPriceRealTime;
+
+    return {
+      priceInBUSDLastEpoch: antBondPriceEpoch.toFixed(this.priceDecimals),
+      priceInBUSDRealTime: antBondPriceRealTime.toFixed(this.priceDecimals),
+      totalSupply: await this.tokens.ANTB.displayedTotalSupply(),
+    };
+  }
+
+    /**
+   * @returns Ant Bond total supply (there is no price for the share)
+   */
+  async getAntShareStat(): Promise<TokenStat> {
+    return {
+      priceInBUSDLastEpoch: '0',
+      priceInBUSDRealTime: '0',
+      totalSupply: await this.tokens.ANTS.displayedTotalSupply(),
+    };
+  }
+
+  /* ================================================ */
+
+  /**
    * Buy Ant Bonds with Ant Token.
    * @param amount amount of Ant Token to purchase Ant Bonds with.
    */
-  async buyAntBonds(amount: string | number, targetPrice: string | number): Promise<TransactionResponse> {
+  async buyAntBonds(amount: string | number, targetPrice: BigNumber): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    const balance = decimalToBalance(amount);
-    return await Treasury.buyAntBonds(balance, targetPrice);
+    const bondsAmount = decimalToBalance(amount);
+    return await Treasury.buyAntBonds(bondsAmount, targetPrice);
   }
 
   /**
    * Redeem Ant Bonds for Ant Token.
    * @param amount amount of Ant Bonds to redeem.
    */
-  async redeemAntBonds(amount: string | number, targetPrice: string | number): Promise<TransactionResponse> {
+  async redeemAntBonds(amount: string | number, targetPrice: BigNumber): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
-    const balance = decimalToBalance(amount);
-    return await Treasury.redeemAntBonds(balance, targetPrice);
+    const redeemAmount = decimalToBalance(amount);
+    return await Treasury.redeemAntBonds(redeemAmount, targetPrice);
   }
 
   async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {

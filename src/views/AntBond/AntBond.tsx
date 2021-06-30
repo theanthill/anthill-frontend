@@ -5,17 +5,18 @@ import { useWallet } from '@binance-chain/bsc-use-wallet';
 import Button from '../../components/Button';
 import Page from '../../components/Page';
 import PageHeader from '../../components/PageHeader';
-import ExchangeCard from './components/ExchangeCard';
+import BondExchangeCard from './components/BondExchangeCard';
 import styled from 'styled-components';
 import Spacer from '../../components/Spacer';
 import useAntBondStats from '../../hooks/useAntBondStats';
 import useAntToken from '../../hooks/useAntToken';
-import useAntBondOraclePriceInLastTWAP from '../../hooks/useAntBondOraclePriceInLastTWAP';
-import useRealAntTokenPrice from '../../hooks/useRealAntTokenPrice';
-import ExchangeStat from './components/ExchangeStat';
+import useAntTokenPriceRealTime from '../../hooks/useRealAntTokenPrice';
+import ExchangeStat from './components/BondExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
 import useHandleTransactionReceipt from '../../hooks/useHandleTransactionReceipt';
+import useAntBondExchangeRate from '../../hooks/useAntBondExchangeRate';
+import { balanceToDecimal } from '../../anthill/ether-utils';
 
 const AntBond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -23,37 +24,41 @@ const AntBond: React.FC = () => {
   const antToken = useAntToken();
   const handleTransactionReceipt = useHandleTransactionReceipt();
   const antBondStat = useAntBondStats();
-  const antTokenPrice = useAntBondOraclePriceInLastTWAP();
-  const antTokenPriceFloat = Number(antTokenPrice) / 10**18;
-  const realAntTokenPrice = useRealAntTokenPrice();
-  const realAntTokenPriceFloat = Number(realAntTokenPrice) / 10**18;
+
+  const antBondExchangeRateBN = useAntBondExchangeRate();
+  const antBondExchangeRate = balanceToDecimal(antBondExchangeRateBN);
+  const antTokenPriceRealTime = useAntTokenPriceRealTime();
+  
+  const ANTBPriceInANTLastEpoch = parseFloat(antBondStat?.priceInBUSDLastEpoch);
+  const ANTPriceInANTBLastEpoch = 1.0/ANTBPriceInANTLastEpoch;
 
   const antBondBalance = useTokenBalance(antToken?.tokens.ANTB);
 
   const handleBuyAntBonds = useCallback(
-    async (amount: string) => {
-      const antBondAmount = Number(amount) / Number(antTokenPriceFloat);
+    async (amount: number) => {
+      const antBondAmount = amount * ANTBPriceInANTLastEpoch;
       handleTransactionReceipt(
-        antToken.buyAntBonds(amount, antTokenPrice.toString()),
-        `Buy ${antBondAmount.toFixed(antToken.priceDecimals)} ANTB with ${amount} ANT`
+        antToken.buyAntBonds(amount, antBondExchangeRateBN),
+        `Buy ${antBondAmount.toFixed(antToken.priceDecimals)} ANTB with ${amount.toFixed(antToken.priceDecimals)} ANT`
       );
     },
-    [antToken, handleTransactionReceipt, antTokenPrice, antTokenPriceFloat],
+    [antToken, handleTransactionReceipt, ANTBPriceInANTLastEpoch, antBondExchangeRateBN],
   );
 
   const handleRedeemAntBonds = useCallback(
-    async (amount: string) => {
+    async (amount: number) => {
+      const antTokenAmount = amount * ANTPriceInANTBLastEpoch;
       handleTransactionReceipt(
-        antToken.redeemAntBonds(amount, antTokenPrice.toString()),
-        `Redeeming ${amount} Ant Bonds`
+        antToken.redeemAntBonds(amount, antBondExchangeRateBN),
+        `Redeem ${amount.toFixed(antToken.priceDecimals)} ANTB for ${antTokenAmount.toFixed(antToken.priceDecimals)} ANT`
       );  
     },
-    [antToken, antTokenPrice, handleTransactionReceipt],
+    [antToken, antBondExchangeRateBN, ANTPriceInANTBLastEpoch, handleTransactionReceipt],
   );
 
-  const antTokenIsOverPriced = useMemo(() => antTokenPrice.gt(realAntTokenPrice), [antTokenPrice, realAntTokenPrice]);
-  const antTokenIsUnderPriced = useMemo(() => antTokenPrice.lt(realAntTokenPrice), [antTokenPrice, realAntTokenPrice]);
-  const antTokenIsUnderPriceCeiling = useMemo(() => antTokenPrice.lt(realAntTokenPrice.mul(105).div(100)), [antTokenPrice, realAntTokenPrice]);
+  const antTokenIsOverPriced = useMemo(() => antBondExchangeRate > antTokenPriceRealTime, [antTokenPriceRealTime, antBondExchangeRate]);
+  const antTokenIsUnderPriced = useMemo(() => antBondExchangeRate < antTokenPriceRealTime, [antTokenPriceRealTime, antBondExchangeRate]);
+  const antTokenIsUnderPriceCeiling = useMemo(() => antBondExchangeRate < (antTokenPriceRealTime * 1.05), [antTokenPriceRealTime, antBondExchangeRate]);
 
   return (
     <Switch>
@@ -68,13 +73,14 @@ const AntBond: React.FC = () => {
             </Route>
             <StyledAntBond>
               <StyledCardWrapper>
-                <ExchangeCard
+                <BondExchangeCard
                   action="Purchase"
                   fromToken={antToken.tokens.ANT}
                   fromTokenName="Ant Token"
                   toToken={antToken.tokens.ANTB}
                   toTokenName="Ant Bond"
-                   priceDesc={
+                  exchangeRate={ANTBPriceInANTLastEpoch}
+                  priceDesc={
                       antTokenIsOverPriced
                        ? 'Ant Token price is over target price'
                        : antTokenIsUnderPriced
@@ -82,30 +88,32 @@ const AntBond: React.FC = () => {
                        : 'Ant Token price is exactly target price'
                   }
                   onExchange={handleBuyAntBonds}
-                  disabled={ parseFloat(antBondStat?.priceInBUSD) <= 1 }
+                  disabled={ ANTBPriceInANTLastEpoch <= 1 }
                 />
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
-                  tokenName="ANT / BUSD"
-                  description="ANT / BUSD (Last-Day TWAP)"
-                  price={(antTokenPriceFloat/realAntTokenPriceFloat).toFixed(2)}
+                  tokenName="Ant Price"
+                  description="Last Epoch TWAP"
+                  price={(antBondExchangeRate/antTokenPriceRealTime).toFixed(antToken.priceDecimals)}
+                  currencySymbol="$"
                 />
                 <Spacer size="md" />
                 <ExchangeStat
-                  tokenName="ANT"
-                  description="ANTB = 1 / (ANT/BUSD)"
-                  price={ parseFloat(antBondStat?.priceInBUSD) > 1 ? antBondStat?.priceInBUSD + ' ANTB' : '-' }
+                  tokenName="ANTB"
+                  description="ANTB = 1.0/(ANT Price in BUSD)"
+                  price={ ANTBPriceInANTLastEpoch > 1 ? (antTokenPriceRealTime/antBondExchangeRate).toFixed(antToken.priceDecimals) + ' ANT' : '-' }
                 />
               </StyledStatsWrapper>
               <StyledCardWrapper>
-                <ExchangeCard
+                <BondExchangeCard
                   action="Redeem"
                   fromToken={antToken.tokens.ANTB}
                   fromTokenName="Ant Bond"
                   toToken={antToken.tokens.ANT}
                   toTokenName="Ant Token"
                   reverseDirection={true}
+                  exchangeRate={ANTPriceInANTBLastEpoch}
                   priceDesc={`${getDisplayBalance(antBondBalance)} ANTB Available`}
                   onExchange={handleRedeemAntBonds}
                   disabled={!antBondStat || getDisplayBalance(antBondBalance) === '0.00' || antTokenIsUnderPriceCeiling}

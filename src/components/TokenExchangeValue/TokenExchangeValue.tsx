@@ -1,48 +1,46 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import ERC20 from '../../../anthill/ERC20';
-import { getFullDisplayBalance } from '../../../utils/formatBalance';
+import ERC20 from '../../anthill/ERC20';
 
-import useTokenBalance from '../../../hooks/useTokenBalance';
+import { getFullDisplayBalance } from '../../utils/formatBalance';
 
-import TokenInput from '../../../components/TokenInput'
+import useTokenBalance from '../../hooks/useTokenBalance';
 
-interface SwapTokensProps {
+import TokenInput from '../TokenInput'
+
+interface TokenExchangeValueProps {
   token: ERC20;
   tokenName: string;
-  onChange?: (amount: string) => void,
-  disable?: boolean;
+  value: string;
 }
 
-const TokenSwapInput: React.FC<SwapTokensProps> = ({ token, tokenName, onChange=null, disable=false }) => {
-  const [val, setVal] = useState('')
+const TokenExchangeValue: React.FC<TokenExchangeValueProps> = ({ token, tokenName, value }) => {
+  const [, setVal] = useState('')
 
   const tokenBalance = useTokenBalance(token);
     
   const balanceMax = useMemo(() => {
     return getFullDisplayBalance(tokenBalance, token.decimal)
-  }, [tokenBalance, token])
+  }, [token, tokenBalance])
 
   const handleSelectMax = useCallback(() => {
     setVal(balanceMax)
-    if (onChange) onChange(balanceMax)
-  }, [balanceMax, setVal, onChange])
+  }, [balanceMax, setVal])
 
   const handleTokenChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
     setVal(e.currentTarget.value)
-    if (onChange) onChange(e.currentTarget.value)
-  }, [setVal, onChange])
+  }, [setVal])
 
   return (
         <StyledCardHeader>
             <TokenInput
-                    value={val}
+                    value={value}
                     onSelectMax={handleSelectMax}
                     onChange={handleTokenChange}
                     max={balanceMax}
                     symbol={tokenName}
-                    disable={disable}
+                    disable={true}
                 />
         </StyledCardHeader>
     );
@@ -54,4 +52,4 @@ const StyledCardHeader = styled.div`
   flex-direction: column;
 `;
 
-export default TokenSwapInput;
+export default TokenExchangeValue;

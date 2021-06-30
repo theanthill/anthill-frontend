@@ -15,8 +15,8 @@ export function web3ProviderFrom(endpoint: string, config?: EthereumConfig): any
   });
 }
 
-export function balanceToDecimal(s: string): string {
-  return formatUnits(s);
+export function balanceToDecimal(balance: BigNumber): number {
+  return Number(formatUnits(balance.toString()));
 }
 
 export function decimalToBalance(d: string | number, decimals = 18): BigNumber {

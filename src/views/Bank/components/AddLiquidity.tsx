@@ -14,8 +14,8 @@ import TokenSymbol from '../../../components/TokenSymbol';
 import { Bank } from '../../../anthill';
 import useAddLiquidity from '../../../hooks/useAddLiquidity';
 import useAntToken from '../../../hooks/useAntToken';
-import TokenSwapInput from '../../Swap/components/TokenSwapInput';
-import TokenSwapValue from '../../Swap/components/TokenSwapValue';
+import TokenSwapInput from '../../../components/TokenExchangeInput';
+import TokenSwapValue from '../../../components/TokenExchangeValue';
 import useCalculateLiquidity from '../../../hooks/useCalculateLiquidity';
 import useTokenBalance from '../../../hooks/useTokenBalance';
 
