@@ -50,9 +50,9 @@ export default function Updater(): null {
       .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
       .forEach((hash) => {
         provider
-          .waitForTransaction(hash)
+          .waitForTransaction(hash, 3)
           .then((receipt) => {
-              if (receipt) {
+              if (receipt && receipt.blockNumber) {
                 dispatch(
                   finalizeTransaction({
                     chainId,
