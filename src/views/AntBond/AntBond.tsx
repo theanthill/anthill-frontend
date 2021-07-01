@@ -30,7 +30,7 @@ const AntBond: React.FC = () => {
   const antTokenPriceRealTime = useAntTokenPriceRealTime();
   
   const ANTBPriceInANTLastEpoch = parseFloat(antBondStat?.priceInBUSDLastEpoch);
-  const ANTPriceInANTBLastEpoch = 1.0/ANTBPriceInANTLastEpoch;
+  const ANTPriceInANTBLastEpoch = 1.0;
 
   const antBondBalance = useTokenBalance(antToken?.tokens.ANTB);
 
@@ -98,11 +98,11 @@ const AntBond: React.FC = () => {
                   price={(antBondExchangeRate/antTokenPriceRealTime).toFixed(antToken.priceDecimals)}
                   currencySymbol="$"
                 />
-                <Spacer size="md" />
+                <Spacer size="sm" />
                 <ExchangeStat
-                  tokenName="ANTB"
-                  description="ANTB = 1.0/(ANT Price in BUSD)"
-                  price={ ANTBPriceInANTLastEpoch > 1 ? (antTokenPriceRealTime/antBondExchangeRate).toFixed(antToken.priceDecimals) + ' ANT' : '-' }
+                  tokenName="1.00 ANT"
+                  description={ ANTBPriceInANTLastEpoch > 1 ? 'ANTB = 1.00/(Ant Price)' : 'ANTB is fixed price'}
+                  price={ ANTBPriceInANTLastEpoch > 1 ? (antTokenPriceRealTime/antBondExchangeRate).toFixed(antToken.priceDecimals) + ' ANTB' : '1.00 ANTB' }
                 />
               </StyledStatsWrapper>
               <StyledCardWrapper>
