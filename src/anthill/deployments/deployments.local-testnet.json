@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0x03835Ce35dD32B9eBb2d662F752D69DAe910CEae",
+    "address": "0xE50e3764C78f8151615B94f32A6ED90c1e76fc05",
     "abi": [
       {
         "inputs": [
@@ -573,7 +573,7 @@
             "type": "address"
           }
         ],
-        "name": "priceAverage",
+        "name": "priceTWAP",
         "outputs": [
           {
             "internalType": "uint256",
@@ -586,14 +586,8 @@
         "constant": true
       },
       {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          }
-        ],
-        "name": "priceExternal",
+        "inputs": [],
+        "name": "priceDollar",
         "outputs": [
           {
             "internalType": "uint256",
@@ -653,7 +647,7 @@
     ]
   },
   "AntToken": {
-    "address": "0x5e6BfF127A949F1d783bb2196249D7b8a1bf99bf",
+    "address": "0x9B966482D35B66374652Fe2f753A68d4F687bB3D",
     "abi": [
       {
         "inputs": [],
@@ -1304,7 +1298,7 @@
     ]
   },
   "AntBond": {
-    "address": "0x0C1a19B64DDfa84398F57ccca6B94BED1D87893f",
+    "address": "0x21156B2A9abcA135a13048cc9112D4660cb0485e",
     "abi": [
       {
         "inputs": [],
@@ -1955,7 +1949,7 @@
     ]
   },
   "AntShare": {
-    "address": "0x0F632a6a35989cCA16a76De0F49cB22484a94fD1",
+    "address": "0x5003618083250D717DBF237a58318Cfc2856CB89",
     "abi": [
       {
         "inputs": [],
@@ -2606,18 +2600,18 @@
     ]
   },
   "Boardroom": {
-    "address": "0x9C87dc961D00deE5aBe39877a92BaD417FFc0eE2",
+    "address": "0x51342B85c9800c4AfE9537c0a4c9C8b3D8D80D3B",
     "abi": [
       {
         "inputs": [
           {
             "internalType": "contract IERC20",
-            "name": "_ant",
+            "name": "token",
             "type": "address"
           },
           {
             "internalType": "contract IERC20",
-            "name": "_antShare",
+            "name": "stakingToken",
             "type": "address"
           }
         ],
@@ -2832,20 +2826,6 @@
         "constant": true
       },
       {
-        "inputs": [],
-        "name": "antShare",
-        "outputs": [
-          {
-            "internalType": "contract IERC20",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
-      },
-      {
         "inputs": [
           {
             "internalType": "address",
@@ -3026,6 +3006,20 @@
       },
       {
         "inputs": [],
+        "name": "token",
+        "outputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
         "name": "totalSupply",
         "outputs": [
           {
@@ -3100,7 +3094,7 @@
       },
       {
         "inputs": [],
-        "name": "rewardPerAntShare",
+        "name": "rewardPer_tokenShare",
         "outputs": [
           {
             "internalType": "uint256",
@@ -3161,7 +3155,13 @@
       {
         "inputs": [],
         "name": "exit",
-        "outputs": [],
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
       },
@@ -3188,7 +3188,7 @@
     ]
   },
   "Treasury": {
-    "address": "0x2d89278786502ca6aD758a12f4b53FDe71093C8e",
+    "address": "0x948E211a67d19754a41ba7c894CD174bd2387DF8",
     "abi": [
       {
         "inputs": [
@@ -3909,7 +3909,7 @@
       },
       {
         "inputs": [],
-        "name": "getAntTokenPriceSwap",
+        "name": "tokenPriceTWAP",
         "outputs": [
           {
             "internalType": "uint256",
@@ -3923,7 +3923,7 @@
       },
       {
         "inputs": [],
-        "name": "getAntTokenPriceExternal",
+        "name": "priceDollar",
         "outputs": [
           {
             "internalType": "uint256",
@@ -3937,7 +3937,7 @@
       },
       {
         "inputs": [],
-        "name": "antTokenPriceCeiling",
+        "name": "tokenPriceCeiling",
         "outputs": [
           {
             "internalType": "uint256",
@@ -4034,7 +4034,7 @@
     ]
   },
   "BNBANTLPHelper": {
-    "address": "0x1704de8df545F306C456B6A0F8fa2046414a4421",
+    "address": "0x31E7FeD7744878E3C0cca9307F067bCcE5ee097D",
     "abi": [
       {
         "inputs": [
@@ -4144,17 +4144,17 @@
     ]
   },
   "BNBANTLPTokenANTPool": {
-    "address": "0xd58b99AD8E2CB43Ea51014F4e3D0A093c31C5a15",
+    "address": "0x3CfB3057A01349C97eDf2f64109dEa4Ca30F261F",
     "abi": [
       {
         "inputs": [
           {
-            "internalType": "address",
+            "internalType": "contract IERC20",
             "name": "antToken_",
             "type": "address"
           },
           {
-            "internalType": "address",
+            "internalType": "contract IERC20",
             "name": "lpToken_",
             "type": "address"
           },
@@ -4925,7 +4925,7 @@
     ]
   },
   "BUSDANTLPHelper": {
-    "address": "0xd006856e58dBd6Ea85EB0Ca28fB201822B64834f",
+    "address": "0x80f3818924CFd0E6Cc0C2FfCDE444F3d3c473Cd0",
     "abi": [
       {
         "inputs": [
@@ -5035,17 +5035,17 @@
     ]
   },
   "BUSDANTLPTokenANTPool": {
-    "address": "0x5E03155971574555349e95567D2b3947A6859538",
+    "address": "0x28bea5a98379dF99199C556DCC016C8Da0C13a63",
     "abi": [
       {
         "inputs": [
           {
-            "internalType": "address",
+            "internalType": "contract IERC20",
             "name": "antToken_",
             "type": "address"
           },
           {
-            "internalType": "address",
+            "internalType": "contract IERC20",
             "name": "lpToken_",
             "type": "address"
           },
@@ -5816,7 +5816,7 @@
     ]
   },
   "RewardsDistributor": {
-    "address": "0x0FadB69C50cCb865131EA4f460343bD8b79Ea3fc",
+    "address": "0x0a2f7Ff58a6Bde2eDb7eCf7EafdEC1E9f1B38CBB",
     "abi": [
       {
         "inputs": [
@@ -6227,7 +6227,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0x3868B11127B676f40bDb237B659f1605e59661e2",
+    "address": "0x406a7eebB48452F94ad2F58F816330402AC8bB7A",
     "abi": [
       {
         "inputs": [
@@ -6250,10 +6250,91 @@
             "internalType": "uint256",
             "name": "_maxAmount",
             "type": "uint256"
+          },
+          {
+            "internalType": "address[]",
+            "name": "_admins",
+            "type": "address[]"
           }
         ],
         "stateMutability": "nonpayable",
         "type": "constructor"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "name": "admins",
+        "outputs": [
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
+        "name": "maxAmount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
+        "name": "token0",
+        "outputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
+        "name": "token1",
+        "outputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
+        "name": "token2",
+        "outputs": [
+          {
+            "internalType": "contract IERC20",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [],
@@ -6265,7 +6346,7 @@
     ]
   },
   "MockStdReference": {
-    "address": "0x28b9FF517774e6EdAc51B2A132e44058fc675e35",
+    "address": "0x340688b5Ec9b1ef2cF95eDf38Ea44b3f915db8f0",
     "abi": [
       {
         "inputs": [],
