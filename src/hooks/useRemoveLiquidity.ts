@@ -4,7 +4,6 @@ import { parseUnits } from 'ethers/lib/utils';
 import useAntToken from './useAntToken';
 import { Bank } from '../anthill';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
-import useUserCustomLiquidityAmounts from './useUserCustomLiquidityAmounts';
 
 const useRemoveLiquidity = (bank: Bank) => {
   const antToken = useAntToken();
@@ -18,7 +17,6 @@ const useRemoveLiquidity = (bank: Bank) => {
         const [amount0Min, amount1Min] = await antToken.getUserLiquidity(bank, amountBN);
 
         handleTransactionReceipt(
-            // [workerant] TODO: implement proper minimum amounts
             liquidityHelper.withdraw(liquidityAmount, amount0Min, amount1Min,  deadline()),
             `Removing ${amount} ${bank.depositToken.symbol} from liquidity pool`,
         );

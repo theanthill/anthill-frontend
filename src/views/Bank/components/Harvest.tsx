@@ -22,8 +22,6 @@ import useModal from '../../../hooks/useModal';
 import LiquidityInfoModal from './LiquidityInfoModal';
 import useRemoveLiquidity from '../../../hooks/useRemoveLiquidity';
 import LiquidityWithdrawModal from './LiquidityWithdrawModal';
-import { BigNumber } from 'ethers';
-import useUserStakedLiquidityAmounts from '../../../hooks/useUserStakedLiquidityAmounts';
 
 interface HarvestProps {
   bank: Bank;
