@@ -5,7 +5,7 @@ import ModalTitle from '../../../components/ModalTitle'
 
 import { formatNumber, getHumanizedDisplayBalance, } from '../../../utils/formatBalance'
 import { Bank } from '../../../anthill/types'
-import useUserLiquidityAmounts from '../../../hooks/useLiquidityAmounts'
+import useUserStakedLiquidityAmounts from '../../../hooks/useUserStakedLiquidityAmounts'
 import Value from '../../../components/Value'
 import Label from '../../../components/Label'
 import styled from 'styled-components'
@@ -18,7 +18,7 @@ interface LiquidityInfoModalProps extends ModalProps {
 }
 
 const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank }) => {
-  const [token0UserBalance, token1UserBalance] = useUserLiquidityAmounts(bank);
+  const [token0UserBalance, token1UserBalance] = useUserStakedLiquidityAmounts(bank);
   const [token0TotalBalance, token1TotalBalance] = useTotalLiquidityAmounts(bank);
   
   const userToken0Amount = getHumanizedDisplayBalance(token0UserBalance, bank.token0.decimal);

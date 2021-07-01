@@ -433,7 +433,16 @@ export class AntToken {
   }
 
   // Liquidity
-  async getUserLiquidity(bank: BankInfo): Promise<Array<BigNumber>>
+  async getUserStakedLiquidity(bank: BankInfo): Promise<Array<BigNumber>>
+  {
+    const stakedLiquidity = await this.stakedBalanceOnBank(bank.contract, this.myAccount);
+    let pairLiquidity =  await this.contracts[bank.depositTokenName].balanceOf(this.myAccount); 
+    pairLiquidity = pairLiquidity.add(stakedLiquidity);
+
+    return this.getUserLiquidity(bank, pairLiquidity);
+  }
+
+  async getUserLiquidity(bank: BankInfo, amount: BigNumber): Promise<Array<BigNumber>>
   {
     const { chainId } = this.config;
 
@@ -442,13 +451,9 @@ export class AntToken {
 
     const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
     
-    const stakedLiquidity = await this.stakedBalanceOnBank(bank.contract, this.myAccount);
-    let pairLiquidity =  await this.contracts[bank.depositTokenName].balanceOf(this.myAccount); 
-    pairLiquidity = pairLiquidity.add(stakedLiquidity);
-
     const pairTotalSupply = await this.contracts[bank.depositTokenName].totalSupply();
     
-    const liquidityAmount = new TokenAmount(pair.liquidityToken, pairLiquidity);
+    const liquidityAmount = new TokenAmount(pair.liquidityToken, amount.toString());
     const totalSupplyAmount = new TokenAmount(pair.liquidityToken, pairTotalSupply);
 
     const token0Amount = pair.getLiquidityValue(pair.token0, totalSupplyAmount, liquidityAmount, false);

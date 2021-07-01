@@ -21,7 +21,9 @@ import InfoButton from '../../../components/InfoButton';
 import useModal from '../../../hooks/useModal';
 import LiquidityInfoModal from './LiquidityInfoModal';
 import useRemoveLiquidity from '../../../hooks/useRemoveLiquidity';
-import WithdrawModal from './WithdrawModal';
+import LiquidityWithdrawModal from './LiquidityWithdrawModal';
+import { BigNumber } from 'ethers';
+import useUserStakedLiquidityAmounts from '../../../hooks/useUserStakedLiquidityAmounts';
 
 interface HarvestProps {
   bank: Bank;
@@ -31,7 +33,7 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
   const earnings = useEarnings(bank.contract);
   const { onReward } = useHarvest(bank);
   const stakedBalance = useStakedBalance(bank.contract);
-  
+
   const [onPresentInfo] = useModal(
     <LiquidityInfoModal bank={bank}/>,
   );
@@ -39,14 +41,12 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
   const { onRemoveLiquidity } = useRemoveLiquidity(bank);
 
   const [onPresentWithdraw, onDismissWithdraw] = useModal(
-    <WithdrawModal
-      max={stakedBalance}
-      decimals={bank.depositToken.decimal}
+    <LiquidityWithdrawModal
+      bank={bank}
       onConfirm={(amount) => {
         onRemoveLiquidity(amount);
         onDismissWithdraw();
       }}
-      tokenName={`${bank.depositToken.symbol}`}
     />,
   );
 
@@ -69,10 +69,10 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
           </StyledCardHeader>
           <StyledCardActions>
             <Button
-                        disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)==='0.00'}
-                        onClick={onPresentWithdraw}
-                        text={`Remove Liquidity`}
-                      />
+              disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)==='0.00'}
+              onClick={onPresentWithdraw}
+              text={`Remove Liquidity`}
+            />
             <StyledActionSpacer/>
             <Button onClick={onReward} disabled={earnings.eq(0)} text="Claim Rewards"  />
           </StyledCardActions>
