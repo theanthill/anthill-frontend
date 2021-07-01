@@ -11,9 +11,11 @@ const useRealAntTokenPrice = () => {
   }, [antToken]);
 
   useEffect(() => {
-    fetchAntTokenPrice().catch((err) => console.error(`Failed to fetch real antToken price: ${err.stack}`));
-    const refreshInterval = setInterval(fetchAntTokenPrice, config.refreshInterval);
-    return () => clearInterval(refreshInterval);
+    if (antToken) {
+      fetchAntTokenPrice().catch((err) => console.error(`Failed to fetch real antToken price: ${err.stack}`));
+      const refreshInterval = setInterval(fetchAntTokenPrice, config.refreshInterval);
+      return () => clearInterval(refreshInterval);
+    }
   }, [setPrice, antToken, fetchAntTokenPrice]);
 
   return price;

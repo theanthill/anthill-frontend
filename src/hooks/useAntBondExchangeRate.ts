@@ -12,9 +12,11 @@ const useAntBondExchangeRate = () => {
   }, [antToken]);
 
   useEffect(() => {
-    fetchAntTokenPrice().catch((err) => console.error(`Failed to fetch ANT price: ${err.stack}`));
-    const refreshInterval = setInterval(fetchAntTokenPrice, config.refreshInterval);
-    return () => clearInterval(refreshInterval);
+    if (antToken) {
+      fetchAntTokenPrice().catch((err) => console.error(`Failed to fetch ANT price: ${err.stack}`));
+      const refreshInterval = setInterval(fetchAntTokenPrice, config.refreshInterval);
+      return () => clearInterval(refreshInterval);
+    }
   }, [setPrice, fetchAntTokenPrice, antToken]);
 
   return price;
