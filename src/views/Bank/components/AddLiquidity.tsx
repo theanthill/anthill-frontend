@@ -26,8 +26,8 @@ interface StakeProps {
 const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
   const antToken = useAntToken();
   const [token0In, setToken0In] = useState<boolean>(true);
-  const [amountTokenA, setAmountTokenA] = useState<number>(0);
-  const amountTokenB = useCalculateLiquidity(bank, token0In, amountTokenA);
+  const [amountToken0, setAmountTokenA] = useState<number>(0);
+  const amountToken1 = useCalculateLiquidity(bank, token0In, amountToken0);
 
   const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts[bank.providerHelperName].address);
   const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts[bank.providerHelperName].address);
@@ -40,13 +40,13 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
   const handleAddLiquidity = useCallback(() => 
   {
     if (token0In) {
-      onAddLiquidity(amountTokenA, amountTokenB);
+      onAddLiquidity(amountToken0, amountToken1);
     }
     else
     {
-      onAddLiquidity(amountTokenB, amountTokenA);
+      onAddLiquidity(amountToken1, amountToken0);
     }
-  }, [token0In, amountTokenA, amountTokenB, onAddLiquidity]);
+  }, [token0In, amountToken0, amountToken1, onAddLiquidity]);
 
   const handleTokenChange = useCallback((amount: string) => {
     try{
@@ -63,7 +63,6 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
     setToken0In(!token0In)
   }, [setToken0In, token0In])
 
-  
   return (
       <Card>
         <CardContent>
@@ -84,7 +83,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                       <TokenSwapValue
                         token={bank.token1}
                         tokenName={bank.token1Name}
-                        value={amountTokenB ? amountTokenB.toString() : ''}
+                        value={amountToken1 ? amountToken1.toString() : ''}
                       />
                     </StyledInputHeader>
                     :
@@ -98,10 +97,14 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                     <TokenSwapValue
                       token={bank.token0}
                       tokenName={bank.token0Name}
-                      value={amountTokenB ? amountTokenB.toString() : ''}
+                      value={amountToken1 ? amountToken1.toString() : ''}
                     />
                   </StyledInputHeader>
               )}
+              <StyledActionSpacer/>
+            <StyledInfoLine>
+              Liquidity Provider fee = 0.17% of each swap
+            </StyledInfoLine>
             </StyledCardHeader>
 
               {
@@ -135,7 +138,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                   <StyledCardActions>
                     <>
                       <Button
-                        disabled={amountTokenA === 0 || amountTokenB === 0 || amountTokenA > getBalance(tokenABalance) || amountTokenB > getBalance(tokenBBalance)}
+                        disabled={amountToken0 === 0 || amountToken1 === 0 || amountToken0 > getBalance(tokenABalance) || amountToken1 > getBalance(tokenBBalance)}
                         onClick={handleAddLiquidity}
                         text={`Add Liquidity`}
                       />
@@ -198,5 +201,14 @@ const StyledApproveButton = styled.div`
   margin-bottom: 10px;
   width: 100%;
 `;
+
+const StyledInfoLine = styled.div`
+  align-items: center;
+  color: ${props => props.theme.color.grey[400]};
+  display: flex;
+  font-size: 12px;
+  font-weight: 700;
+  justify-content: flex-end;
+`
 
 export default AddLiquidity;

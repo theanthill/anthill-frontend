@@ -85,7 +85,7 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
   const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts[bank.providerHelperName].address);
   const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts[bank.providerHelperName].address);
 
-  const [APR, APY] = usePoolAPRAPY(bank.contract);
+  const [APR,] = usePoolAPRAPY(bank.contract);
   const TVL = useBankTVL(bank); 
 
   return (
@@ -103,7 +103,6 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
               <StyledDetail>Earn {`${bank.earnTokenName}`}</StyledDetail>
               <StyledSpacer/>
               <StyledStats>APR: {`${formatNumber(APR)}%`}</StyledStats>
-              <StyledStats>APY: {`${formatNumber(APY)}%`}</StyledStats>
               <StyledStats>TVL: {`~$${getCompactDisplayBalance(TVL)}`}</StyledStats>
             </StyledDetails>
           </StyledContent>

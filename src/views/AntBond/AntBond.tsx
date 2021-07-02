@@ -67,8 +67,8 @@ const AntBond: React.FC = () => {
           <>
             <Route exact path={path}>
               <PageHeader
-                title="Buy & Redeem AntBonds"
-                subtitle="Earn premiums upon redemption"
+                title="Purchase & Redeem Ant Bonds"
+                subtitle="Purchase Ant Bonds at a discount price when the Ant Token price is below $1. Redeem the And Bonds when the Ant Token price is above $1.05"
               />
             </Route>
             <StyledAntBond>

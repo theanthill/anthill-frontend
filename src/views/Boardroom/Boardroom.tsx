@@ -17,7 +17,7 @@ import ProgressCountdown from './components/ProgressCountdown';
 import useTreasuryAmount from '../../hooks/useTreasuryAmount';
 import useAntToken from '../../hooks/useAntToken';
 import { getBalance, getCompactDisplayBalance } from '../../utils/formatBalance';
-import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
+//import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
 import Notice from '../../components/Notice';
 import useBoardroomVersion from '../../hooks/useBoardroomVersion';
 import moment from 'moment';
@@ -39,16 +39,27 @@ const Boardroom: React.FC = () => {
     () => (antTokenStat ? Number(antTokenStat.priceInBUSDLastEpoch).toFixed(antToken.priceDecimals) : null),
     [antTokenStat, antToken],
   );
+  
+  // [workerant] Set Epoch to 10 minutes for now
+  /*
   const { prevAllocation, nextAllocation } = useTreasuryAllocationTimes();
-
-  const prevEpoch = useMemo(
-    () =>
+  const prevEpoch = useMemo(() =>
       nextAllocation.getTime() <= Date.now()
         ? moment().utc().startOf('day').toDate()
         : prevAllocation,
     [prevAllocation, nextAllocation],
   );
-  const nextEpoch = useMemo(() => moment(prevEpoch).add(10, 'minutes').toDate(), [prevEpoch]);
+  const nextEpoch = useMemo(() => moment(prevEpoch).add(8, 'hours').toDate(), [prevEpoch]);
+  */
+
+  const prevEpoch = useMemo(() => {
+    const now = Date.now();
+    const startOf10Minutes = now - (now % 600000);
+    return moment(startOf10Minutes).toDate()
+  },[],);
+  const nextEpoch = useMemo(() => 
+    moment(prevEpoch).add(10, 'minutes').toDate(),
+  [prevEpoch]);
 
   const boardroomVersion = useBoardroomVersion();
   const usingOldBoardroom = boardroomVersion !== 'latest';

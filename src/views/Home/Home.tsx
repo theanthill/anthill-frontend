@@ -13,18 +13,17 @@ const Home: React.FC = () => {
   const ant = useAntToken();
   const antUnlocked = ant?.isUnlocked;
 
-  const [{ antToken, antBond, antShare }, setStats] = useState<OverviewData>({});
+  const [{ antToken, antBond }, setStats] = useState<OverviewData>({});
   const fetchStats = useCallback(async () => {
-    const [antToken, antBond, antShare] = await Promise.all([
+    const [antToken, antBond] = await Promise.all([
       ant.getAntTokenStat(),
       ant.getAntBondStat(),
-      ant.getAntShareStat(),
     ]);
     if (Date.now() < config.antBondLaunchesAt.getTime() || parseFloat(antBond.priceInBUSDLastEpoch) < 1 ) {
       antBond.priceInBUSDLastEpoch = '-';
       antBond.priceInBUSDRealTime = '-';
     }
-    setStats({ antToken, antBond, antShare });
+    setStats({ antToken, antBond });
   }, [ant, setStats]);
 
   useEffect(() => {
@@ -34,13 +33,12 @@ const Home: React.FC = () => {
   }, [antUnlocked, fetchStats]);
 
   const antTokenAddr = useMemo(() => ant?.tokens.ANT.address, [ant]);
-  const antShareAddr = useMemo(() => ant?.tokens.ANTS.address, [ant]);
   const antBondAddr = useMemo(() => ant?.tokens.ANTB.address, [ant]);
 
   return (
     <Page>
       <PageHeader
-        subtitle={ `Testnet Only! This is an alpha test on how to buy, sell, and provide liquidity for ${tokens.AntToken.inlineName} on PancakeSwap` }
+        subtitle={ `Testnet Only!! Welcome to the Anthill Tokenomy Open Beta` }
         title="The Anthill Testnet!"
       />
       { Date.now() / 1000 < 1610596800 ? (
@@ -58,19 +56,11 @@ const Home: React.FC = () => {
             color={tokens['AntToken'].color}
             supplyLabel="Circulating Supply"
             address={antTokenAddr}
-            priceInBUSDLastEpoch={'$' + antToken?.priceInBUSDLastEpoch}
             priceInBUSDRealTime={'$' + antToken?.priceInBUSDRealTime}
-            totalSupply={antToken?.totalSupply}
-            showSimplified={true}
-          />
-          <Spacer size="lg" />
-          <HomeCard
-            title={tokens['AntShare'].titleName}
-            symbol={tokens['AntShare'].symbol}
-            color={tokens['AntShare'].color}
-            address={antShareAddr}
-            totalSupply={antShare?.totalSupply}
-            priceText="USD price"
+            priceTextRealTime='Latest price'
+            priceInBUSDLastEpoch={'$' + antToken?.priceInBUSDLastEpoch}
+            priceTextLastEpoch='Average price (TWAP)'
+            totalSupply={antToken?.totalSupply}            
             showSimplified={true}
           />
           <Spacer size="lg" />
@@ -81,7 +71,7 @@ const Home: React.FC = () => {
             address={antBondAddr}
             priceInBUSDLastEpoch={ antBond?.priceInBUSDLastEpoch }
             totalSupply={ antBond?.totalSupply }
-            priceText="ANTB / ANT"
+            priceTextLastEpoch="Ant Bond per Ant Token"
             showSimplified={true}
           />
         </CardWrapper>

@@ -13,9 +13,10 @@ interface HomeCardProps {
   supplyLabel?: string;
   address: string;
   priceInBUSDLastEpoch?: string;
+  priceTextLastEpoch?: string;
   priceInBUSDRealTime?: string;
+  priceTextRealTime?: string;
   totalSupply?: string;
-  priceText?: string;
   showSimplified?: boolean;
 }
 
@@ -28,7 +29,8 @@ const HomeCard: React.FC<HomeCardProps> = ({
   priceInBUSDLastEpoch,
   priceInBUSDRealTime,
   totalSupply,
-  priceText,
+  priceTextLastEpoch,
+  priceTextRealTime,
   showSimplified
 }) => {
   const tokenUrl = `${config.bscscanUrl}/token/${address}`;
@@ -37,28 +39,29 @@ const HomeCard: React.FC<HomeCardProps> = ({
       <CardHeader>{title}</CardHeader>
       <StyledCards>
         <TokenSymbol symbol={symbol} />
-        {priceInBUSDLastEpoch ? (
-            <CardSection>
-              <StyledValue>{priceInBUSDLastEpoch}</StyledValue>
-              <Label text={priceText ? priceText + " TWAP" : "TWAP"} color={color} />
-            </CardSection>
-          ) : (
-            <CardSection>
-              {!showSimplified && <ValueSkeleton />}
-              {!showSimplified && <Label text={priceText ? priceText + " TWAP" : "TWAP"} color={color} />}
-            </CardSection>
-          )}          
         {priceInBUSDRealTime ? (
             <CardSection>
               <StyledValue>{priceInBUSDRealTime}</StyledValue>
-              <Label text={priceText ? priceText + " Current" : "PancakeSwap"} color={color} />
+              <Label text={priceTextRealTime} color={color} />
             </CardSection>
           ) : (
             <CardSection>
               {!showSimplified && <ValueSkeleton />}
-              {!showSimplified && <Label text={priceText ? priceText + " Current" : "PancakeSwap"} color={color} />}
+              {!showSimplified && <Label text={priceTextRealTime} color={color} />}
             </CardSection>
-          )}  
+          )} 
+        {priceInBUSDLastEpoch ? (
+            <CardSection>
+              <StyledValue>{priceInBUSDLastEpoch}</StyledValue>
+              <Label text={priceTextLastEpoch} color={color} />
+            </CardSection>
+          ) : (
+            <CardSection>
+              {!showSimplified && <ValueSkeleton />}
+              {!showSimplified && <Label text={priceTextLastEpoch} color={color} />}
+            </CardSection>
+          )}          
+ 
         <CardSection>
           {totalSupply ? <StyledValue>{commify(totalSupply)}</StyledValue> : <ValueSkeleton />}
           <StyledSupplyLabel href={tokenUrl} target="_blank" color={color}>
@@ -82,7 +85,7 @@ const CardHeader = styled.h2`
 `;
 
 const StyledCards = styled.div`
-  min-width: 200px;
+  min-width: 300px;
   padding: ${(props) => props.theme.spacing[3]}px;
   color: ${(props) => props.theme.color.white};
   background-color: ${(props) => props.theme.color.grey[900]};

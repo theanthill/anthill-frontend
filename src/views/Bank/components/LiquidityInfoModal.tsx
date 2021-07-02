@@ -27,7 +27,7 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
   const totalToken0Amount = getHumanizedDisplayBalance(token0TotalBalance, bank.token0.decimal);
   const totalToken1Amount = getHumanizedDisplayBalance(token1TotalBalance, bank.token0.decimal);
 
-  const [APR, APY] = usePoolAPRAPY(bank.contract);
+  const [APR] = usePoolAPRAPY(bank.contract);
   const TVL = getHumanizedDisplayBalance(useBankTVL(bank)); 
   
   return (
@@ -62,11 +62,6 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
           <StyledColumn>
             <Value size='14px' value={`${formatNumber(APR)}%`}/>
             <Label text={`APR`} />
-          </StyledColumn>
-          <StyledActionSpacer/>
-          <StyledColumn>
-            <Value size='14px' value={`${formatNumber(APY)}%`}/>
-            <Label text={`APY`} />
           </StyledColumn>
         </StyledValues>
       </StyledCardHeader>

@@ -24,7 +24,7 @@ const Bank: React.FC = () => {
   return account && bank ? (
     <>
       <PageHeader
-        subtitle={`Deposit ${bank?.token0.symbol} + ${bank?.token1.symbol} and earn ${bank?.earnTokenName}`}
+        subtitle={`Deposit ${bank?.token0.symbol} + ${bank?.token1.symbol} and earn ${bank?.earnTokenName} plus a 0.17% in Liquidity Provider fees`}
         title={bank?.name}
       />
       <StyledBank>

@@ -19,7 +19,7 @@ const Swaps: React.FC = () => {
         <Route exact path={path}>
           <PageHeader
             title="Pick a Swap."
-            subtitle={`Exchange ${tokens.AntToken.inlineName} for other cryptocurrencies and viceversa`}
+            subtitle={`Exchange the ${tokens.AntToken.inlineName} for other cryptocurrencies and viceversa`}
           />
 
           {!!account ? (

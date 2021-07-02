@@ -19,7 +19,7 @@ const Banks: React.FC = () => {
         <Route exact path={path}>
           <PageHeader
             title="Pick a Liquidity Pool."
-            subtitle={`Earn ${tokens.AntToken.inlineName} by providing liquidity`}
+            subtitle={`Add liquidity to a pair of your liking and earn ${tokens.AntToken.inlineName} in the process!`}
           />
 
           {!!account ? (

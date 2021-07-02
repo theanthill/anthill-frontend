@@ -20,6 +20,7 @@ import InfoButton from '../../../components/InfoButton';
 import useModal from '../../../hooks/useModal';
 import SwapInfoModal from './SwapInfoModal';
 import { getDisplayBalance } from '../../../utils/formatBalance';
+import Spacer from '../../../components/Spacer';
 
 interface SwapTokensProps {
   bank: Bank;
@@ -60,7 +61,8 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
     <SwapInfoModal bank={bank}/>,
   );
 
-  const providerFee = amountIn?.mul(2).div(1000);
+  const swapFee = amountIn?.mul(3).div(10000); // 0.03%
+  const liqProviderFee = amountIn?.mul(17).div(10000); // 0.17%
 
   return (
       <Card>
@@ -86,8 +88,13 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                       tokenName={bank.token1Name}
                       value={amountOut ? formatUnits(amountOut) : ''}
                     />
+                    <Spacer size="md"/>
                     <StyledMaxText>
-                      {( providerFee ? `Service fee: ${getDisplayBalance(providerFee, 18, 6)} ${bank.token0Name}` : ``)}
+                      {( swapFee ? `Swap fee: ${getDisplayBalance(swapFee, 18, 6)} ${bank.token0Name}` : ``)}
+                    </StyledMaxText>
+                    <Spacer size="sm"/>
+                    <StyledMaxText>
+                      {( liqProviderFee ? `Liquidity Provider fee: ${getDisplayBalance(liqProviderFee, 18, 6)} ${bank.token0Name}` : ``)}
                     </StyledMaxText>
                   </StyledCardHeader>
                   :
@@ -103,8 +110,13 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
                       tokenName={bank.token0Name}
                       value={amountOut ? formatUnits(amountOut) : ''}
                     />
+                    <Spacer size="md"/>
                     <StyledMaxText>
-                      {( providerFee ? `Service fee: ${getDisplayBalance(providerFee, 18, 6)} ${bank.token1Name}` : ``)}
+                      {( swapFee ? `Swap fee: ${getDisplayBalance(swapFee, 18, 6)} ${bank.token0Name}` : ``)}
+                    </StyledMaxText>
+                    <Spacer size="sm"/>
+                    <StyledMaxText>
+                      {( liqProviderFee ? `Liquidity Provider fee: ${getDisplayBalance(liqProviderFee, 18, 6)} ${bank.token0Name}` : ``)}
                     </StyledMaxText>
                   </StyledCardHeader>
               )}
@@ -205,7 +217,6 @@ const StyledMaxText = styled.div`
   display: flex;
   font-size: 12px;
   font-weight: 700;
-  height: 44px;
   justify-content: flex-end;
 `
 
