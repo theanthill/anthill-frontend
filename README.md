@@ -11,10 +11,8 @@ can do:
 
 ```
  $ yarn
- $ cd ..
- $ cp anthill-contracts/build/*.json anthill-frontend/src/anthill/deployments/
- $ cd anthill-frontend
- $ yarn start
+ $ cp ../anthill-contracts/build/*.json anthill-frontend/src/anthill/deployments/
+ $ yarn start:local-testnet
 ```
 
 ## 💻 🐜 Set Up Environment
@@ -22,9 +20,7 @@ can do:
 To begin, you need to install dependencies with Yarn.
 
 ```
-
 $ yarn
-
 ```
 
 ## 💻 🐜 Compiling the contracts
@@ -36,9 +32,7 @@ This is explained in the [Anthill Contracts README](https://github.com/theanthil
 Once you've compiled the contracts in the [contracts](https://github.com/theanthill/anthill-contracts) repository you must copy the deployment file to the frontend project:
 
 ```
- $ cd ..
- $ cp anthill-contracts/build/*.json anthill-frontend/src/anthill/deployments/
- $ cd anthill-frontend
+ $ cp ../anthill-contracts/build/*.json anthill-frontend/src/anthill/deployments/
 ```
 
 ## 🕸 🐜 Running the frontend
@@ -49,6 +43,6 @@ You can launch the development server with following command.
  $ yarn start
 ```
 
-The frontend will open in the browser on `http://localhost:3000`. You should see the number of available ANT, ANT Share and ANT Bond, pluse their prices.
+The frontend will open in the browser on `http://localhost:3000`. You should see the number of available ANT and ANT Bond, plus their prices.
 
 _© Copyright 2021, The Anthill_
