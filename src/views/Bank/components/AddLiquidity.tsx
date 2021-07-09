@@ -50,7 +50,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
 
   const handleTokenChange = useCallback((amount: string) => {
     try{
-      setAmountTokenA(parseInt(amount) || 0);
+      setAmountTokenA(parseFloat(amount) || 0);
     }
     catch(err)
     {
