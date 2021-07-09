@@ -17,7 +17,9 @@ const useRemoveLiquidity = (bank: Bank) => {
         const [amount0Min, amount1Min] = await antToken.getUserLiquidity(bank, amountBN);
 
         handleTransactionReceipt(
-            liquidityHelper.withdraw(liquidityAmount, amount0Min, amount1Min,  deadline()),
+            liquidityHelper.withdraw(liquidityAmount,
+                                     amount0Min.mul(99).div(100),
+                                     amount1Min.mul(99).div(100),  deadline()),
             `Removing ${amount} ${bank.depositToken.symbol} from liquidity pool`,
         );
     },

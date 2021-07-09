@@ -13,6 +13,7 @@ import Spacer from '../../../components/Spacer'
 import Label from '../../../components/Label'
 import useUserCustomLiquidityAmounts from '../../../hooks/useUserCustomLiquidityAmounts'
 import { parseUnits } from 'ethers/lib/utils'
+import styled from 'styled-components'
 
 interface WithdrawModalProps extends ModalProps {
   bank: Bank,
@@ -53,6 +54,10 @@ const LiquidityWithdrawModal: React.FC<WithdrawModalProps> = ({ bank, onConfirm,
       />
       <Spacer/>
       <Label text={`Receives minimum ${token0Minimum} ${bank.token0Name} and ${token1Minimum} ${bank.token1Name}`} />
+      <Spacer/>
+      <StyledInfoLine>
+          Using slippage of 1%
+      </StyledInfoLine>
       <ModalActions>
         <Button text="Cancel" variant="secondary" onClick={onDismiss} />
         <Button text="Confirm" onClick={() => onConfirm(amount)} />
@@ -60,5 +65,13 @@ const LiquidityWithdrawModal: React.FC<WithdrawModalProps> = ({ bank, onConfirm,
     </Modal>
   )
 }
+const StyledInfoLine = styled.div`
+  align-items: center;
+  color: ${props => props.theme.color.grey[400]};
+  display: flex;
+  font-size: 12px;
+  font-weight: 700;
+  justify-content: flex-start;
+`
 
 export default LiquidityWithdrawModal
