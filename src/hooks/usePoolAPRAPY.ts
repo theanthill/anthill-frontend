@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers';
 import useAntToken from './useAntToken';
 import { ContractName } from '../anthill';
 import config from '../config';
+import { balanceToDecimal } from '../anthill/ether-utils';
 
 const usePoolAPRAPY = (poolName: ContractName) => {
   const [APRAPY, setAPRAPY] = useState([0, 0]);
@@ -10,19 +11,23 @@ const usePoolAPRAPY = (poolName: ContractName) => {
   const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchRewardRate = useCallback(async () => {
-    const rewardRatePerSecond = await antToken.getBankRewardRate(poolName);
-    let totalSupply = await antToken.getBankTotalSupply(poolName);
+    const rewardRatePerSecondBN = await antToken.getBankRewardRate(poolName);
+    let totalSupplyBN = await antToken.getBankTotalSupply(poolName);
+    const unit = BigNumber.from(10).pow(18);
 
-    if (totalSupply.isZero())
+    if (totalSupplyBN.isZero())
     {
-      totalSupply = BigNumber.from(10).pow(18);
+      totalSupplyBN = unit;
     }
     
-    const secondsInYear = BigNumber.from(60*60*24*365);
-    const rewardsPerYear = secondsInYear.mul(rewardRatePerSecond);
-    const interestRate = rewardsPerYear.div(totalSupply);
+    const totalSupply = balanceToDecimal(totalSupplyBN);
+    const rewardRatePerSecond = balanceToDecimal(rewardRatePerSecondBN)
 
-    const APR = interestRate.mul(100).toNumber();
+    const SecondsInYear = 60*60*24*365;
+    const rewardsPerYear = rewardRatePerSecond * SecondsInYear;
+    const interestRate = rewardsPerYear/totalSupply;
+
+    const APR = interestRate*100;
     const APY = (1 + APR/365)**365 - 1;
 
     setAPRAPY([APR, APY]);
