@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import useTotalLiquidityAmounts from '../../../hooks/useTotalLiquidityAmounts'
 import usePoolAPRAPY from '../../../hooks/usePoolAPRAPY'
 import useBankTVL from '../../../hooks/useBankTVL'
+import Spacer from '../../../components/Spacer'
 
 interface LiquidityInfoModalProps extends ModalProps {
   bank: Bank,
@@ -27,7 +28,7 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
   const totalToken0Amount = getHumanizedDisplayBalance(token0TotalBalance, bank.token0.decimal);
   const totalToken1Amount = getHumanizedDisplayBalance(token1TotalBalance, bank.token0.decimal);
 
-  const [APR] = usePoolAPRAPY(bank.contract);
+  const [APR, APY] = usePoolAPRAPY(bank);
   const TVL = getHumanizedDisplayBalance(useBankTVL(bank)); 
   
   return (
@@ -63,6 +64,13 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
             <Value size='14px' value={`${formatNumber(APR)}%`}/>
             <Label text={`APR`} />
           </StyledColumn>
+          { isFinite(APY) && <Spacer/> }
+          { isFinite(APY) && 
+              <StyledColumn>
+                <Value size='14px' value={`${formatNumber(APY)}%`}/>
+                <Label text={`APY`} />
+              </StyledColumn>
+          }
         </StyledValues>
       </StyledCardHeader>
     </Modal>
