@@ -1,8 +1,7 @@
 import { Deployments } from './deployments';
-import { ChainId } from '@pancakeswap-libs/sdk';
 
 export type Configuration = {
-  chainId: ChainId,
+  chainId: number,
   bscscanUrl: string,
   defaultProvider: string,
   deployments: Deployments,

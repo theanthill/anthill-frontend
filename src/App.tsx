@@ -10,7 +10,6 @@ import {
   ConnectionRejectedError,
   UseWalletProvider,
 } from '@binance-chain/bsc-use-wallet'
-import { ChainId } from '@pancakeswap-libs/sdk';
 
 import BanksProvider from './contexts/Banks';
 import AntTokenProvider from './contexts/AntTokenProvider';
@@ -68,7 +67,7 @@ const Providers: React.FC = ({ children }) => {
       connectors={{
         bsc: {
           web3ReactConnector() {
-            return new BscConnector({ supportedChainIds: [ChainId.MAINNET, ChainId.BSCTESTNET] })
+            return new BscConnector({ supportedChainIds: [56, 97, 3] })
           },
           handleActivationError(err: any) {
             if (err instanceof UserRejectedRequestError) {

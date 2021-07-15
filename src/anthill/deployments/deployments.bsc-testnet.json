@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0xAd140710f7052a7A49ff1F93A9B67902F6823742",
+    "address": "0xE7C4C64101400d7E6E989b8792CABfe0cE59a33d",
     "abi": [
       {
         "inputs": [
@@ -647,7 +647,7 @@
     ]
   },
   "AntToken": {
-    "address": "0x53f5AA5DC6b65B1746F4BDaD294E67c33FDCFdAB",
+    "address": "0xB8c0841CB28A6feB35AaBaCbffF337cadeF066A1",
     "abi": [
       {
         "inputs": [],
@@ -1298,7 +1298,7 @@
     ]
   },
   "AntBond": {
-    "address": "0xbae17c9295F70B7528E4c84A73c997e15eB7d9A4",
+    "address": "0xc26d6640F2fe4aD966f264da86F382b48aF49A73",
     "abi": [
       {
         "inputs": [],
@@ -1949,7 +1949,7 @@
     ]
   },
   "AntShare": {
-    "address": "0xdb870C8797bE227a43ef17081F716673d5c1AFd8",
+    "address": "0x0c36c482522146Bc77C5d2add57d62015C181BEe",
     "abi": [
       {
         "inputs": [],
@@ -2600,7 +2600,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0x08388549B9e2976Cd724f3f108694C41c68cE388",
+    "address": "0x48545aF4F637CF320C0e8276f07da4Df238500BA",
     "abi": [
       {
         "inputs": [
@@ -3188,7 +3188,7 @@
     ]
   },
   "Treasury": {
-    "address": "0x05a38026a9f9feB0D51C4481bdE95BE3F2b64b57",
+    "address": "0x9a42080D795868Dd8D7ecd018B1Ae866a1419bD1",
     "abi": [
       {
         "inputs": [
@@ -4034,7 +4034,7 @@
     ]
   },
   "BNBANTLPHelper": {
-    "address": "0xd3a227E9742222b616d825F0bE9dC9b154067771",
+    "address": "0x82D106baEDe1F7D243e38505eEdDd2E226542496",
     "abi": [
       {
         "inputs": [
@@ -4144,7 +4144,7 @@
     ]
   },
   "BNBANTLPTokenANTPool": {
-    "address": "0x13003EFd0B58c4a6f2360DcEA238389cab6Fb791",
+    "address": "0xd9ECCE0633176EB189a92FACdF6Dd51353283588",
     "abi": [
       {
         "inputs": [
@@ -4925,7 +4925,7 @@
     ]
   },
   "BUSDANTLPHelper": {
-    "address": "0xD22a6fFEFC68c34b4F1C8AC06bcD854dbB9D53cc",
+    "address": "0x1C17Ca1d19505aF8B1A226AcAbb4455dF7C73e34",
     "abi": [
       {
         "inputs": [
@@ -5035,7 +5035,7 @@
     ]
   },
   "BUSDANTLPTokenANTPool": {
-    "address": "0x197196BB8A0ae6327771723f8c21B7D073a611F4",
+    "address": "0x6afC904e849F7680370f74fE54c6B9b3327Bd587",
     "abi": [
       {
         "inputs": [
@@ -5816,7 +5816,7 @@
     ]
   },
   "RewardsDistributor": {
-    "address": "0x0F5570af8B9Ccc55c735523881F2E39b8121a9bd",
+    "address": "0xd293b11C1262265aBc84A83ECfCf4570A476F9c2",
     "abi": [
       {
         "inputs": [
@@ -6227,7 +6227,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0xA3C7EFB0AF11931eA0917FdA9e1679A713F68e0f",
+    "address": "0x7BA4129005ebe5C76b3838Bbc3dDA6C4C66E9C43",
     "abi": [
       {
         "inputs": [
@@ -6346,7 +6346,7 @@
     ]
   },
   "MockStdReference": {
-    "address": "0xDf94b07d5A60Ad487B6CB2f40Ed64D3161F99D18",
+    "address": "0x77cBeaf2c632E1047BF7dCf9A6Ac74505B672f76",
     "abi": [
       {
         "inputs": [],

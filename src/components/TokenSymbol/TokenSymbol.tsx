@@ -6,6 +6,7 @@ import antsLogo from '../../assets/img/ant-share.png';
 import antbLogo from '../../assets/img/ant-bond.png';
 import BUSDLogo from '../../assets/img/BUSD.png';
 import BNBLogo from '../../assets/img/BNB.png';
+import ETHLogo from '../../assets/img/ETH.png';
 
 const logosBySymbol: {[title: string]: string} = {
   'ANT': antLogo,
@@ -13,8 +14,10 @@ const logosBySymbol: {[title: string]: string} = {
   'ANTS': antsLogo,
   'BUSD': BUSDLogo,
   'BNB' : BNBLogo,
-  'ANT-BUSD': antLogo,
-  'ANT-BNB': antLogo,
+  'ETH' : ETHLogo,
+  'AntToken-BUSD': antLogo,
+  'AntToken-BNB': antLogo,
+  'AntToken-ETH': antLogo,
   'ANTS-BUSD': antsLogo,
 };
 

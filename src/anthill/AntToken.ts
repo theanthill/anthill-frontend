@@ -1,17 +1,13 @@
 import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance, balanceToDecimal } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
-import { TokenAmount, ChainId, Price } from '@pancakeswap-libs/sdk';
-import { Fetcher, Route, Token } from '@theanthill/pancakeswap-sdk-v1';
-import { abi as IPancakeRouter02ABI } from '@theanthill/pancake-swap-periphery/build/IPancakeRouter02.json'
-import IUniswapV2PairABI from './IUniswapV2Pair.abi.json';
-
 import { Configuration } from './config';
 import { bankDefinitions } from '../config'
 
 import ERC20 from './ERC20';
 import { Bank, BankInfo, ContractName, TokenStat, TreasuryAllocationTime } from './types';
 import { getDefaultProvider } from '../utils/provider';
+import { ILiquidityProvider } from './ILiquidityProvider';
 
 /**
  * An API module of The Anthill contracts.
@@ -20,6 +16,7 @@ import { getDefaultProvider } from '../utils/provider';
 export class AntToken {
   myAccount: string;
   provider: ethers.providers.Web3Provider;
+  liquidityProvider: ILiquidityProvider;
   signer?: ethers.Signer;
   config: Configuration;
   contracts: { [name: string]: Contract };
@@ -33,9 +30,9 @@ export class AntToken {
   ANTBNB: Contract;
   PancakeRouter: Contract;
   
-  ChainId: Number;
+  ChainId: number;
 
-  constructor(cfg: Configuration) {
+  constructor(cfg: Configuration, liquidityProvider: ILiquidityProvider) {
     const { deployments, externalTokens } = cfg;
     const provider = getDefaultProvider();
 
@@ -58,21 +55,28 @@ export class AntToken {
     this.tokens['ANTS'] = new ERC20(deployments.AntShare.address, provider, 'ANTS');
     this.tokens['ANTB'] = new ERC20(deployments.AntBond.address, provider, 'ANTB');
 
-    this.contracts['PancakeRouter'] = new Contract(externalTokens['PancakeRouter'].address, IPancakeRouter02ABI, provider);
+    this.contracts['PancakeRouter'] = liquidityProvider.getRouterContract();
 
     // PancakeSwap V2 Pairs
     for(const bank of Object.keys(bankDefinitions))
     {
+      if (bankDefinitions[bank].chainIds.length>0 && !bankDefinitions[bank].chainIds.includes(this.ChainId))
+      {
+        continue;
+      }
+      console.log("Bank: " + bankDefinitions[bank].contract);
+
       const pairName = bankDefinitions[bank].depositTokenName;
       this.contracts[pairName] = new Contract(
         externalTokens[pairName].address,
-        IUniswapV2PairABI,
+        liquidityProvider.getPairABI(),
         provider,
       );  
     }
 
     this.config = cfg;
     this.provider = provider;
+    this.liquidityProvider = liquidityProvider;
   }
 
   /**
@@ -97,6 +101,10 @@ export class AntToken {
     // PancakeSwap V2 Pairs
     for(const bank of Object.keys(bankDefinitions))
     {
+      if (bankDefinitions[bank].chainIds.length>0 && !bankDefinitions[bank].chainIds.includes(this.ChainId))
+      {
+        continue;
+      }
       const pairName = bankDefinitions[bank].depositTokenName;
       this.contracts[pairName] = this.contracts[pairName].connect(this.signer);
     }  
@@ -147,19 +155,7 @@ export class AntToken {
    * @returns The price of the requested token as given by PancakeSwap in real time
    */
   async getTokenPriceRealTime(tokenContract: ERC20): Promise<number> {
-    await this.provider.ready;
-    const { chainId } = this.config;
-
-    const busd = new Token(chainId, this.tokens.BUSD.address, this.tokens.BUSD.decimal);
-    const token = new Token(chainId, tokenContract.address, tokenContract.decimal);
-
-    try {
-      const busdToToken = await Fetcher.fetchPairData(busd, token, this.provider, this.ChainId === ChainId.MAINNET);
-      const priceInBUSD = new Route([busdToToken], token);
-      return Number(priceInBUSD.midPrice.toSignificant(3));
-    } catch (err) {
-      console.error(`Failed to fetch token price of ${tokenContract.symbol}: ${err}`);
-    }
+    return this.liquidityProvider.getTokenPriceRealTime(this.tokens.BUSD, tokenContract);
   }
 
   /**
@@ -442,78 +438,33 @@ export class AntToken {
     return this.getUserLiquidity(bank, pairLiquidity);
   }
 
-  async getUserLiquidity(bank: BankInfo, amount: BigNumber): Promise<Array<BigNumber>>
+  async getUserLiquidity(bank: BankInfo, pairLiquidity: BigNumber): Promise<Array<BigNumber>>
   {
-    const { chainId } = this.config;
+    const totalSupply = await this.contracts[bank.depositTokenName].totalSupply();
 
-    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
-    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
-
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
-    
-    const pairTotalSupply = await this.contracts[bank.depositTokenName].totalSupply();
-    
-    const liquidityAmount = new TokenAmount(pair.liquidityToken, amount.toString());
-    const totalSupplyAmount = new TokenAmount(pair.liquidityToken, pairTotalSupply);
-
-    const token0Amount = pair.getLiquidityValue(pair.token0, totalSupplyAmount, liquidityAmount, false);
-    const token1Amount = pair.getLiquidityValue(pair.token1, totalSupplyAmount, liquidityAmount, false);
-
-    const token0AmountBN = BigNumber.from(token0Amount.raw.toString());
-    const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
-
-    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];
+    return this.liquidityProvider.getLiquidity(this.tokens[bank.token0Name],
+                                               this.tokens[bank.token1Name],
+                                               pairLiquidity, totalSupply);
   }
 
   async getLockedLiquidity(bank: BankInfo): Promise<Array<BigNumber>>
   {
-    const { chainId } = this.config;
-
-    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
-    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
-
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
-    
     const stakedLiquidity = await this.getBankTotalSupply(bank.contract);
-    const pairTotalSupply = await this.contracts[bank.depositTokenName].totalSupply();
-    
-    const liquidityAmount = new TokenAmount(pair.liquidityToken, stakedLiquidity.toString());
-    const totalSupplyAmount = new TokenAmount(pair.liquidityToken, pairTotalSupply);
+    const totalSupply = await this.contracts[bank.depositTokenName].totalSupply();
 
-    const token0Amount = pair.getLiquidityValue(pair.token0, totalSupplyAmount, liquidityAmount, false);
-    const token1Amount = pair.getLiquidityValue(pair.token1, totalSupplyAmount, liquidityAmount, false);
-
-    const token0AmountBN = BigNumber.from(token0Amount.raw.toString());
-    const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
-
-    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];
+    return this.liquidityProvider.getLiquidity(this.tokens[bank.token0Name],
+                                               this.tokens[bank.token1Name],
+                                               stakedLiquidity, totalSupply);
   }
 
   async getTotalLiquidity(bank: Bank): Promise<Array<BigNumber>>
   {
-    const { chainId } = this.config;
-
-    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
-    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
-
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
-
-    const token0AmountBN = BigNumber.from(pair.reserve0.raw.toString());
-    const token1AmountBN = BigNumber.from(pair.reserve1.raw.toString());
-
-    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];
+    return this.liquidityProvider.getTotalLiquidity(this.tokens[bank.token0Name], this.tokens[bank.token1Name]);
   }
 
-  async getPairPrice(bank: BankInfo): Promise<[Price, Price]>
+  async getPairPrice(bank: BankInfo): Promise<[number, number]>
   {
-    const { chainId } = this.config;
-
-    const token0 = new Token(chainId, this.tokens[bank.token0Name].address, this.tokens[bank.token0Name].decimal);
-    const token1 = new Token(chainId, this.tokens[bank.token1Name].address, this.tokens[bank.token1Name].decimal);
-
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider, this.ChainId === ChainId.MAINNET);
-    
-    return [pair.priceOf(token0), pair.priceOf(token1)];
+    return this.liquidityProvider.getPairPrice(this.tokens[bank.token0Name], this.tokens[bank.token1Name]);
   }
 
   // Faucet

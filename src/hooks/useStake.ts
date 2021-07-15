@@ -13,7 +13,7 @@ const useStake = (bank: Bank) => {
       const amountBn = parseUnits(amount, bank.depositToken.decimal);
       handleTransactionReceipt(
         antToken.stake(bank.contract, amountBn),
-        `Stake ${amount} ${bank.depositTokenName} to ${bank.contract}`,
+        `Stake ${amount} ${bank.token0Name}-${bank.token1Name} to ${bank.contract}`,
       );
     },
     [bank, antToken],

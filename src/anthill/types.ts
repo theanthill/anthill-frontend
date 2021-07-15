@@ -14,6 +14,7 @@ export interface BankInfo {
   providerHelperName: ContractName;
   sort: number;
   finished: boolean;
+  chainIds: number[];
 }
 
 export interface Bank extends  BankInfo {

@@ -44,13 +44,13 @@ const LiquidityWithdrawModal: React.FC<WithdrawModalProps> = ({ bank, onConfirm,
 
   return (
     <Modal>
-      <ModalTitle text={`Withdraw ${bank.depositTokenName}`} />
+      <ModalTitle text={`Withdraw ${bank.token0Name}-${bank.token1Name}`} />
       <TokenInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         value={amount}
         max={fullBalance}
-        symbol={bank.depositTokenName}
+        symbol={bank.token0Name + '-' + bank.token1Name}
       />
       <Spacer/>
       <Label text={`Receives minimum ${token0Minimum} ${bank.token0Name} and ${token1Minimum} ${bank.token1Name}`} />

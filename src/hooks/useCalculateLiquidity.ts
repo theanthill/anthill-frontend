@@ -10,9 +10,7 @@ const useCalculateLiquidity = (bank: Bank, token0In: boolean, amountIn: number) 
   const fetchLiquidityAmount = useCallback(async () => {
       const pairPrice = await antToken.getPairPrice(bank);
 
-      const price = token0In ?
-                      Number(pairPrice[0].toSignificant(bank.token0.decimal)) :
-                      Number(pairPrice[1].toSignificant(bank.token1.decimal));
+      const price = token0In ? pairPrice[0] : pairPrice[1];
 
       setAmountOut(amountIn * price)
       

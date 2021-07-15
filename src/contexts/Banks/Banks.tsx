@@ -13,6 +13,11 @@ const Banks: React.FC = ({ children }) => {
     const banks: Bank[] = [];
 
     for (const bankInfo of Object.values(bankDefinitions)) {
+      if (bankInfo.chainIds.length>0 && !bankInfo.chainIds.includes(config.chainId))
+      {
+        continue;
+      }
+
       if (bankInfo.finished) {
         if (!antTokenUnlocked) continue;
 
