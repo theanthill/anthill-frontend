@@ -190,11 +190,11 @@ export class AntToken {
    */
   async getAntTokenStat(): Promise<TokenStat> {
     const estimatedPriceEpoch = await this.getAntTokenCalculatedPriceEpoch();
-    const estimatedPriceRalTime = await this.getAntTokenCalculatedPriceRealTime();
+    const estimatedPriceRealTime = await this.getAntTokenCalculatedPriceRealTime();
 
     return {
       priceInBUSDLastEpoch: estimatedPriceEpoch.toFixed(this.priceDecimals),
-      priceInBUSDRealTime: estimatedPriceRalTime.toFixed(this.priceDecimals),
+      priceInBUSDRealTime: estimatedPriceRealTime.toFixed(this.priceDecimals),
       totalSupply: await this.tokens.ANT.displayedTotalSupply(),
     };
   }
@@ -412,13 +412,18 @@ export class AntToken {
   }
 
   async changeDollarPrice(amount: BigNumber): Promise<TransactionResponse> {
-    const { MockStdReference } = this.contracts;
-    return MockStdReference.setTestRate(amount);
+    const { BandOracle } = this.contracts;
+    return BandOracle.setTestRate(amount);
   }
 
   async getTokenPriceInBUSD(tokenName: string): Promise<BigNumber> {
-    const { MockStdReference } = this.contracts;
-    const priceData = await MockStdReference.getReferenceData(tokenName, "BUSD");
+    if (tokenName === this.tokens.ANT.symbol) {
+      const tokenPrice = await this.getAntTokenCalculatedPriceRealTime();
+      return decimalToBalance(tokenPrice);
+    }
+
+    const { BandOracle } = this.contracts;
+    const priceData = await BandOracle.getReferenceData(tokenName, "BUSD");
     
     return priceData.rate;
   }
