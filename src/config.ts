@@ -24,21 +24,21 @@ export const tokens: { [tokenName: string]: TokenInfo } =
     symbol: 'ANTB',
     color: "#da5eff",
   },
-  'ANT-BUSD' :
+  'AntToken-BUSD' :
   {
     titleName: 'ANT-BUSD LP',
     inlineName: 'ANTBUSD LP',
     symbol: 'ANT-BUSD',
     color: "#ffffff",
   },
-  'ANT-BNB' :
+  'AntToken-BNB' :
   {
     titleName: 'ANT-BNB LP',
     inlineName: 'ANTBNB LP',
     symbol: 'ANT-BNB',
     color: "#ffffff",
   },
-  'ANT-ETH' :
+  'AntToken-ETH' :
   {
     titleName: 'ANT-ETH LP',
     inlineName: 'ANTETH LP',
