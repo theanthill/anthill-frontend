@@ -19,7 +19,7 @@ const SwapInfoModal: React.FC<SwapInfoModalProps> = ({ onDismiss, bank }) => {
   const [token0TotalBalance, token1TotalBalance] = useTotalLiquidityAmounts(bank);
   
   const totalToken0Amount = getHumanizedDisplayBalance(token0TotalBalance, bank.token0.decimal);
-  const totalToken1Amount = getHumanizedDisplayBalance(token1TotalBalance, bank.token0.decimal);
+  const totalToken1Amount = getHumanizedDisplayBalance(token1TotalBalance, bank.token1.decimal);
 
   const TVL = getHumanizedDisplayBalance(useLiquidityPoolTVL(bank)); 
   
