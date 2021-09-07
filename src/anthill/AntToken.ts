@@ -2,7 +2,7 @@ import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance, balanceToDecimal } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Configuration } from './config';
-import { bankDefinitions } from '../config'
+import { bankDefinitions } from '../config';
 
 import ERC20 from './ERC20';
 import { Bank, BankInfo, ContractName, TokenStat, TreasuryAllocationTime } from './types';
@@ -29,7 +29,7 @@ export class AntToken {
   ANTBUSD: Contract;
   ANTBNB: Contract;
   PancakeRouter: Contract;
-  
+
   ChainId: number;
 
   constructor(cfg: Configuration, liquidityProvider: ILiquidityProvider) {
@@ -55,10 +55,10 @@ export class AntToken {
     this.tokens['ANTS'] = new ERC20(deployments.AntShare.address, provider, 'ANTS');
     this.tokens['ANTB'] = new ERC20(deployments.AntBond.address, provider, 'ANTB');
 
-    this.contracts['PancakeRouter'] = liquidityProvider.getRouterContract();
+    //this.contracts['PancakeRouter'] = liquidityProvider.getRouterContract();
 
     // PancakeSwap V2 Pairs
-    for(const bank of Object.keys(bankDefinitions))
+    /*for(const bank of Object.keys(bankDefinitions))
     {
       if (bankDefinitions[bank].chainIds.length>0 && !bankDefinitions[bank].chainIds.includes(this.ChainId))
       {
@@ -72,7 +72,7 @@ export class AntToken {
         liquidityProvider.getPairABI(),
         provider,
       );  
-    }
+    }*/
 
     this.config = cfg;
     this.provider = provider;
@@ -95,11 +95,11 @@ export class AntToken {
     for (const token of tokens) {
       token.connect(this.signer);
     }
-    
-    this.contracts.PancakeRouter = this.contracts.PancakeRouter.connect(this.signer);
+
+    this.liquidityProvider.unlockWallet(this.signer);
 
     // PancakeSwap V2 Pairs
-    for(const bank of Object.keys(bankDefinitions))
+    /*for(const bank of Object.keys(bankDefinitions))
     {
       if (bankDefinitions[bank].chainIds.length>0 && !bankDefinitions[bank].chainIds.includes(this.ChainId))
       {
@@ -107,7 +107,7 @@ export class AntToken {
       }
       const pairName = bankDefinitions[bank].depositTokenName;
       this.contracts[pairName] = this.contracts[pairName].connect(this.signer);
-    }  
+    } */
 
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchBoardroomVersionOfUser()
@@ -131,15 +131,7 @@ export class AntToken {
   }
 
   /* =========== Price functions ============== */
-  
-  /**
-   * @returns Ant Token price from last seigniorage update
-   */
-  async getTokenPriceEpoch(tokenContract: ERC20): Promise<number> {
-    const { Oracle } = this.contracts;
-    return balanceToDecimal(await Oracle.priceTWAP(tokenContract.address));
-  }
-  
+
   /**
    * @returns Get exchange rate for bonds in BN format
    */
@@ -149,18 +141,8 @@ export class AntToken {
   }
 
   /**
-   * 
-   * @param tokenContract ERC20 token for which to get the price against BUSD
-   * 
-   * @returns The price of the requested token as given by PancakeSwap in real time
-   */
-  async getTokenPriceRealTime(tokenContract: ERC20): Promise<number> {
-    return this.liquidityProvider.getTokenPriceRealTime(this.tokens.BUSD, tokenContract);
-  }
-
-  /**
    * @returns Ant Token current target price
-   */  
+   */
   async getAntTokenTargetPrice(): Promise<number> {
     const { Oracle } = this.contracts;
     const price = await Oracle.priceDollar();
@@ -168,20 +150,26 @@ export class AntToken {
   }
 
   /**
-   * @returns 
+   * @returns
    */
-  async getAntTokenCalculatedPriceEpoch(): Promise<number> {
-    const antTokenCurrentPrice = await this.getTokenPriceEpoch(this.tokens.ANT);
+  async _getAntTokenPriceRatioTWAP(): Promise<number> {
+    const tokenPairPrice = await this.liquidityProvider.getPairPriceTWAP(
+      this.tokens.ANT,
+      this.tokens.BUSD,
+    );
     const antTokenTargetPrice = await this.getAntTokenTargetPrice();
 
-    return antTokenCurrentPrice / antTokenTargetPrice;
+    return tokenPairPrice[0] / antTokenTargetPrice;
   }
 
-  async getAntTokenCalculatedPriceRealTime(): Promise<number> {
-    const antTokenCurrentPrice = await this.getTokenPriceRealTime(this.tokens.ANT);
+  async _getAntTokenPriceRatioLatest(): Promise<number> {
+    const tokenPairPrice = await this.liquidityProvider.getPairPriceLatest(
+      this.tokens.ANT,
+      this.tokens.BUSD,
+    );
     const antTokenTargetPrice = await this.getAntTokenTargetPrice();
 
-    return antTokenCurrentPrice / antTokenTargetPrice;
+    return tokenPairPrice[0] / antTokenTargetPrice;
   }
 
   /**
@@ -189,8 +177,8 @@ export class AntToken {
    *          current total supply
    */
   async getAntTokenStat(): Promise<TokenStat> {
-    const estimatedPriceEpoch = await this.getAntTokenCalculatedPriceEpoch();
-    const estimatedPriceRealTime = await this.getAntTokenCalculatedPriceRealTime();
+    const estimatedPriceEpoch = await this._getAntTokenPriceRatioTWAP();
+    const estimatedPriceRealTime = await this._getAntTokenPriceRatioLatest();
 
     return {
       priceInBUSDLastEpoch: estimatedPriceEpoch.toFixed(this.priceDecimals),
@@ -203,8 +191,8 @@ export class AntToken {
    * @returns Ant Bond price in BUSD and total supply
    */
   async getAntBondStat(): Promise<TokenStat> {
-    const antTokenPriceEpoch = await this.getAntTokenCalculatedPriceEpoch();
-    const antTokenPriceRealTime = await this.getAntTokenCalculatedPriceRealTime();
+    const antTokenPriceEpoch = await this._getAntTokenPriceRatioTWAP();
+    const antTokenPriceRealTime = await this._getAntTokenPriceRatioLatest();
     const antBondPriceEpoch = 1.0 / antTokenPriceEpoch;
     const antBondPriceRealTime = 1.0 / antTokenPriceRealTime;
 
@@ -215,7 +203,7 @@ export class AntToken {
     };
   }
 
-    /**
+  /**
    * @returns Ant Bond total supply (there is no price for the share)
    */
   async getAntShareStat(): Promise<TokenStat> {
@@ -232,7 +220,10 @@ export class AntToken {
    * Buy Ant Bonds with Ant Token.
    * @param amount amount of Ant Token to purchase Ant Bonds with.
    */
-  async buyAntBonds(amount: string | number, targetPrice: BigNumber): Promise<TransactionResponse> {
+  async buyAntBonds(
+    amount: string | number,
+    targetPrice: BigNumber,
+  ): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
     const bondsAmount = decimalToBalance(amount);
     return await Treasury.buyAntBonds(bondsAmount, targetPrice);
@@ -242,7 +233,10 @@ export class AntToken {
    * Redeem Ant Bonds for Ant Token.
    * @param amount amount of Ant Bonds to redeem.
    */
-  async redeemAntBonds(amount: string | number, targetPrice: BigNumber): Promise<TransactionResponse> {
+  async redeemAntBonds(
+    amount: string | number,
+    targetPrice: BigNumber,
+  ): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
     const redeemAmount = decimalToBalance(amount);
     return await Treasury.redeemAntBonds(redeemAmount, targetPrice);
@@ -274,10 +268,10 @@ export class AntToken {
       return await pool.totalSupply();
     } catch (err) {
       console.error(`Failed to call earned() on pool ${pool.address}: ${err.stack}`);
-      return BigNumber.from(0); 
+      return BigNumber.from(0);
     }
   }
-  
+
   async stakedBalanceOnBank(
     poolName: ContractName,
     account = this.myAccount,
@@ -361,7 +355,9 @@ export class AntToken {
 
   async stakeAntShareToBoardroom(amount: string): Promise<TransactionResponse> {
     if (this.isOldBoardroomMember()) {
-      throw new Error("you're using old Boardroom. please withdraw and deposit the ANTS again.");
+      throw new Error(
+        "you're using old Boardroom. please withdraw and deposit the ANTS again.",
+      );
     }
     const Boardroom = this.currentBoardroom();
     return await Boardroom.stake(decimalToBalance(amount));
@@ -418,13 +414,13 @@ export class AntToken {
 
   async getTokenPriceInBUSD(tokenName: string): Promise<BigNumber> {
     if (tokenName === this.tokens.ANT.symbol) {
-      const tokenPrice = await this.getAntTokenCalculatedPriceRealTime();
+      const tokenPrice = await this._getAntTokenPriceRatioLatest();
       return decimalToBalance(tokenPrice);
     }
 
     const { BandOracle } = this.contracts;
-    const priceData = await BandOracle.getReferenceData(tokenName, "BUSD");
-    
+    const priceData = await BandOracle.getReferenceData(tokenName, 'BUSD');
+
     return priceData.rate;
   }
 
@@ -434,48 +430,54 @@ export class AntToken {
   }
 
   // Liquidity
-  async getUserStakedLiquidity(bank: BankInfo): Promise<Array<BigNumber>>
-  {
+  async getUserStakedLiquidity(bank: BankInfo): Promise<Array<BigNumber>> {
     const stakedLiquidity = await this.stakedBalanceOnBank(bank.contract, this.myAccount);
-    let pairLiquidity =  await this.contracts[bank.depositTokenName].balanceOf(this.myAccount); 
+    let pairLiquidity = await this.contracts[bank.depositTokenName].balanceOf(this.myAccount);
     pairLiquidity = pairLiquidity.add(stakedLiquidity);
 
     return this.getUserLiquidity(bank, pairLiquidity);
   }
 
-  async getUserLiquidity(bank: BankInfo, pairLiquidity: BigNumber): Promise<Array<BigNumber>>
-  {
+  async getUserLiquidity(bank: BankInfo, pairLiquidity: BigNumber): Promise<Array<BigNumber>> {
     const totalSupply = await this.contracts[bank.depositTokenName].totalSupply();
 
-    return this.liquidityProvider.getLiquidity(this.tokens[bank.token0Name],
-                                               this.tokens[bank.token1Name],
-                                               pairLiquidity, totalSupply);
+    return this.liquidityProvider.getLiquidity(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+      pairLiquidity,
+      totalSupply,
+    );
   }
 
-  async getLockedLiquidity(bank: BankInfo): Promise<Array<BigNumber>>
-  {
+  async getLockedLiquidity(bank: BankInfo): Promise<Array<BigNumber>> {
     const stakedLiquidity = await this.getBankTotalSupply(bank.contract);
     const totalSupply = await this.contracts[bank.depositTokenName].totalSupply();
 
-    return this.liquidityProvider.getLiquidity(this.tokens[bank.token0Name],
-                                               this.tokens[bank.token1Name],
-                                               stakedLiquidity, totalSupply);
+    return this.liquidityProvider.getLiquidity(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+      stakedLiquidity,
+      totalSupply,
+    );
   }
 
-  async getTotalLiquidity(bank: Bank): Promise<Array<BigNumber>>
-  {
-    return this.liquidityProvider.getTotalLiquidity(this.tokens[bank.token0Name], this.tokens[bank.token1Name]);
+  async getTotalLiquidity(bank: Bank): Promise<Array<BigNumber>> {
+    return this.liquidityProvider.getTotalLiquidity(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+    );
   }
 
-  async getPairPrice(bank: BankInfo): Promise<[number, number]>
-  {
-    return this.liquidityProvider.getPairPrice(this.tokens[bank.token0Name], this.tokens[bank.token1Name]);
+  async getPairPrice(bank: BankInfo): Promise<[number, number]> {
+    return this.liquidityProvider.getPairPriceLatest(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+    );
   }
 
   // Faucet
-  async getFreeTokens() : Promise<TransactionResponse> 
-  {
-    const {TokenFaucet} = this.contracts;
+  async getFreeTokens(): Promise<TransactionResponse> {
+    const { TokenFaucet } = this.contracts;
     return await TokenFaucet.refill();
   }
 }
