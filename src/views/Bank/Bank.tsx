@@ -37,11 +37,6 @@ const Bank: React.FC = () => {
             <Harvest bank={bank} />
           </StyledCardWrapper>
         </StyledCardsWrapper>
-        <Spacer size="lg" />
-        <Center>
-          <Button onClick={onRedeem} text="Exit: Claim & Withdraw" />
-        </Center>
-        <Spacer size="lg" />
       </StyledBank>
     </>
   ) : !bank ? (

@@ -246,6 +246,7 @@ export class AntToken {
 
   /* ==================== Staking pools ======================= */
 
+  /* USED */
   async _getLiquidityPositions(bank: BankInfo) {
     const stakingHelper = this.contracts[bank.providerHelperName];
     const balance = await stakingHelper.balanceOf(this.myAccount);
@@ -257,16 +258,19 @@ export class AntToken {
     return tokenIds;
   }
 
+  /* USED */
   async getUserStakedLiquidity(bank: BankInfo): Promise<BigNumber> {
     const positions = await this._getLiquidityPositions(bank);
     return this.liquidityProvider.getUserLiquidity(positions);
   }
 
+  /* USED */
   async getUserTotalLiquidity(bank: BankInfo): Promise<BigNumber> {
     const positions = await this._getLiquidityPositions(bank);
     return this.liquidityProvider.getUserLiquidity(positions);
   }
 
+  /* USED */
   async getUserLockedLiquidity(bank: BankInfo): Promise<Array<BigNumber>> {
     // TODO
     return this.liquidityProvider.getAccountLiquidity(
@@ -276,6 +280,7 @@ export class AntToken {
     );
   }
 
+  /* USED */
   async getTotalLiquidity(bank: Bank): Promise<Array<BigNumber>> {
     return this.liquidityProvider.getTotalLiquidity(
       this.tokens[bank.token0Name],
@@ -283,6 +288,7 @@ export class AntToken {
     );
   }
 
+  /* USED */
   async earnedFromBank(bank: BankInfo): Promise<BigNumber> {
     const stakingPool = this.contracts[bank.contract];
     const positions = await this._getLiquidityPositions(bank);
@@ -329,6 +335,17 @@ export class AntToken {
     }
   }
 
+  /* USED */
+  async exitAndRemoveLiquidity(bank: BankInfo, deadline: number) {
+    const stakingHelper = this.contracts[bank.providerHelperName];
+
+    const positions = await this._getLiquidityPositions(bank);
+
+    for (let i = 0; i < positions.length; ++i) {
+      await stakingHelper.withdrawAndRemoveLiquidity(positions[i], deadline);
+    }
+  }
+
   /**
    * Deposits token to given pool.
    * @param poolName A name of pool contract.
@@ -351,15 +368,6 @@ export class AntToken {
     const pool = this.contracts[poolName];
     const gas = await pool.estimateGas.withdraw(amount);
     return await pool.withdraw(amount, this.gasOptions(gas));
-  }
-
-  /**
-   * Transfers earned token reward from given pool to my account.
-   */
-  async harvest(poolName: ContractName): Promise<TransactionResponse> {
-    const pool = this.contracts[poolName];
-    const gas = await pool.estimateGas.getMyReward();
-    return await pool.getMyReward(this.gasOptions(gas));
   }
 
   /**

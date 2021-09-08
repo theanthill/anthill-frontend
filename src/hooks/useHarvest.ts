@@ -1,20 +1,20 @@
 import { useCallback } from 'react';
 import useAntToken from './useAntToken';
-import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 import { Bank } from '../anthill';
 
-const useHarvest = (bank: Bank) => {
+const useExitAndClaim = (bank: Bank) => {
   const antToken = useAntToken();
-  const handleTransactionReceipt = useHandleTransactionReceipt();
 
-  const handleReward = useCallback(() => {
-    handleTransactionReceipt(
-      antToken.harvest(bank.contract),
-      `Claim ${bank.earnTokenName} from ${bank.contract}`,
-    );
-  }, [bank, antToken, handleTransactionReceipt]);
+  const handleExitAndClaim = useCallback(() => {
+    antToken.exitAndRemoveLiquidity(bank, deadline());
+  }, [bank, antToken]);
 
-  return { onReward: handleReward };
+  return { onExitAndClaim: handleExitAndClaim };
 };
 
-export default useHarvest;
+function deadline() {
+  // 30 minutes
+  return Math.floor(new Date().getTime() / 1000) + 1800;
+}
+
+export default useExitAndClaim;
