@@ -105,8 +105,11 @@ export class AntToken {
    * @returns Get exchange rate for bonds in BN format
    */
   async getAntBondExchangeRate(): Promise<BigNumber> {
-    const { Oracle } = this.contracts;
-    return await Oracle.priceTWAP(this.tokens.ANT.address);
+    const price = await this._getAntTokenPriceRatioTWAP();
+    const units = BigNumber.from(10).pow(18);
+    return BigNumber.from(price * 1000)
+      .mul(units)
+      .div(1000);
   }
 
   /**
@@ -271,24 +274,15 @@ export class AntToken {
     return totalReward;
   }
 
-  async getBankRewardRate(poolName: ContractName): Promise<BigNumber> {
-    const pool = this.contracts[poolName];
-    try {
-      return await pool.rewardRate();
-    } catch (err) {
-      console.error(`Failed to call earned() on pool ${pool.address}: ${err.stack}`);
-      return BigNumber.from(0);
-    }
+  /* USED */
+  async getBankRewardRate(bank: BankInfo): Promise<BigNumber> {
+    const stakingPool = this.contracts[bank.contract];
+    return stakingPool.getRewardRate();
   }
 
-  async getBankTotalSupply(poolName: ContractName): Promise<BigNumber> {
-    const pool = this.contracts[poolName];
-    try {
-      return await pool.totalSupply();
-    } catch (err) {
-      console.error(`Failed to call earned() on pool ${pool.address}: ${err.stack}`);
-      return BigNumber.from(0);
-    }
+  async getBankTotalSupply(bank: BankInfo): Promise<BigNumber> {
+    const stakingPool = this.contracts[bank.contract];
+    return stakingPool.getTotalStakedLiquidity();
   }
 
   async stakedBalanceOnBank(

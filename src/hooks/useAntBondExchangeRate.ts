@@ -13,7 +13,9 @@ const useAntBondExchangeRate = () => {
 
   useEffect(() => {
     if (antToken) {
-      fetchAntTokenPrice().catch((err) => console.error(`Failed to fetch ANT price: ${err.stack}`));
+      fetchAntTokenPrice().catch((err) =>
+        console.error(`Failed to fetch ANT price: ${err.stack}`),
+      );
       const refreshInterval = setInterval(fetchAntTokenPrice, config.refreshInterval);
       return () => clearInterval(refreshInterval);
     }

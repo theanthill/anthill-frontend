@@ -4316,7 +4316,7 @@
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "rewardAmount",
+            "name": "rewardAmount_",
             "type": "uint256"
           },
           {
@@ -4386,6 +4386,20 @@
           {
             "internalType": "uint256",
             "name": "reward",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
+        "name": "getRewardRate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
             "type": "uint256"
           }
         ],
@@ -4715,44 +4729,6 @@
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          }
-        ],
-        "name": "_getLiquidity",
-        "outputs": [
-          {
-            "internalType": "uint128",
-            "name": "liquidity",
-            "type": "uint128"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "deadline",
-            "type": "uint256"
-          }
-        ],
-        "name": "_removeLiquidity",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
             "name": "amount0Desired",
             "type": "uint256"
           },
@@ -4810,6 +4786,20 @@
             "internalType": "uint24",
             "name": "",
             "type": "uint24"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
+        "name": "getTotalStakedLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
           }
         ],
         "stateMutability": "view",
@@ -5158,7 +5148,7 @@
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "rewardAmount",
+            "name": "rewardAmount_",
             "type": "uint256"
           },
           {
@@ -5228,6 +5218,20 @@
           {
             "internalType": "uint256",
             "name": "reward",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
+        "name": "getRewardRate",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
             "type": "uint256"
           }
         ],
@@ -5557,44 +5561,6 @@
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          }
-        ],
-        "name": "_getLiquidity",
-        "outputs": [
-          {
-            "internalType": "uint128",
-            "name": "liquidity",
-            "type": "uint128"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "deadline",
-            "type": "uint256"
-          }
-        ],
-        "name": "_removeLiquidity",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
             "name": "amount0Desired",
             "type": "uint256"
           },
@@ -5652,6 +5618,20 @@
             "internalType": "uint24",
             "name": "",
             "type": "uint24"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [],
+        "name": "getTotalStakedLiquidity",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
           }
         ],
         "stateMutability": "view",
