@@ -2,9 +2,9 @@ import { BigNumber, Contract, ethers } from 'ethers';
 import { ChainId } from '@uniswap/sdk';
 
 import { abi as INonfungiblePositionManager } from '@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json';
-import { abi as ISwapRouter } from '@uniswap/v3-periphery/artifacts/contracts/interfaces/ISwapRouter.sol/ISwapRouter.json';
 import { abi as ISwapFactory } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json';
 import { abi as IUniswapV3Pool } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
+import { abi as IQuoter } from '@uniswap/v3-periphery/artifacts/contracts/interfaces/IQuoter.sol/IQuoter.json';
 
 import ERC20 from './ERC20';
 import { getDefaultProvider } from '../utils/provider';
@@ -27,6 +27,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
   chainId: ChainId;
   positionManager: Contract;
   swapFactory: Contract;
+  quoter: Contract;
   poolMap: Map<String, Contract>;
 
   constructor(cfg: Configuration) {
@@ -43,6 +44,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
       ISwapFactory,
       this.provider,
     );
+    this.quoter = new Contract(cfg.deployments['Quoter'].address, IQuoter, this.provider);
 
     this.poolMap = new Map<string, Contract>();
   }
@@ -50,6 +52,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
   unlockWallet(signer: ethers.Signer): void {
     this.positionManager = this.positionManager.connect(signer);
     this.swapFactory = this.swapFactory.connect(signer);
+    this.quoter = this.quoter.connect(signer);
   }
 
   async getLiquidity(
@@ -58,6 +61,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     pairLiquidity: BigNumber,
     totalSupply: BigNumber,
   ): Promise<Array<BigNumber>> {
+    // Get the specific liquidity for a position
     /*const token0 = new Token(this.chainId, erc20Token0.address, erc20Token0.decimal);
     const token1 = new Token(this.chainId, erc20Token1.address, erc20Token1.decimal);
 
@@ -73,20 +77,33 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
 
     return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];*/
-    return [BigNumber.from(19900000000000000000), BigNumber.from(19900000000000000000)];
+    return [BigNumber.from('19900000000000000000'), BigNumber.from('19900000000000000000')];
   }
 
   async getTotalLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<Array<BigNumber>> {
-    /*const token0 = new Token(this.chainId, erc20Token0.address, erc20Token0.decimal);
-    const token1 = new Token(this.chainId, erc20Token1.address, erc20Token1.decimal);
+    const pool = await this.getPool(erc20Token0, erc20Token1);
 
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider);
+    const token0Amount = await erc20Token0.balanceOf(pool.address);
+    const token1Amount = await erc20Token1.balanceOf(pool.address);
 
-    const token0AmountBN = BigNumber.from(pair.reserve0.raw.toString());
-    const token1AmountBN = BigNumber.from(pair.reserve1.raw.toString());
+    return [token0Amount, token1Amount];
+  }
 
-    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];*/
-    return [BigNumber.from(19900000000000000000), BigNumber.from(19900000000000000000)];
+  async getPoolLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber> {
+    const pool = await this.getPool(erc20Token0, erc20Token1);
+    return pool.liquidity();
+  }
+
+  async getPoolSqrtPriceX96(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber> {
+    const pool = await this.getPool(erc20Token0, erc20Token1);
+    const slot0 = await pool.slot0();
+    return slot0.sqrtPriceX96;
+  }
+
+  async getPoolCurrentTick(erc20Token0: ERC20, erc20Token1: ERC20): Promise<number> {
+    const pool = await this.getPool(erc20Token0, erc20Token1);
+    const slot0 = await pool.slot0();
+    return slot0.tick;
   }
 
   async getPairPriceLatest(erc20Token0: ERC20, erc20Token1: ERC20): Promise<[number, number]> {
@@ -145,5 +162,19 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     }
 
     return this.poolMap.get(key);
+  }
+
+  async quoteExactInput(
+    tokenIn: ERC20,
+    tokenOut: ERC20,
+    amount: BigNumber,
+  ): Promise<BigNumber> {
+    return this.quoter.callStatic.quoteExactInputSingle(
+      tokenIn.address,
+      tokenOut.address,
+      LIQUIDITY_FEE,
+      amount,
+      0,
+    );
   }
 }

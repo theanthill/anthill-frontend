@@ -32,8 +32,8 @@ const SwapTokens: React.FC<SwapTokensProps> = ({ bank }) => {
   const antToken = useAntToken();
   const {onSwapTokens} = useSwapTokens(bank);
 
-  const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts.PancakeRouter.address);
-  const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts.PancakeRouter.address);
+  const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts.SwapRouter.address);
+  const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts.SwapRouter.address);
   
   const amountOut = useCalculateSwap(bank, token0In, amountIn);
 

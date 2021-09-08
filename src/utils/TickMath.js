@@ -1,3 +1,4 @@
+const { BigNumber } = require('@ethersproject/bignumber');
 const JSBI = require('jsbi');
 //import invariant from 'tiny-invariant'
 const { ONE, ZERO } = require('./internalConstants');
@@ -66,9 +67,11 @@ function getSqrtRatioAtTick(tick) {
   if (tick > 0) ratio = JSBI.divide(MaxUint256, ratio);
 
   // back to Q96
-  return JSBI.greaterThan(JSBI.remainder(ratio, Q32), ZERO)
+  const value = JSBI.greaterThan(JSBI.remainder(ratio, Q32), ZERO)
     ? JSBI.add(JSBI.divide(ratio, Q32), ONE)
     : JSBI.divide(ratio, Q32);
+
+  return BigNumber.from(value.toString());
 }
 
 /**
@@ -121,11 +124,14 @@ function getTickAtSqrtRatio(sqrtRatioX96) {
     ),
   );
 
-  return tickLow === tickHigh
-    ? tickLow
-    : JSBI.lessThanOrEqual(getSqrtRatioAtTick(tickHigh), sqrtRatioX96)
-    ? tickHigh
-    : tickLow;
+  const value =
+    tickLow === tickHigh
+      ? tickLow
+      : JSBI.lessThanOrEqual(getSqrtRatioAtTick(tickHigh), sqrtRatioX96)
+      ? tickHigh
+      : tickLow;
+
+  return BigNumber.from(value);
 }
 
 module.exports = {

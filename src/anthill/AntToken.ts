@@ -468,11 +468,50 @@ export class AntToken {
     );
   }
 
+  async getPoolLiquidity(bank: Bank): Promise<BigNumber> {
+    return this.liquidityProvider.getPoolLiquidity(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+    );
+  }
+
+  async getPoolSqrtPriceX96(bank: Bank): Promise<BigNumber> {
+    return this.liquidityProvider.getPoolSqrtPriceX96(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+    );
+  }
+
+  async getPoolCurrentTick(bank: Bank): Promise<number> {
+    return this.liquidityProvider.getPoolCurrentTick(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+    );
+  }
+
   async getPairPrice(bank: BankInfo): Promise<[number, number]> {
     return this.liquidityProvider.getPairPriceLatest(
       this.tokens[bank.token0Name],
       this.tokens[bank.token1Name],
     );
+  }
+
+  async quoteExactInput(
+    bank: BankInfo,
+    token0In: boolean,
+    amount: BigNumber,
+  ): Promise<BigNumber> {
+    return token0In
+      ? this.liquidityProvider.quoteExactInput(
+          this.tokens[bank.token0Name],
+          this.tokens[bank.token1Name],
+          amount,
+        )
+      : this.liquidityProvider.quoteExactInput(
+          this.tokens[bank.token1Name],
+          this.tokens[bank.token0Name],
+          amount,
+        );
   }
 
   // Faucet

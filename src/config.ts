@@ -1,50 +1,43 @@
 import { Configuration } from './anthill/config';
 import { BankInfo, TokenInfo } from './anthill';
 
-export const tokens: { [tokenName: string]: TokenInfo } =
-{
-  AntToken :
-  {
+export const tokens: { [tokenName: string]: TokenInfo } = {
+  AntToken: {
     titleName: 'ANT Token',
     inlineName: 'Ant Token',
     symbol: 'ANT',
-    color: "#77e463",
+    color: '#77e463',
   },
-  AntShare :
-  {
+  AntShare: {
     titleName: 'ANT Share',
     inlineName: 'Ant Share',
     symbol: 'ANTS',
-    color: "#4cb3ff",
+    color: '#4cb3ff',
   },
-  AntBond :
-  {
+  AntBond: {
     titleName: 'ANT Bond',
     inlineName: 'Ant Bond',
     symbol: 'ANTB',
-    color: "#da5eff",
+    color: '#da5eff',
   },
-  'AntToken-BUSD' :
-  {
+  'AntToken-BUSD': {
     titleName: 'ANT-BUSD LP',
     inlineName: 'ANTBUSD LP',
     symbol: 'ANT-BUSD',
-    color: "#ffffff",
+    color: '#ffffff',
   },
-  'AntToken-BNB' :
-  {
+  'AntToken-BNB': {
     titleName: 'ANT-BNB LP',
     inlineName: 'ANTBNB LP',
     symbol: 'ANT-BNB',
-    color: "#ffffff",
+    color: '#ffffff',
   },
-  'AntToken-ETH' :
-  {
+  'AntToken-ETH': {
     titleName: 'ANT-ETH LP',
     inlineName: 'ANTETH LP',
     symbol: 'ANT-ETH',
-    color: "#ffffff",
-  }
+    color: '#ffffff',
+  },
 };
 
 const configurations: { [env: string]: Configuration } = {
@@ -184,45 +177,33 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   BUSDANTLPTokenANTPool: {
     name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol} + BUSD`,
     swapTitle: `Swap ${tokens['AntToken'].inlineName} and BUSD`,
-    contract: 'BUSDANTLPTokenANTPool',
+    contract: 'BUSDANTPoolStakerANT',
     depositTokenName: 'AntToken-BUSD',
     token0Name: 'ANT',
     token1Name: 'BUSD',
     earnTokenSymbol: 'ANT',
     earnTokenName: 'Ant Tokens',
-    providerHelperName: 'BUSDANTLPHelper',
+    providerHelperName: 'BUSDANTPoolHelper',
     finished: false,
     sort: 0,
-    chainIds: []
-  },
-  BNBANTLPTokenANTPool: {
-    name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol} + BNB`,
-    swapTitle: `Swap ${tokens['AntToken'].inlineName} and BNB`,
-    contract: 'BNBANTLPTokenANTPool',
-    depositTokenName: 'AntToken-BNB',
-    token0Name: 'ANT',
-    token1Name: 'BNB',
-    earnTokenSymbol: 'ANT',
-    earnTokenName: 'Ant Tokens',
-    providerHelperName: 'BNBANTLPHelper',
-    finished: false,
-    sort: 1,
-    chainIds: [56, 97]
+    chainIds: [4],
   },
   ETHANTLPTokenANTPool: {
     name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol} + ETH`,
     swapTitle: `Swap ${tokens['AntToken'].inlineName} and ETH`,
-    contract: 'ETHANTLPTokenANTPool',
+    contract: 'BUSDANTPoolStakerANT',
     depositTokenName: 'AntToken-ETH',
     token0Name: 'ANT',
     token1Name: 'ETH',
     earnTokenSymbol: 'ANT',
     earnTokenName: 'Ant Tokens',
-    providerHelperName: 'ETHANTLPHelper',
+    providerHelperName: 'ETHANTPoolHelper',
     finished: false,
     sort: 1,
-    chainIds: [3]
+    chainIds: [4],
   },
 };
 
-export default configurations[process.env.REACT_APP_ENVIRONMENT || process.env.NODE_ENV || "development"];
+export default configurations[
+  process.env.REACT_APP_ENVIRONMENT || process.env.NODE_ENV || 'development'
+];

@@ -22,7 +22,9 @@
     "@types/react": "^16.9.46",
     "@types/react-redux": "^7.1.9",
     "@uniswap/sdk": "^3.0.3-beta.1",
+    "@uniswap/sdk-core": "^3.0.1",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
+    "@uniswap/v3-periphery": "^1.1.1",
     "bignumber.js": "^9.0.0",
     "ethers": "^5.0.12",
     "humanize-plus": "^1.8.2",
@@ -79,7 +81,6 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
-    "@uniswap/v3-periphery": "^1.1.1",
     "prettier": "^2.1.1"
   }
 }
