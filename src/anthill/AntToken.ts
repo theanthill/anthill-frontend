@@ -156,6 +156,7 @@ export class AntToken {
     const tokenPairPrice = await this.liquidityProvider.getPairPriceTWAP(
       this.tokens.ANT,
       this.tokens.BUSD,
+      this.priceDecimals,
     );
     const antTokenTargetPrice = await this.getAntTokenTargetPrice();
 
@@ -166,6 +167,7 @@ export class AntToken {
     const tokenPairPrice = await this.liquidityProvider.getPairPriceLatest(
       this.tokens.ANT,
       this.tokens.BUSD,
+      this.priceDecimals,
     );
     const antTokenTargetPrice = await this.getAntTokenTargetPrice();
 
@@ -493,6 +495,7 @@ export class AntToken {
     return this.liquidityProvider.getPairPriceLatest(
       this.tokens[bank.token0Name],
       this.tokens[bank.token1Name],
+      this.priceDecimals,
     );
   }
 
@@ -511,6 +514,29 @@ export class AntToken {
           this.tokens[bank.token1Name],
           this.tokens[bank.token0Name],
           amount,
+        );
+  }
+
+  async swapExactInput(
+    bank: BankInfo,
+    token0In: boolean,
+    amountIn: BigNumber,
+    amountOutMin: BigNumber,
+  ): Promise<TransactionResponse> {
+    return token0In
+      ? this.liquidityProvider.swapExactInput(
+          this.tokens[bank.token0Name],
+          this.tokens[bank.token1Name],
+          amountIn,
+          amountOutMin,
+          this.myAccount,
+        )
+      : this.liquidityProvider.swapExactInput(
+          this.tokens[bank.token1Name],
+          this.tokens[bank.token0Name],
+          amountIn,
+          amountOutMin,
+          this.myAccount,
         );
   }
 

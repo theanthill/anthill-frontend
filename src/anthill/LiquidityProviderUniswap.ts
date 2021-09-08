@@ -5,6 +5,7 @@ import { abi as INonfungiblePositionManager } from '@uniswap/v3-periphery/artifa
 import { abi as ISwapFactory } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json';
 import { abi as IUniswapV3Pool } from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json';
 import { abi as IQuoter } from '@uniswap/v3-periphery/artifacts/contracts/interfaces/IQuoter.sol/IQuoter.json';
+import { abi as ISwapRouter } from '@uniswap/v3-periphery/artifacts/contracts/interfaces/ISwapRouter.sol/ISwapRouter.json';
 
 import ERC20 from './ERC20';
 import { getDefaultProvider } from '../utils/provider';
@@ -13,6 +14,7 @@ import { decodeSqrtX96 } from '../utils/sqrtPrice';
 import { getSqrtRatioAtTick } from '../utils/TickMath';
 
 import { ILiquidityProvider } from './ILiquidityProvider';
+import { TransactionResponse } from '@ethersproject/providers';
 
 const LIQUIDITY_FEE = 3000;
 
@@ -27,6 +29,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
   chainId: ChainId;
   positionManager: Contract;
   swapFactory: Contract;
+  swapRouter: Contract;
   quoter: Contract;
   poolMap: Map<String, Contract>;
 
@@ -44,6 +47,11 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
       ISwapFactory,
       this.provider,
     );
+    this.swapRouter = new Contract(
+      cfg.deployments['SwapRouter'].address,
+      ISwapRouter,
+      this.provider,
+    );
     this.quoter = new Contract(cfg.deployments['Quoter'].address, IQuoter, this.provider);
 
     this.poolMap = new Map<string, Contract>();
@@ -52,6 +60,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
   unlockWallet(signer: ethers.Signer): void {
     this.positionManager = this.positionManager.connect(signer);
     this.swapFactory = this.swapFactory.connect(signer);
+    this.swapRouter = this.swapRouter.connect(signer);
     this.quoter = this.quoter.connect(signer);
   }
 
@@ -106,17 +115,27 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     return slot0.tick;
   }
 
-  async getPairPriceLatest(erc20Token0: ERC20, erc20Token1: ERC20): Promise<[number, number]> {
+  async getPairPriceLatest(
+    erc20Token0: ERC20,
+    erc20Token1: ERC20,
+    decimals: number,
+  ): Promise<[number, number]> {
     const pool = await this.getPool(erc20Token0, erc20Token1);
     const slot0 = await pool.slot0();
     const sqrtPriceX96 = slot0.sqrtPriceX96;
 
-    const price = decodeSqrtX96(sqrtPriceX96);
+    const price = decodeSqrtX96(sqrtPriceX96, decimals);
 
-    return [price.toNumber(), 1.0 / price.toNumber()];
+    return erc20Token0.address < erc20Token1.address
+      ? [price, 1.0 / price]
+      : [1.0 / price, price];
   }
 
-  async getPairPriceTWAP(erc20Token0: ERC20, erc20Token1: ERC20): Promise<[number, number]> {
+  async getPairPriceTWAP(
+    erc20Token0: ERC20,
+    erc20Token1: ERC20,
+    decimals: number,
+  ): Promise<[number, number]> {
     const pool = await this.getPool(erc20Token0, erc20Token1);
     const slot0 = await pool.slot0();
 
@@ -126,7 +145,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     const currentObservation = await pool.observations(slot0.observationIndex);
     const oldestObservation = await pool.observations(oldestObservationIndex);
 
-    let price: BigNumber;
+    let price: number;
     if (
       oldestObservation.initialized &&
       oldestObservation.blockTimestamp !== 0 &&
@@ -136,13 +155,15 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
         (currentObservation.tickCumulative - oldestObservation.tickCumulative) /
         (currentObservation.blockTimestamp - oldestObservation.blockTimestamp);
       const sqrtPriceX96 = getSqrtRatioAtTick(tick);
-      price = decodeSqrtX96(sqrtPriceX96);
+      price = decodeSqrtX96(sqrtPriceX96, decimals);
     } else {
       // We only have 1 current observation
-      price = decodeSqrtX96(slot0.sqrtPriceX96);
+      price = decodeSqrtX96(slot0.sqrtPriceX96, decimals);
     }
 
-    return [price.toNumber(), 1.0 / price.toNumber()];
+    return erc20Token0.address < erc20Token1.address
+      ? [price, 1.0 / price]
+      : [1.0 / price, price];
   }
 
   async getPool(erc20Token0: ERC20, erc20Token1: ERC20): Promise<Contract> {
@@ -176,5 +197,25 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
       amount,
       0,
     );
+  }
+
+  async swapExactInput(
+    tokenIn: ERC20,
+    tokenOut: ERC20,
+    amountIn: BigNumber,
+    amountOutMin: BigNumber,
+    recipient: string,
+  ): Promise<TransactionResponse> {
+    const deadline = Math.floor(new Date().getTime() / 1000) + 1800; // 30 minutes
+    return this.swapRouter.exactInputSingle([
+      tokenIn.address,
+      tokenOut.address,
+      LIQUIDITY_FEE,
+      recipient,
+      deadline,
+      amountIn,
+      amountOutMin,
+      0,
+    ]);
   }
 }

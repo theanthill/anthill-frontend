@@ -4,44 +4,26 @@ import useAntToken from './useAntToken';
 import { Bank } from '../anthill';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
 import { BigNumber } from '@ethersproject/bignumber';
-import { useWallet } from '@binance-chain/bsc-use-wallet';
 import { getDisplayBalance } from '../utils/formatBalance';
 
 const useSwapTokens = (bank: Bank) => {
   const antToken = useAntToken();
-  const {account} = useWallet();
-  
+
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
-  const handleSwapTokens = useCallback((token0In: boolean, amountIn: BigNumber, amountOutMin: BigNumber) => {
-        var path;
-            
-        const amountInDisplay = getDisplayBalance(amountIn);
-        const amountOutMinDisplay = getDisplayBalance(amountOutMin);
+  const handleSwapTokens = useCallback(
+    (token0In: boolean, amountIn: BigNumber, amountOutMin: BigNumber) => {
+      const amountInDisplay = getDisplayBalance(amountIn);
+      const amountOutMinDisplay = getDisplayBalance(amountOutMin);
 
-        if (token0In) {
-            path = [ bank.token0.address, bank.token1.address ];
-
-            handleTransactionReceipt(
-                antToken.contracts.PancakeRouter.swapExactTokensForTokens(amountIn, amountOutMin, path, account, deadline()),
-                `Swapping ${amountInDisplay} ${bank.token0Name} for at least ${amountOutMinDisplay} ${bank.token1Name} tokens `);
-        } else  {
-            path = [ bank.token1.address, bank.token0.address ];
-
-            handleTransactionReceipt(
-                antToken.contracts.PancakeRouter.swapExactTokensForTokens(amountIn, amountOutMin, path, account, deadline()),
-                `Swapping ${amountInDisplay} ${bank.token1Name} for at least ${amountOutMinDisplay} ${bank.token0Name} tokens `);
-        }
+      handleTransactionReceipt(
+        antToken.swapExactInput(bank, token0In, amountIn, amountOutMin),
+        `Swapping ${amountInDisplay} ${bank.token0Name} for at least ${amountOutMinDisplay} ${bank.token1Name} tokens `,
+      );
     },
-    [bank, antToken, account, handleTransactionReceipt],
+    [bank, antToken, handleTransactionReceipt],
   );
   return { onSwapTokens: handleSwapTokens };
 };
-
-function deadline()
-{
-    // 30 minutes
-    return Math.floor(new Date().getTime() / 1000) + 1800;
-}
 
 export default useSwapTokens;
