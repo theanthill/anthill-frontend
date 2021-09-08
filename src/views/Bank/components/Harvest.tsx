@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { tokens } from '../../../config';
-
 import Button from '../../../components/Button';
 import Card from '../../../components/Card';
 import CardContent from '../../../components/CardContent';
@@ -11,7 +9,7 @@ import Label from '../../../components/Label';
 import Value from '../../../components/Value';
 
 import useEarnings from '../../../hooks/useEarnings';
-import useExitAndClaim from '../../../hooks/useHarvest';
+import useExitAndClaim from '../../../hooks/useExitAndClaim';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
 import TokenSymbol from '../../../components/TokenSymbol';
@@ -20,8 +18,6 @@ import useUserTotalLiquidity from '../../../hooks/useUserTotalLiquidity';
 import InfoButton from '../../../components/InfoButton';
 import useModal from '../../../hooks/useModal';
 import LiquidityInfoModal from './LiquidityInfoModal';
-import useRemoveLiquidity from '../../../hooks/useRemoveLiquidity';
-import LiquidityWithdrawModal from './LiquidityWithdrawModal';
 
 interface HarvestProps {
   bank: Bank;
@@ -92,11 +88,6 @@ const StyledCardContentInner = styled.div`
 const StyledInfoButton = styled.div`
   margin-left: auto; 
   margin-right: 0;
-`;
-
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
 `;
 
 export default Harvest;

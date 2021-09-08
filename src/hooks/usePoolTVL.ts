@@ -9,7 +9,9 @@ const useLiquidityPoolTVL = (bank: Bank) => {
   const antToken = useAntToken();
 
   const fetchRewardRate = useCallback(async () => {
-    const [token0TotalLiquidity, token1TotalLiquidity] = await antToken.getTotalLiquidity(bank);
+    const [token0TotalLiquidity, token1TotalLiquidity] = await antToken.getBankTotalLiquidity(
+      bank,
+    );
 
     const token0Price = await antToken.getTokenPriceInBUSD(bank.token0.symbol);
     const token1Price = await antToken.getTokenPriceInBUSD(bank.token1.symbol);

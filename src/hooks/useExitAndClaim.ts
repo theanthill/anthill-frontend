@@ -6,7 +6,7 @@ const useExitAndClaim = (bank: Bank) => {
   const antToken = useAntToken();
 
   const handleExitAndClaim = useCallback(() => {
-    antToken.exitAndRemoveLiquidity(bank, deadline());
+    antToken.removeLiquidityAndExit(bank, deadline());
   }, [bank, antToken]);
 
   return { onExitAndClaim: handleExitAndClaim };

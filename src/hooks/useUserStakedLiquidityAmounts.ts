@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 
 import useAntToken from './useAntToken';
-import { BankInfo } from '../anthill';
+import { Bank } from '../anthill';
 import config from '../config';
 
-const useUserStakedLiquidityAmounts = (bank: BankInfo) => {
+const useUserStakedLiquidityAmounts = (bank: Bank) => {
   const [balances, setBalance] = useState([BigNumber.from(0), BigNumber.from(0)]);
   const antToken = useAntToken();
   const antTokenUnlocked = antToken?.isUnlocked;

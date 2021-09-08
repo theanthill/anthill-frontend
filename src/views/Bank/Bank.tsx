@@ -10,7 +10,6 @@ import Spacer from '../../components/Spacer';
 import Harvest from './components/Harvest';
 import AddLiquidity from './components/AddLiquidity';
 import useBank from '../../hooks/useBank';
-import useRedeem from '../../hooks/useRedeem';
 
 const Bank: React.FC = () => {
   useEffect(() => window.scrollTo(0, 0));
@@ -19,7 +18,6 @@ const Bank: React.FC = () => {
   const bank = useBank(bankId);
 
   const { account } = useWallet();
-  const { onRedeem } = useRedeem(bank);
 
   return account && bank ? (
     <>

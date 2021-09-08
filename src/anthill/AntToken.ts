@@ -4,7 +4,7 @@ import { TransactionResponse } from '@ethersproject/providers';
 import { Configuration } from './config';
 
 import ERC20 from './ERC20';
-import { Bank, BankInfo, ContractName, TokenStat, TreasuryAllocationTime } from './types';
+import { Bank, BankInfo, TokenStat, TreasuryAllocationTime } from './types';
 import { getDefaultProvider } from '../utils/provider';
 import { ILiquidityProvider } from './ILiquidityProvider';
 
@@ -177,17 +177,6 @@ export class AntToken {
     };
   }
 
-  /**
-   * @returns Ant Bond total supply (there is no price for the share)
-   */
-  async getAntShareStat(): Promise<TokenStat> {
-    return {
-      priceInBUSDLastEpoch: '0',
-      priceInBUSDRealTime: '0',
-      totalSupply: await this.tokens.ANTS.displayedTotalSupply(),
-    };
-  }
-
   /* ================== Bonds ======================== */
 
   /**
@@ -218,8 +207,7 @@ export class AntToken {
 
   /* ==================== Staking pools ======================= */
 
-  /* USED */
-  async _getLiquidityPositions(bank: BankInfo) {
+  async _getLiquidityPositions(bank: Bank) {
     const stakingHelper = this.contracts[bank.providerHelperName];
     const balance = await stakingHelper.balanceOf(this.myAccount);
 
@@ -230,38 +218,25 @@ export class AntToken {
     return tokenIds;
   }
 
-  /* USED */
-  async getUserStakedLiquidity(bank: BankInfo): Promise<BigNumber> {
+  async getUserTotalLiquidity(bank: Bank): Promise<BigNumber> {
     const positions = await this._getLiquidityPositions(bank);
     return this.liquidityProvider.getUserLiquidity(positions);
   }
 
-  /* USED */
-  async getUserTotalLiquidity(bank: BankInfo): Promise<BigNumber> {
-    const positions = await this._getLiquidityPositions(bank);
-    return this.liquidityProvider.getUserLiquidity(positions);
-  }
-
-  /* USED */
-  async getUserLockedLiquidity(bank: BankInfo): Promise<Array<BigNumber>> {
-    // TODO
-    return this.liquidityProvider.getAccountLiquidity(
-      this.tokens[bank.token0Name],
-      this.tokens[bank.token1Name],
-      this.myAccount,
-    );
-  }
-
-  /* USED */
-  async getTotalLiquidity(bank: Bank): Promise<Array<BigNumber>> {
+  async getBankTotalLiquidity(bank: Bank): Promise<Array<BigNumber>> {
     return this.liquidityProvider.getTotalLiquidity(
       this.tokens[bank.token0Name],
       this.tokens[bank.token1Name],
     );
   }
 
-  /* USED */
-  async earnedFromBank(bank: BankInfo): Promise<BigNumber> {
+  /* TODO */
+  async getBankTotalSupply(bank: Bank): Promise<BigNumber> {
+    const stakingHelper = this.contracts[bank.providerHelperName];
+    return stakingHelper.getTotalStakedLiquidity();
+  }
+
+  async earnedFromBank(bank: Bank): Promise<BigNumber> {
     const stakingPool = this.contracts[bank.contract];
     const positions = await this._getLiquidityPositions(bank);
 
@@ -274,33 +249,13 @@ export class AntToken {
     return totalReward;
   }
 
-  /* USED */
-  async getBankRewardRate(bank: BankInfo): Promise<BigNumber> {
+  async getBankRewardRate(bank: Bank): Promise<BigNumber> {
     const stakingPool = this.contracts[bank.contract];
     return stakingPool.getRewardRate();
   }
 
-  async getBankTotalSupply(bank: BankInfo): Promise<BigNumber> {
-    const stakingPool = this.contracts[bank.contract];
-    return stakingPool.getTotalStakedLiquidity();
-  }
-
-  async stakedBalanceOnBank(
-    poolName: ContractName,
-    account = this.myAccount,
-  ): Promise<BigNumber> {
-    const pool = this.contracts[poolName];
-    try {
-      return await pool.balanceOf(account);
-    } catch (err) {
-      console.error(`Failed to call balanceOf() on pool ${pool.address}: ${err.stack}`);
-      return BigNumber.from(0);
-    }
-  }
-
-  /* USED */
   async addLiquidityAndStake(
-    bank: BankInfo,
+    bank: Bank,
     amount0Desired: BigNumber,
     amount1Desired: BigNumber,
     amount0Min: BigNumber,
@@ -317,8 +272,7 @@ export class AntToken {
     );
   }
 
-  /* USED */
-  async exitAndRemoveLiquidity(bank: BankInfo, deadline: number) {
+  async removeLiquidityAndExit(bank: Bank, deadline: number) {
     const stakingHelper = this.contracts[bank.providerHelperName];
 
     const positions = await this._getLiquidityPositions(bank);
@@ -328,40 +282,6 @@ export class AntToken {
     }
   }
 
-  /**
-   * Deposits token to given pool.
-   * @param poolName A name of pool contract.
-   * @param amount Number of tokens with decimals applied. (e.g. 1.45 BUSD * 10^18)
-   * @returns {string} Transaction hash
-   */
-  async stake(poolName: ContractName, amount: BigNumber): Promise<TransactionResponse> {
-    const pool = this.contracts[poolName];
-    const gas = await pool.estimateGas.stake(amount);
-    return await pool.stake(amount, this.gasOptions(gas));
-  }
-
-  /**
-   * Withdraws token from given pool.
-   * @param poolName A name of pool contract.
-   * @param amount Number of tokens with decimals applied. (e.g. 1.45 BUSD * 10^18)
-   * @returns {string} Transaction hash
-   */
-  async unstake(poolName: ContractName, amount: BigNumber): Promise<TransactionResponse> {
-    const pool = this.contracts[poolName];
-    const gas = await pool.estimateGas.withdraw(amount);
-    return await pool.withdraw(amount, this.gasOptions(gas));
-  }
-
-  /**
-   * Harvests and withdraws deposited tokens from the pool.
-   */
-  async settleWithdraw(providerHelperName: ContractName): Promise<TransactionResponse> {
-    const liquidityHelper = this.contracts[providerHelperName];
-    const deadline = Math.floor(new Date().getTime() / 1000) + 1800;
-    var gas = await liquidityHelper.estimateGas.exit(deadline);
-    return await liquidityHelper.exit(deadline, this.gasOptions(gas));
-  }
-
   /* ======================= Boardroom ====================== */
 
   async fetchBoardroomVersionOfUser(): Promise<string> {
@@ -369,12 +289,6 @@ export class AntToken {
   }
 
   boardroomByVersion(version: string): Contract {
-    // if (version === 'v1') {
-    //   return this.contracts.Boardroom1;
-    // }
-    // if (version === 'v2') {
-    //   return this.contracts.Boardroom2;
-    // }
     return this.contracts.Boardroom;
   }
 
@@ -466,26 +380,6 @@ export class AntToken {
   }
 
   /* ================ Liquidity Pools ================== */
-  async getPoolLiquidity(bank: Bank): Promise<BigNumber> {
-    return this.liquidityProvider.getPoolLiquidity(
-      this.tokens[bank.token0Name],
-      this.tokens[bank.token1Name],
-    );
-  }
-
-  async getPoolSqrtPriceX96(bank: Bank): Promise<BigNumber> {
-    return this.liquidityProvider.getPoolSqrtPriceX96(
-      this.tokens[bank.token0Name],
-      this.tokens[bank.token1Name],
-    );
-  }
-
-  async getPoolCurrentTick(bank: Bank): Promise<number> {
-    return this.liquidityProvider.getPoolCurrentTick(
-      this.tokens[bank.token0Name],
-      this.tokens[bank.token1Name],
-    );
-  }
 
   /* USED */
   async getPairPrice(bank: BankInfo): Promise<[number, number]> {

@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
 import useAntToken from './useAntToken';
 import config from '../config';
-import { BankInfo } from '../anthill';
+import { Bank } from '../anthill';
 
-const useEarnings = (bank: BankInfo) => {
+const useEarnings = (bank: Bank) => {
   const [balance, setBalance] = useState(BigNumber.from(0));
   const antToken = useAntToken();
   const antTokenUnlocked = antToken?.isUnlocked;

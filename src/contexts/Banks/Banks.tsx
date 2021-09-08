@@ -7,7 +7,6 @@ import config, { bankDefinitions } from '../../config';
 const Banks: React.FC = ({ children }) => {
   const [banks, setBanks] = useState<Bank[]>([]);
   const antToken = useAntToken();
-  const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchPools = useCallback(async () => {
     const banks: Bank[] = [];
@@ -18,15 +17,6 @@ const Banks: React.FC = ({ children }) => {
         continue;
       }
 
-      if (bankInfo.finished) {
-        if (!antTokenUnlocked) continue;
-
-        // only show pools staked by user
-        const balance = await antToken.stakedBalanceOnBank(bankInfo.contract, antToken.myAccount);
-        if (balance.lte(0)) {
-          continue;
-        }
-      }
       banks.push({
         ...bankInfo,
         address: config.deployments[bankInfo.contract].address,
@@ -38,7 +28,7 @@ const Banks: React.FC = ({ children }) => {
     }
     banks.sort((a, b) => (a.sort > b.sort ? 1 : -1));
     setBanks(banks);
-  }, [antToken, antTokenUnlocked, setBanks]);
+  }, [antToken, setBanks]);
 
   useEffect(() => {
     if (antToken) {
