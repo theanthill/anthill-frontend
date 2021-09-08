@@ -11,8 +11,9 @@ const useUserCustomLiquidityAmounts = (bank: BankInfo, amount: BigNumber) => {
   const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchBalances = useCallback(async () => {
-    setBalance(await antToken.getUserLiquidity(bank, amount));
-  }, [antToken, bank, amount]);
+    const amount = await antToken.getUserTotalLiquidity(bank);
+    setBalance([amount, amount]);
+  }, [antToken, bank]);
 
   useEffect(() => {
     if (antTokenUnlocked) {

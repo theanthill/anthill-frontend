@@ -4,13 +4,13 @@ import ERC20 from './ERC20';
 
 export interface ILiquidityProvider {
   unlockWallet(signer: ethers.Signer): void;
-  getLiquidity(
+  getAccountLiquidity(
     erc20Token0: ERC20,
     erc20Token1: ERC20,
-    pairLiquidity: BigNumber,
-    totalSupply: BigNumber,
+    account: string,
   ): Promise<Array<BigNumber>>;
   getTotalLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<Array<BigNumber>>;
+  getUserLiquidity(positions: number[]): Promise<BigNumber>;
   getPoolLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber>;
   getPoolSqrtPriceX96(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber>;
   getPoolCurrentTick(erc20Token0: ERC20, erc20Token1: ERC20): Promise<number>;

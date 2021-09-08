@@ -16,7 +16,7 @@ import useHarvest from '../../../hooks/useHarvest';
 import { getDisplayBalance } from '../../../utils/formatBalance';
 import TokenSymbol from '../../../components/TokenSymbol';
 import { Bank } from '../../../anthill';
-import useStakedBalance from '../../../hooks/useStakedBalance';
+import useUserTotalLiquidity from '../../../hooks/useUserTotalLiquidity';
 import InfoButton from '../../../components/InfoButton';
 import useModal from '../../../hooks/useModal';
 import LiquidityInfoModal from './LiquidityInfoModal';
@@ -28,9 +28,9 @@ interface HarvestProps {
 }
 
 const Harvest: React.FC<HarvestProps> = ({ bank }) => {
-  const earnings = useEarnings(bank.contract);
+  const earnings = useEarnings(bank);
   const { onReward } = useHarvest(bank);
-  const stakedBalance = useStakedBalance(bank.contract);
+  const userTotalLiquidity = useUserTotalLiquidity(bank);
 
   const [onPresentInfo] = useModal(
     <LiquidityInfoModal bank={bank}/>,
@@ -59,15 +59,15 @@ const Harvest: React.FC<HarvestProps> = ({ bank }) => {
             <CardIcon>
               <TokenSymbol symbol={bank.earnToken.symbol} />
             </CardIcon>
-            <Value value={getDisplayBalance(stakedBalance, bank.depositToken.decimal)} />
-            <Label text={`${tokens[bank.depositTokenName].titleName} Tokens Staked`} />
+            <Value value={getDisplayBalance(userTotalLiquidity, bank.depositToken.decimal)} />
+            <Label text={`Total Liquidity Staked`} />
             <StyledSpacer/>
             <Value value={getDisplayBalance(earnings, 18, 6)} />
             <Label text={`${bank.earnTokenName} Rewarded`} />
           </StyledCardHeader>
           <StyledCardActions>
             <Button
-              disabled={getDisplayBalance(stakedBalance, bank.depositToken.decimal)==='0.00'}
+              disabled={getDisplayBalance(userTotalLiquidity, bank.depositToken.decimal)==='0.00'}
               onClick={onPresentWithdraw}
               text={`Remove Liquidity`}
             />

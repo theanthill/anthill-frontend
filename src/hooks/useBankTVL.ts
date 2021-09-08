@@ -10,12 +10,12 @@ const useBankTVL = (bank: Bank) => {
   const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchRewardRate = useCallback(async () => {
-    const [token0TotalLiquidity, token1TotalLiquidity] = await antToken.getLockedLiquidity(bank);
+    const [token0TotalLiquidity, token1TotalLiquidity] = await antToken.getTotalLiquidity(bank);
 
     const token0Price = await antToken.getTokenPriceInBUSD(bank.token0.symbol);
     const token1Price = await antToken.getTokenPriceInBUSD(bank.token1.symbol);
     const decimalsDivisor = BigNumber.from(10).pow(18);
-    
+
     let TVL = token0TotalLiquidity.mul(token0Price).div(decimalsDivisor);
     TVL = TVL.add(token1TotalLiquidity.mul(token1Price).div(decimalsDivisor));
 

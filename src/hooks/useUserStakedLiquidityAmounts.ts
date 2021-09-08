@@ -11,7 +11,8 @@ const useUserStakedLiquidityAmounts = (bank: BankInfo) => {
   const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchBalances = useCallback(async () => {
-    setBalance(await antToken.getUserStakedLiquidity(bank));
+    const amount = await antToken.getUserTotalLiquidity(bank);
+    setBalance([amount, amount]);
   }, [antToken, bank]);
 
   useEffect(() => {

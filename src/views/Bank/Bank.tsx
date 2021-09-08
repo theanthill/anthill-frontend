@@ -30,7 +30,7 @@ const Bank: React.FC = () => {
       <StyledBank>
         <StyledCardsWrapper>
           <StyledCardWrapper>
-            <AddLiquidity bank={bank} />
+            {/* <AddLiquidity bank={bank} /> */}
           </StyledCardWrapper>
           <Spacer/>
           <StyledCardWrapper>

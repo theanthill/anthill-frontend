@@ -85,7 +85,8 @@ const BankCard: React.FC<BankCardProps> = ({ bank }) => {
   const [approveStatusToken0, approveToken0] = useApprove(antToken.tokens[bank.token0.symbol], antToken.contracts[bank.providerHelperName].address);
   const [approveStatusToken1, approveToken1] = useApprove(antToken.tokens[bank.token1.symbol], antToken.contracts[bank.providerHelperName].address);
 
-  const [APR,APY] = usePoolAPRAPY(bank);
+  //const [APR,APY] = usePoolAPRAPY(bank);
+  const APR = 0, APY = 0;
   const TVL = useBankTVL(bank); 
 
   return (

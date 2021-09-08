@@ -244,14 +244,56 @@ export class AntToken {
     return await Treasury.redeemAntBonds(redeemAmount, targetPrice);
   }
 
-  async earnedFromBank(poolName: ContractName, account = this.myAccount): Promise<BigNumber> {
-    const pool = this.contracts[poolName];
-    try {
-      return await pool.earned(account);
-    } catch (err) {
-      console.error(`Failed to call earned() on pool ${pool.address}: ${err.stack}`);
-      return BigNumber.from(0);
+  /* ==================== Staking pools ======================= */
+
+  async _getLiquidityPositions(bank: BankInfo) {
+    const stakingHelper = this.contracts[bank.providerHelperName];
+    const balance = await stakingHelper.balanceOf(this.myAccount);
+
+    let tokenIds = [];
+    for (let i = 0; i < balance; ++i) {
+      tokenIds.push(await stakingHelper.tokenOfOwnerByIndex(this.myAccount, i));
     }
+    return tokenIds;
+  }
+
+  async getUserStakedLiquidity(bank: BankInfo): Promise<BigNumber> {
+    const positions = await this._getLiquidityPositions(bank);
+    return this.liquidityProvider.getUserLiquidity(positions);
+  }
+
+  async getUserTotalLiquidity(bank: BankInfo): Promise<BigNumber> {
+    const positions = await this._getLiquidityPositions(bank);
+    return this.liquidityProvider.getUserLiquidity(positions);
+  }
+
+  async getUserLockedLiquidity(bank: BankInfo): Promise<Array<BigNumber>> {
+    // TODO
+    return this.liquidityProvider.getAccountLiquidity(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+      this.myAccount,
+    );
+  }
+
+  async getTotalLiquidity(bank: Bank): Promise<Array<BigNumber>> {
+    return this.liquidityProvider.getTotalLiquidity(
+      this.tokens[bank.token0Name],
+      this.tokens[bank.token1Name],
+    );
+  }
+
+  async earnedFromBank(bank: BankInfo): Promise<BigNumber> {
+    const stakingPool = this.contracts[bank.contract];
+    const positions = await this._getLiquidityPositions(bank);
+
+    let totalReward = BigNumber.from(0);
+    for (let i = 0; i < positions.length; ++i) {
+      const reward = await stakingPool.getRewardInfo(positions[i]);
+      totalReward = totalReward.add(reward);
+    }
+
+    return totalReward;
   }
 
   async getBankRewardRate(poolName: ContractName): Promise<BigNumber> {
@@ -329,6 +371,8 @@ export class AntToken {
     var gas = await liquidityHelper.estimateGas.exit(deadline);
     return await liquidityHelper.exit(deadline, this.gasOptions(gas));
   }
+
+  /* ======================= Boardroom ====================== */
 
   async fetchBoardroomVersionOfUser(): Promise<string> {
     return 'latest';
@@ -431,45 +475,7 @@ export class AntToken {
     return await Treasury.allocateSeigniorage();
   }
 
-  // Liquidity
-  async getUserStakedLiquidity(bank: BankInfo): Promise<Array<BigNumber>> {
-    const stakedLiquidity = await this.stakedBalanceOnBank(bank.contract, this.myAccount);
-    let pairLiquidity = await this.contracts[bank.depositTokenName].balanceOf(this.myAccount);
-    pairLiquidity = pairLiquidity.add(stakedLiquidity);
-
-    return this.getUserLiquidity(bank, pairLiquidity);
-  }
-
-  async getUserLiquidity(bank: BankInfo, pairLiquidity: BigNumber): Promise<Array<BigNumber>> {
-    const totalSupply = await this.contracts[bank.depositTokenName].totalSupply();
-
-    return this.liquidityProvider.getLiquidity(
-      this.tokens[bank.token0Name],
-      this.tokens[bank.token1Name],
-      pairLiquidity,
-      totalSupply,
-    );
-  }
-
-  async getLockedLiquidity(bank: BankInfo): Promise<Array<BigNumber>> {
-    const stakedLiquidity = await this.getBankTotalSupply(bank.contract);
-    const totalSupply = await this.contracts[bank.depositTokenName].totalSupply();
-
-    return this.liquidityProvider.getLiquidity(
-      this.tokens[bank.token0Name],
-      this.tokens[bank.token1Name],
-      stakedLiquidity,
-      totalSupply,
-    );
-  }
-
-  async getTotalLiquidity(bank: Bank): Promise<Array<BigNumber>> {
-    return this.liquidityProvider.getTotalLiquidity(
-      this.tokens[bank.token0Name],
-      this.tokens[bank.token1Name],
-    );
-  }
-
+  /* ================ Liquidity Pools ================== */
   async getPoolLiquidity(bank: Bank): Promise<BigNumber> {
     return this.liquidityProvider.getPoolLiquidity(
       this.tokens[bank.token0Name],

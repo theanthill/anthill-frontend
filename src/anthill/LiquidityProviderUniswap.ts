@@ -64,11 +64,10 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     this.quoter = this.quoter.connect(signer);
   }
 
-  async getLiquidity(
+  async getAccountLiquidity(
     erc20Token0: ERC20,
     erc20Token1: ERC20,
-    pairLiquidity: BigNumber,
-    totalSupply: BigNumber,
+    account: string,
   ): Promise<Array<BigNumber>> {
     // Get the specific liquidity for a position
     /*const token0 = new Token(this.chainId, erc20Token0.address, erc20Token0.decimal);
@@ -96,6 +95,16 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     const token1Amount = await erc20Token1.balanceOf(pool.address);
 
     return [token0Amount, token1Amount];
+  }
+
+  async getUserLiquidity(positions: number[]): Promise<BigNumber> {
+    let userLiquidity = BigNumber.from(0);
+    for (let i = 0; i < positions.length; ++i) {
+      const [, , , , , , , liquidity, , ,] = await this.positionManager.positions(positions[i]);
+      userLiquidity = userLiquidity.add(liquidity);
+    }
+
+    return userLiquidity;
   }
 
   async getPoolLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber> {

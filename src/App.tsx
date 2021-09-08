@@ -16,7 +16,7 @@ import AntTokenProvider from './contexts/AntTokenProvider';
 import ModalsProvider from './contexts/Modals';
 
 import Home from './views/Home';
-//import Banks from './views/Banks';
+import Banks from './views/Banks';
 import Swaps from './views/Swaps';
 //import AntBond from './views/AntBond';
 import Boardroom from './views/Boardroom';
@@ -43,7 +43,7 @@ const App: React.FC = () => {
             {/* <AntBond /> */}
           </Route>
           <Route path="/liquidity">
-            {/* <Banks /> */}
+            <Banks />
           </Route>
           <Route path="/boardroom">
             <Boardroom />

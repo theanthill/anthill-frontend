@@ -8,7 +8,7 @@ import TokenInput from '../../../components/TokenInput'
 
 import { getDisplayBalance, getFullDisplayBalance } from '../../../utils/formatBalance'
 import { Bank } from '../../../anthill/types'
-import useStakedBalance from '../../../hooks/useStakedBalance'
+import useUserTotalLiquidity from '../../../hooks/useUserTotalLiquidity'
 import Spacer from '../../../components/Spacer'
 import Label from '../../../components/Label'
 import useUserCustomLiquidityAmounts from '../../../hooks/useUserCustomLiquidityAmounts'
@@ -25,7 +25,7 @@ const LiquidityWithdrawModal: React.FC<WithdrawModalProps> = ({ bank, onConfirm,
   
   const amountBN = parseUnits(amount !== '' ? amount : "0", bank.depositToken.decimal);
   
-  const stakedBalance = useStakedBalance(bank.contract);
+  const stakedBalance = useUserTotalLiquidity(bank);
   const [token0UserBalance, token1UserBalance] = useUserCustomLiquidityAmounts(bank, amountBN);
   const token0Minimum = getDisplayBalance(token0UserBalance, bank.depositToken.decimal);
   const token1Minimum = getDisplayBalance(token1UserBalance, bank.depositToken.decimal);
