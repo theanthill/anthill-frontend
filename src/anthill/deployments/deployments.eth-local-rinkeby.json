@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0x3FC0cB363D8E287637903e067fEAc97eddE730E6",
+    "address": "0xd50739EAafbA8f6E27F598fC65E4Ea6DcDF97AE9",
     "abi": [
       {
         "inputs": [
@@ -647,7 +647,7 @@
     ]
   },
   "AntToken": {
-    "address": "0xA38C07d077fad97D5E22590B051aB03307703101",
+    "address": "0xB626112fDbFA9C037d68A37cA1081609eA0d20e9",
     "abi": [
       {
         "inputs": [],
@@ -1298,7 +1298,7 @@
     ]
   },
   "AntBond": {
-    "address": "0x05204Ac4B7BCE6ce8F5d3984425805c48262408E",
+    "address": "0xC7b24E17293E1Dd05142FD3eE372DEca5B62DC13",
     "abi": [
       {
         "inputs": [],
@@ -1949,7 +1949,7 @@
     ]
   },
   "AntShare": {
-    "address": "0x5692dAA07568eE73601EE59717cA8C6CC42e507E",
+    "address": "0xD0C69251C501CED3b453B8ef49aA28A770a78e48",
     "abi": [
       {
         "inputs": [],
@@ -2600,7 +2600,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0x2FF51Ed0894b00C6EFfc64f689080877F4d34489",
+    "address": "0xf0b397920905c603F08293787bd8EF4119994AC3",
     "abi": [
       {
         "inputs": [
@@ -3188,7 +3188,7 @@
     ]
   },
   "Treasury": {
-    "address": "0x4E2E48d904CBb5Ed28F23C1b94f5911849AD93D0",
+    "address": "0x48570dEe37C853a8DCBA51723bC4D97266678e5a",
     "abi": [
       {
         "inputs": [
@@ -4034,7 +4034,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0x46A1e78946bA37c5805325dc7FFf8251113bA082",
+    "address": "0xFD4D131A9687b1AC0E3d90FdC067b4aD327deA7B",
     "abi": [
       {
         "inputs": [
@@ -4153,7 +4153,7 @@
     ]
   },
   "BUSDANTPoolStakerANT": {
-    "address": "0x612787185615B5d2A94c26DfE981AaBc63976774",
+    "address": "0xBdC5B831633300cCDeD7EaB5dc71bAaD318DE801",
     "abi": [
       {
         "inputs": [
@@ -4663,7 +4663,7 @@
     ]
   },
   "BUSDANTPoolHelper": {
-    "address": "0x23de126A57E41EA5148520B5775254A6B94e330e",
+    "address": "0x2E602C584033C1c99c2Bd6e78A6C182B02CE1448",
     "abi": [
       {
         "inputs": [
@@ -4995,7 +4995,7 @@
     ]
   },
   "ETHANTPoolStakerANT": {
-    "address": "0x940af5dfd4D08A7695eA04Bf1Cb870780492bd8C",
+    "address": "0x9D53631B5773183E7c17189e29206369BD855C42",
     "abi": [
       {
         "inputs": [
@@ -5505,7 +5505,7 @@
     ]
   },
   "ETHANTPoolHelper": {
-    "address": "0xEca6f7FACcCfe0a673b36474915996eB8FA5d324",
+    "address": "0x2d2AF20a61a10A8Af64dC276a2dDe6D67dFf623F",
     "abi": [
       {
         "inputs": [
@@ -5837,7 +5837,7 @@
     ]
   },
   "BandOracle": {
-    "address": "0xBA8136B656BC4a4368Eae5E2a8C55E8a851b5F20",
+    "address": "0xAf8ec996486F5c645e9fb5Eb745068Bfe56085F2",
     "abi": [
       {
         "inputs": [],

@@ -2,7 +2,6 @@ import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance, balanceToDecimal } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Configuration } from './config';
-import { bankDefinitions } from '../config';
 
 import ERC20 from './ERC20';
 import { Bank, BankInfo, ContractName, TokenStat, TreasuryAllocationTime } from './types';
@@ -55,25 +54,6 @@ export class AntToken {
     this.tokens['ANTS'] = new ERC20(deployments.AntShare.address, provider, 'ANTS');
     this.tokens['ANTB'] = new ERC20(deployments.AntBond.address, provider, 'ANTB');
 
-    //this.contracts['PancakeRouter'] = liquidityProvider.getRouterContract();
-
-    // PancakeSwap V2 Pairs
-    /*for(const bank of Object.keys(bankDefinitions))
-    {
-      if (bankDefinitions[bank].chainIds.length>0 && !bankDefinitions[bank].chainIds.includes(this.ChainId))
-      {
-        continue;
-      }
-      console.log("Bank: " + bankDefinitions[bank].contract);
-
-      const pairName = bankDefinitions[bank].depositTokenName;
-      this.contracts[pairName] = new Contract(
-        externalTokens[pairName].address,
-        liquidityProvider.getPairABI(),
-        provider,
-      );  
-    }*/
-
     this.config = cfg;
     this.provider = provider;
     this.liquidityProvider = liquidityProvider;
@@ -98,17 +78,6 @@ export class AntToken {
 
     this.liquidityProvider.unlockWallet(this.signer);
 
-    // PancakeSwap V2 Pairs
-    /*for(const bank of Object.keys(bankDefinitions))
-    {
-      if (bankDefinitions[bank].chainIds.length>0 && !bankDefinitions[bank].chainIds.includes(this.ChainId))
-      {
-        continue;
-      }
-      const pairName = bankDefinitions[bank].depositTokenName;
-      this.contracts[pairName] = this.contracts[pairName].connect(this.signer);
-    } */
-
     console.log(`🔓 Wallet is unlocked. Welcome, ${account}!`);
     this.fetchBoardroomVersionOfUser()
       .then((version) => (this.boardroomVersionOfUser = version))
@@ -130,7 +99,7 @@ export class AntToken {
     };
   }
 
-  /* =========== Price functions ============== */
+  /* =========== Stats ============== */
 
   /**
    * @returns Get exchange rate for bonds in BN format
@@ -216,7 +185,7 @@ export class AntToken {
     };
   }
 
-  /* ================================================ */
+  /* ================== Bonds ======================== */
 
   /**
    * Buy Ant Bonds with Ant Token.
@@ -333,6 +302,25 @@ export class AntToken {
       console.error(`Failed to call balanceOf() on pool ${pool.address}: ${err.stack}`);
       return BigNumber.from(0);
     }
+  }
+
+  /* USED */
+  async addLiquidityAndStake(
+    bank: BankInfo,
+    amount0Desired: BigNumber,
+    amount1Desired: BigNumber,
+    amount0Min: BigNumber,
+    amount1Min: BigNumber,
+    deadline: number,
+  ) {
+    const stakingHelper = this.contracts[bank.providerHelperName];
+    return stakingHelper.addLiquidityAndStake(
+      amount0Desired,
+      amount1Desired,
+      amount0Min,
+      amount1Min,
+      deadline,
+    );
   }
 
   /* USED */
@@ -505,6 +493,7 @@ export class AntToken {
     );
   }
 
+  /* USED */
   async getPairPrice(bank: BankInfo): Promise<[number, number]> {
     return this.liquidityProvider.getPairPriceLatest(
       this.tokens[bank.token0Name],

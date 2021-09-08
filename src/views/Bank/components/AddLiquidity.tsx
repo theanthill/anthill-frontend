@@ -140,7 +140,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                       <Button
                         disabled={amountToken0 === 0 || amountToken1 === 0 || amountToken0 > getBalance(tokenABalance) || amountToken1 > getBalance(tokenBBalance)}
                         onClick={handleAddLiquidity}
-                        text={`Add Liquidity`}
+                        text={`Add Liquidity & Stake`}
                       />
                     </>
 

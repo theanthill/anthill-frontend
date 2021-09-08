@@ -124,6 +124,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     return slot0.tick;
   }
 
+  /* USED */
   async getPairPriceLatest(
     erc20Token0: ERC20,
     erc20Token1: ERC20,

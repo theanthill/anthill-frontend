@@ -18,7 +18,7 @@ import ModalsProvider from './contexts/Modals';
 import Home from './views/Home';
 import Banks from './views/Banks';
 import Swaps from './views/Swaps';
-//import AntBond from './views/AntBond';
+import AntBond from './views/AntBond';
 import Boardroom from './views/Boardroom';
 import Help from './views/Help';
 
@@ -40,7 +40,7 @@ const App: React.FC = () => {
             <Swaps />
           </Route>
           <Route path="/bonds">
-            {/* <AntBond /> */}
+            <AntBond />
           </Route>
           <Route path="/liquidity">
             <Banks />
