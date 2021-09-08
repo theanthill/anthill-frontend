@@ -191,7 +191,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
   ETHANTLPTokenANTPool: {
     name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol} + ETH`,
     swapTitle: `Swap ${tokens['AntToken'].inlineName} and ETH`,
-    contract: 'BUSDANTPoolStakerANT',
+    contract: 'ETHANTPoolStakerANT',
     depositTokenName: 'AntToken-ETH',
     token0Name: 'ANT',
     token1Name: 'ETH',
