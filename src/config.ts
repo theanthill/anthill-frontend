@@ -122,7 +122,7 @@ const configurations: { [env: string]: Configuration } = {
   'eth-ropsten': {
     chainId: 3,
     bscscanUrl: 'https://ropsten.etherscan.io/',
-    defaultProvider: 'https://ropsten.infura.io/v3/6e5d84ddfd044f44b7b6ae6ec167f3f1',
+    defaultProvider: 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     deployments: require('./anthill/deployments/deployments.eth-ropsten.json'),
     externalTokens: require('./anthill/deployments/externals.eth-ropsten.json'),
     baseLaunchDate: new Date('2021-05-02T04:00:00Z'),
@@ -146,9 +146,9 @@ const configurations: { [env: string]: Configuration } = {
     priceDecimals: 2,
   },
   'eth-rinkeby': {
-    chainId: 3,
+    chainId: 4,
     bscscanUrl: 'https://ropsten.etherscan.io/',
-    defaultProvider: 'https://rinkeby.infura.io/v3/6e5d84ddfd044f44b7b6ae6ec167f3f1',
+    defaultProvider: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     deployments: require('./anthill/deployments/deployments.eth-rinkeby.json'),
     externalTokens: require('./anthill/deployments/externals.eth-rinkeby.json'),
     baseLaunchDate: new Date('2021-05-02T04:00:00Z'),
