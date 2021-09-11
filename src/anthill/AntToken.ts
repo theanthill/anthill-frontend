@@ -242,7 +242,7 @@ export class AntToken {
 
     let totalReward = BigNumber.from(0);
     for (let i = 0; i < positions.length; ++i) {
-      const reward = await stakingPool.getRewardInfo(positions[i]);
+      const reward = await stakingPool.callStatic.getRewardInfo(positions[i]);
       totalReward = totalReward.add(reward);
     }
 

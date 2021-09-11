@@ -55,6 +55,7 @@
     "start:eth-ropsten": "REACT_APP_ENVIRONMENT=eth-ropsten react-scripts start",
     "start:eth-local-rinkeby": "REACT_APP_ENVIRONMENT=eth-local-rinkeby react-scripts start",
     "start:eth-rinkeby": "REACT_APP_ENVIRONMENT=eth-rinkeby react-scripts start",
+    "start:arbitrum-testnet": "REACT_APP_ENVIRONMENT=arbitrum-testnet react-scripts start",
     "start": "REACT_APP_ENVIRONMENT=bsc-mainnet react-scripts start",
     "build:eth-ropsten": "REACT_APP_ENVIRONMENT=eth-ropsten react-scripts build",
     "build:eth-rinkeby": "REACT_APP_ENVIRONMENT=eth-rinkeby react-scripts build",

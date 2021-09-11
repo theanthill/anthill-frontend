@@ -1,6 +1,6 @@
 {
   "Oracle": {
-    "address": "0x59df67e44836C084621e1798dA87B10C4424632B",
+    "address": "0x1A7f454B3D8EE57Af622e0fEf5A1C80d4C606b88",
     "abi": [
       {
         "inputs": [
@@ -262,6 +262,51 @@
             "type": "bytes32"
           },
           {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          },
+          {
             "internalType": "address",
             "name": "account",
             "type": "address"
@@ -485,26 +530,6 @@
         "constant": true
       },
       {
-        "inputs": [
-          {
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }
-        ],
-        "name": "supportsInterface",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
-      },
-      {
         "inputs": [],
         "name": "token0",
         "outputs": [
@@ -647,7 +672,7 @@
     ]
   },
   "AntToken": {
-    "address": "0x748aB91e49E63AAe2D364339b7e3473f4215B048",
+    "address": "0xcF74BA6Fc510eca80F2d39A67048D89449C50688",
     "abi": [
       {
         "inputs": [],
@@ -1001,6 +1026,51 @@
             "type": "bytes32"
           },
           {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          },
+          {
             "internalType": "address",
             "name": "account",
             "type": "address"
@@ -1167,26 +1237,6 @@
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }
-        ],
-        "name": "supportsInterface",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
       },
       {
         "inputs": [],
@@ -1298,7 +1348,7 @@
     ]
   },
   "AntBond": {
-    "address": "0x9428905BA9FD9282f094Dbe5728b9776D1503775",
+    "address": "0x6be4B0afF89AeA66528f5c3A0d0eb57a5D8d4556",
     "abi": [
       {
         "inputs": [],
@@ -1652,6 +1702,51 @@
             "type": "bytes32"
           },
           {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          },
+          {
             "internalType": "address",
             "name": "account",
             "type": "address"
@@ -1818,26 +1913,6 @@
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }
-        ],
-        "name": "supportsInterface",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
       },
       {
         "inputs": [],
@@ -1949,7 +2024,7 @@
     ]
   },
   "AntShare": {
-    "address": "0x720A60E7Ec4D999248cf10487FF6fB800e2D2Fe2",
+    "address": "0x24BE1ddBf79597A84BE49a811CD1A018729021bE",
     "abi": [
       {
         "inputs": [],
@@ -2303,6 +2378,51 @@
             "type": "bytes32"
           },
           {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          },
+          {
             "internalType": "address",
             "name": "account",
             "type": "address"
@@ -2471,26 +2591,6 @@
         "type": "function"
       },
       {
-        "inputs": [
-          {
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }
-        ],
-        "name": "supportsInterface",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
-      },
-      {
         "inputs": [],
         "name": "symbol",
         "outputs": [
@@ -2600,7 +2700,7 @@
     ]
   },
   "Boardroom": {
-    "address": "0x59Ce75d7C452463D94503706704FeB52B6007656",
+    "address": "0xc2F988c0E31DB6D01e44D755891ad986b0554F6f",
     "abi": [
       {
         "inputs": [
@@ -2873,6 +2973,51 @@
             "type": "bytes32"
           },
           {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          },
+          {
             "internalType": "address",
             "name": "account",
             "type": "address"
@@ -2983,26 +3128,6 @@
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }
-        ],
-        "name": "supportsInterface",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
       },
       {
         "inputs": [],
@@ -3188,7 +3313,7 @@
     ]
   },
   "Treasury": {
-    "address": "0xDEf02B55473f09E126F752804aa33277A9B211CF",
+    "address": "0x8E10E528103e9A0042a57ffe85BeAc7993Ce5b76",
     "abi": [
       {
         "inputs": [
@@ -3653,6 +3778,51 @@
             "type": "bytes32"
           },
           {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          },
+          {
             "internalType": "address",
             "name": "account",
             "type": "address"
@@ -3850,26 +4020,6 @@
       {
         "inputs": [
           {
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }
-        ],
-        "name": "supportsInterface",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
-      },
-      {
-        "inputs": [
-          {
             "internalType": "address",
             "name": "newAdmin",
             "type": "address"
@@ -4034,7 +4184,7 @@
     ]
   },
   "TokenFaucet": {
-    "address": "0x1059464bEA997fD10104AFC48F19F0A3018B4353",
+    "address": "0xB590874429F551e20B2F276e49e2DEbE8Ff1ed9c",
     "abi": [
       {
         "inputs": [
@@ -4153,7 +4303,7 @@
     ]
   },
   "BUSDANTPoolStakerANT": {
-    "address": "0xa9e74dc740724Ef05313e402FE6c69Cff7C15d7a",
+    "address": "0xac1Ff53637277351846a6aAC557014A71C5E8Ec6",
     "abi": [
       {
         "inputs": [
@@ -4389,9 +4539,8 @@
             "type": "uint256"
           }
         ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
+        "stateMutability": "nonpayable",
+        "type": "function"
       },
       {
         "inputs": [],
@@ -4421,6 +4570,51 @@
             "internalType": "bytes32",
             "name": "",
             "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
           }
         ],
         "stateMutability": "view",
@@ -4618,26 +4812,6 @@
       {
         "inputs": [
           {
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }
-        ],
-        "name": "supportsInterface",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
-      },
-      {
-        "inputs": [
-          {
             "internalType": "address",
             "name": "newAdmin",
             "type": "address"
@@ -4677,7 +4851,7 @@
     ]
   },
   "BUSDANTPoolHelper": {
-    "address": "0xAC1a0eE42B819e0bcF5209b0f2FaF6E0952527b4",
+    "address": "0xD6cbeAf7512aB3b40f978b8eE189bbb214E39c20",
     "abi": [
       {
         "inputs": [
@@ -4985,7 +5159,7 @@
     ]
   },
   "ETHANTPoolStakerANT": {
-    "address": "0xac26084735c298e6d6693AA9020C1197dF42510A",
+    "address": "0xf2c6706765AB71244547de72bD767b3f2c5EF77c",
     "abi": [
       {
         "inputs": [
@@ -5221,9 +5395,8 @@
             "type": "uint256"
           }
         ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
+        "stateMutability": "nonpayable",
+        "type": "function"
       },
       {
         "inputs": [],
@@ -5253,6 +5426,51 @@
             "internalType": "bytes32",
             "name": "",
             "type": "bytes32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getRoleMember",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "bytes32",
+            "name": "role",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getRoleMemberCount",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
           }
         ],
         "stateMutability": "view",
@@ -5450,26 +5668,6 @@
       {
         "inputs": [
           {
-            "internalType": "bytes4",
-            "name": "interfaceId",
-            "type": "bytes4"
-          }
-        ],
-        "name": "supportsInterface",
-        "outputs": [
-          {
-            "internalType": "bool",
-            "name": "",
-            "type": "bool"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function",
-        "constant": true
-      },
-      {
-        "inputs": [
-          {
             "internalType": "address",
             "name": "newAdmin",
             "type": "address"
@@ -5509,7 +5707,7 @@
     ]
   },
   "ETHANTPoolHelper": {
-    "address": "0x31ee8e0f824A117A3bb0fbd6e6aA6023C6a66e3e",
+    "address": "0xd2C95F7db2ACb333Da76398B8F4CCC97B30fd67d",
     "abi": [
       {
         "inputs": [
@@ -5817,7 +6015,7 @@
     ]
   },
   "BandOracle": {
-    "address": "0xb3A826624356A72E8AfE6c9b9A959A6f4aafc860",
+    "address": "0x65b145DE84B71940C19D34A64a6B8fdC8eDee2bd",
     "abi": [
       {
         "inputs": [],

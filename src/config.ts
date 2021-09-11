@@ -158,6 +158,19 @@ const configurations: { [env: string]: Configuration } = {
     gasLimitMultiplier: 1.7,
     priceDecimals: 2,
   },
+  'arbitrum-testnet': {
+    chainId: 421611,
+    bscscanUrl: 'https://arbiscan.io/',
+    defaultProvider: 'https://arb-rinkeby.g.alchemy.com/v2/I5TkoZm3LljH40hBPQc6a0YNbO6eo8Hy',
+    deployments: require('./anthill/deployments/deployments.arbitrum-testnet.json'),
+    externalTokens: require('./anthill/deployments/externals.arbitrum-testnet.json'),
+    baseLaunchDate: new Date('2021-05-02T04:00:00Z'),
+    antBondLaunchesAt: new Date('2021-05-02T04:00:00Z'),
+    boardroomLaunchesAt: new Date('2021-05-02T04:00:00Z'),
+    refreshInterval: 5000,
+    gasLimitMultiplier: 1.7,
+    priceDecimals: 2,
+  },
   production: {
     chainId: 97,
     bscscanUrl: 'https://testnet.bscscan.com/',
@@ -186,7 +199,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     providerHelperName: 'BUSDANTPoolHelper',
     finished: false,
     sort: 0,
-    chainIds: [4],
+    chainIds: [4, 421611],
   },
   ETHANTLPTokenANTPool: {
     name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol} + ETH`,
@@ -200,7 +213,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     providerHelperName: 'ETHANTPoolHelper',
     finished: false,
     sort: 1,
-    chainIds: [4],
+    chainIds: [4, 421611],
   },
 };
 
