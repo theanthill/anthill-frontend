@@ -60,6 +60,7 @@
     "build:eth-ropsten": "REACT_APP_ENVIRONMENT=eth-ropsten react-scripts build",
     "build:eth-rinkeby": "REACT_APP_ENVIRONMENT=eth-rinkeby react-scripts build",
     "build:bsc-testnet": "REACT_APP_ENVIRONMENT=bsc-testnet react-scripts build",
+    "build:arbitrum-testnet": "REACT_APP_ENVIRONMENT=arbitrum-testnet react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
