@@ -30,11 +30,11 @@ const Help: React.FC = () => {
                     </StyledTitle>
                     <StyledDesc>
                         <List
-                            elements = {[ {header:`${tokens.AntToken.titleName}`, content: `${Configurations.deployments['AntToken'].address}`},
-                                        {header:`${tokens.AntShare.titleName}`, content: `${Configurations.deployments['AntShare'].address}`},
-                                        {header:`${tokens.AntBond.titleName}`, content: `${Configurations.deployments['AntBond'].address}`},
-                                        {header:'BUSD Token', content: `${Configurations.externalTokens['BUSD'].address}`},
-                                        {header:'ETH Token', content: `${Configurations.externalTokens['ETH'].address}`}
+                            elements = {[ {header:`${tokens.AntToken.titleName}`, content: `${Configurations.deployments.contracts['AntToken'].address}`},
+                                        {header:`${tokens.AntShare.titleName}`, content: `${Configurations.deployments.contracts['AntShare'].address}`},
+                                        {header:`${tokens.AntBond.titleName}`, content: `${Configurations.deployments.contracts['AntBond'].address}`},
+                                        {header:'BUSD Token', content: `${Configurations.deployments.contracts['MockBUSD'].address}`},
+                                        {header:'ETH Token', content: `${Configurations.deployments.contracts['MockETH'].address}`}
                     ]}/>
                     </StyledDesc>
                     <StyledDesc>

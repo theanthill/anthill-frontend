@@ -1,6 +1,7 @@
 import { BigNumber, Contract, ethers, Overrides } from 'ethers';
 import { decimalToBalance, balanceToDecimal } from './ether-utils';
 import { TransactionResponse } from '@ethersproject/providers';
+
 import { Configuration } from './config';
 
 import ERC20 from './ERC20';
@@ -32,7 +33,15 @@ export class AntToken {
   ChainId: number;
 
   constructor(cfg: Configuration, liquidityProvider: ILiquidityProvider) {
-    const { deployments, externalTokens } = cfg;
+    const ERC20Tokens = {
+      AntToken: 'ANT',
+      AntShare: 'ANTS',
+      AntBond: 'ANTB',
+      MockBUSD: 'BUSD',
+      MockETH: 'ETH',
+    };
+
+    const { deployments } = cfg;
     const provider = getDefaultProvider();
 
     this.ChainId = cfg.chainId;
@@ -40,19 +49,17 @@ export class AntToken {
 
     // loads contracts from deployments
     this.contracts = {};
-    for (const [name, deployment] of Object.entries(deployments)) {
-      this.contracts[name] = new Contract(deployment.address, deployment.abi, provider);
+    for (const [name, deployment] of Object.entries(deployments.contracts)) {
+      if (deployment.address) {
+        this.contracts[name] = new Contract(deployment.address, deployment.abi, provider);
+      }
     }
 
     this.tokens = {};
-    for (const symbol of Object.keys(externalTokens)) {
-      const token = externalTokens[symbol];
-      this.tokens[symbol] = new ERC20(token.address, provider, symbol, token.decimals);
+    for (const [tokenName, symbol] of Object.entries(ERC20Tokens)) {
+      const token = deployments.contracts[tokenName];
+      this.tokens[tokenName] = this.tokens[symbol] = new ERC20(token.address, provider, symbol);
     }
-
-    this.tokens['ANT'] = new ERC20(deployments.AntToken.address, provider, 'ANT');
-    this.tokens['ANTS'] = new ERC20(deployments.AntShare.address, provider, 'ANTS');
-    this.tokens['ANTB'] = new ERC20(deployments.AntBond.address, provider, 'ANTB');
 
     this.config = cfg;
     this.provider = provider;

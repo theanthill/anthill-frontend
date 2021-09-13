@@ -46,7 +46,7 @@
     "web3": "^1.2.11"
   },
   "scripts": {
-    "start:dev": "REACT_APP_ENVIRONMENT=development react-scripts start",
+    "start:localhost": "REACT_APP_ENVIRONMENT=localhost react-scripts start",
     "start:bsc-local-testnet": "REACT_APP_ENVIRONMENT=bsc-local-testnet react-scripts start",
     "start:bsc-testnet": "REACT_APP_ENVIRONMENT=bsc-testnet react-scripts start",
     "start:bsc-local-mainnet": "REACT_APP_ENVIRONMENT=bsc-local-mainnet react-scripts start",
@@ -84,6 +84,8 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",
+    "hardhat": "^2.6.4",
+    "hardhat-deploy": "^0.9.1",
     "prettier": "^2.1.1"
   }
 }

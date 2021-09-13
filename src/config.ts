@@ -41,12 +41,11 @@ export const tokens: { [tokenName: string]: TokenInfo } = {
 };
 
 const configurations: { [env: string]: Configuration } = {
-  development: {
-    chainId: 97,
+  localhost: {
+    chainId: 4,
     bscscanUrl: 'https://testnet.bscscan.com/',
     defaultProvider: 'http://localhost:8545',
-    deployments: require('./anthill/deployments/deployments.dev.json'),
-    externalTokens: require('./anthill/deployments/externals.dev.json'),
+    deployments: require('./anthill/deployments/localhost.deployments.json'),
     baseLaunchDate: new Date('2021-05-02T04:00:00Z'),
     antBondLaunchesAt: new Date('2021-05-02T04:00:00Z'),
     boardroomLaunchesAt: new Date('2021-05-02T04:00:00Z'),
@@ -54,59 +53,7 @@ const configurations: { [env: string]: Configuration } = {
     gasLimitMultiplier: 1.7,
     priceDecimals: 2,
   },
-  'bsc-local-testnet': {
-    chainId: 97,
-    bscscanUrl: 'https://testnet.bscscan.com/',
-    defaultProvider: 'http://localhost:8545',
-    deployments: require('./anthill/deployments/deployments.bsc-local-testnet.json'),
-    externalTokens: require('./anthill/deployments/externals.bsc-local-testnet.json'),
-    baseLaunchDate: new Date('2021-05-02T04:00:00Z'),
-    antBondLaunchesAt: new Date('2021-05-02T04:00:00Z'),
-    boardroomLaunchesAt: new Date('2021-05-02T04:00:00Z'),
-    refreshInterval: 5000,
-    gasLimitMultiplier: 1.7,
-    priceDecimals: 2,
-  },
-  'bsc-testnet': {
-    chainId: 97,
-    bscscanUrl: 'https://testnet.bscscan.com/',
-    defaultProvider: 'https://data-seed-prebsc-1-s1.binance.org:8545',
-    deployments: require('./anthill/deployments/deployments.bsc-testnet.json'),
-    externalTokens: require('./anthill/deployments/externals.bsc-testnet.json'),
-    baseLaunchDate: new Date('2021-05-02T04:00:00Z'),
-    antBondLaunchesAt: new Date('2021-05-02T04:00:00Z'),
-    boardroomLaunchesAt: new Date('2021-05-02T04:00:00Z'),
-    refreshInterval: 5000,
-    gasLimitMultiplier: 1.7,
-    priceDecimals: 2,
-  },
-  'bsc-local-mainnet': {
-    chainId: 56,
-    bscscanUrl: 'https://bscscan.com/',
-    defaultProvider: 'https://bsc-dataseed.binance.org',
-    deployments: require('./anthill/deployments/deployments.bsc-local-mainnet.json'),
-    externalTokens: require('./anthill/deployments/externals.bsc-local-mainnet.json'),
-    baseLaunchDate: new Date('2021-05-02T04:00:00Z'),
-    antBondLaunchesAt: new Date('2021-05-02T04:00:00Z'),
-    boardroomLaunchesAt: new Date('2021-05-02T04:00:00Z'),
-    refreshInterval: 5000,
-    gasLimitMultiplier: 1.7,
-    priceDecimals: 2,
-  },
-  'bsc-mainnet': {
-    chainId: 56,
-    bscscanUrl: 'https://bscscan.com/',
-    defaultProvider: 'https://bsc-dataseed.binance.org',
-    deployments: require('./anthill/deployments/deployments.bsc-mainnet.json'),
-    externalTokens: require('./anthill/deployments/externals.bsc-mainnet.json'),
-    baseLaunchDate: new Date('2021-05-02T04:00:00Z'),
-    antBondLaunchesAt: new Date('2021-05-02T04:00:00Z'),
-    boardroomLaunchesAt: new Date('2021-05-02T04:00:00Z'),
-    refreshInterval: 5000,
-    gasLimitMultiplier: 1.7,
-    priceDecimals: 2,
-  },
-  'eth-local-ropsten': {
+  /*'eth-local-ropsten': {
     chainId: 3,
     bscscanUrl: 'https://ropsten.etherscan.io/',
     defaultProvider: 'http://localhost:8545',
@@ -183,7 +130,7 @@ const configurations: { [env: string]: Configuration } = {
     refreshInterval: 5000,
     gasLimitMultiplier: 1.7,
     priceDecimals: 2,
-  },
+  },*/
 };
 
 export const bankDefinitions: { [contractName: string]: BankInfo } = {

@@ -19,7 +19,7 @@ const Banks: React.FC = ({ children }) => {
 
       banks.push({
         ...bankInfo,
-        address: config.deployments[bankInfo.contract].address,
+        address: config.deployments.contracts[bankInfo.contract].address,
         depositToken: antToken.tokens[bankInfo.depositTokenName],
         token0: antToken.tokens[bankInfo.token0Name],
         token1: antToken.tokens[bankInfo.token1Name],

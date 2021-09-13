@@ -38,21 +38,25 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     this.provider = getDefaultProvider();
 
     this.positionManager = new Contract(
-      cfg.deployments['PositionManager'].address,
+      cfg.deployments.contracts['INonfungiblePositionManager'].address,
       INonfungiblePositionManager,
       this.provider,
     );
     this.swapFactory = new Contract(
-      cfg.deployments['SwapFactory'].address,
+      cfg.deployments.contracts['IUniswapV3Factory'].address,
       ISwapFactory,
       this.provider,
     );
     this.swapRouter = new Contract(
-      cfg.deployments['SwapRouter'].address,
+      cfg.deployments.contracts['ISwapRouter'].address,
       ISwapRouter,
       this.provider,
     );
-    this.quoter = new Contract(cfg.deployments['Quoter'].address, IQuoter, this.provider);
+    this.quoter = new Contract(
+      cfg.deployments.contracts['IQuoter'].address,
+      IQuoter,
+      this.provider,
+    );
 
     this.poolMap = new Map<string, Contract>();
   }
