@@ -5,6 +5,6 @@ import { web3ProviderFrom } from '../anthill/ether-utils';
 export function getDefaultProvider(): ethers.providers.Web3Provider {
   return new ethers.providers.Web3Provider(
     web3ProviderFrom(config.defaultProvider),
-    config.chainId,
-  )
+    parseInt(config.deployments.chainId),
+  );
 }

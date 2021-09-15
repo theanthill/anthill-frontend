@@ -34,7 +34,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
   poolMap: Map<String, Contract>;
 
   constructor(cfg: Configuration) {
-    this.chainId = cfg.chainId;
+    this.chainId = parseInt(cfg.deployments.chainId);
     this.provider = getDefaultProvider();
 
     this.positionManager = new Contract(
@@ -101,14 +101,70 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     return [token0Amount, token1Amount];
   }
 
-  async getUserLiquidity(positions: number[]): Promise<BigNumber> {
-    let userLiquidity = BigNumber.from(0);
+  async getUserLiquidity(
+    erc20Token0: ERC20,
+    erc20Token1: ERC20,
+    positions: number[],
+  ): Promise<[BigNumber, BigNumber]> {
+    let amount0 = BigNumber.from(0);
+    let amount1 = BigNumber.from(0);
+
+    const pool = await this.getPool(erc20Token0, erc20Token1);
+    const slot0 = await pool.slot0();
+
     for (let i = 0; i < positions.length; ++i) {
-      const [, , , , , , , liquidity, , ,] = await this.positionManager.positions(positions[i]);
-      userLiquidity = userLiquidity.add(liquidity);
+      console.log(positions[i].toString());
+      const [
+        ,
+        ,
+        ,
+        ,
+        ,
+        tickLower,
+        tickUpper,
+        liquidity,
+        ,
+        ,
+      ] = await this.positionManager.positions(positions[i]);
+
+      const sqrtRatioAX96 = getSqrtRatioAtTick(tickLower);
+      const sqrtRatioBX96 = getSqrtRatioAtTick(tickUpper);
+
+      if (slot0.tick < tickLower) {
+        const numerator1 = liquidity.mul(BigNumber.from(2).pow(96));
+        const numerator2 = sqrtRatioBX96.sub(sqrtRatioAX96);
+
+        const amount = numerator1.mul(numerator2).div(sqrtRatioBX96).div(sqrtRatioAX96);
+
+        amount0 = amount0.add(amount);
+      } else if (slot0.tick < tickUpper) {
+        {
+          const numerator1 = liquidity.mul(BigNumber.from(2).pow(96));
+          const numerator2 = sqrtRatioBX96.sub(slot0.sqrtPriceX96);
+
+          const amount = numerator1.mul(numerator2).div(sqrtRatioBX96).div(slot0.sqrtPriceX96);
+
+          amount0 = amount0.add(amount);
+        }
+        {
+          const numerator1 = liquidity.mul(BigNumber.from(2).pow(96));
+          const numerator2 = slot0.sqrtPriceX96.sub(sqrtRatioAX96);
+
+          const amount = numerator1.mul(numerator2).div(slot0.sqrtPriceX96).div(sqrtRatioAX96);
+
+          amount1 = amount1.add(amount);
+        }
+      } else {
+        const numerator1 = liquidity.mul(BigNumber.from(2).pow(96));
+        const numerator2 = sqrtRatioBX96.sub(sqrtRatioAX96);
+
+        const amount = numerator1.mul(numerator2).div(sqrtRatioBX96).div(sqrtRatioAX96);
+
+        amount1 = amount1.add(amount);
+      }
     }
 
-    return userLiquidity;
+    return [amount0, amount1];
   }
 
   async getPoolLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber> {

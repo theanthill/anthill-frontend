@@ -26,25 +26,21 @@ export class AntToken {
   boardroomVersionOfUser?: string;
   priceDecimals: number;
 
-  ANTBUSD: Contract;
-  ANTBNB: Contract;
-  PancakeRouter: Contract;
-
-  ChainId: number;
+  chainId: number;
 
   constructor(cfg: Configuration, liquidityProvider: ILiquidityProvider) {
     const ERC20Tokens = {
       AntToken: 'ANT',
       AntShare: 'ANTS',
       AntBond: 'ANTB',
-      MockBUSD: 'BUSD',
+      MockUSDC: 'USDC',
       MockETH: 'ETH',
     };
 
     const { deployments } = cfg;
     const provider = getDefaultProvider();
 
-    this.ChainId = cfg.chainId;
+    this.chainId = parseInt(cfg.deployments.chainId);
     this.priceDecimals = cfg.priceDecimals;
 
     // loads contracts from deployments
@@ -71,7 +67,7 @@ export class AntToken {
    * @param account An address of unlocked wallet account.
    */
   unlockWallet(provider: any, account: string) {
-    const newProvider = new ethers.providers.Web3Provider(provider, this.config.chainId);
+    const newProvider = new ethers.providers.Web3Provider(provider, this.chainId);
 
     this.signer = newProvider.getSigner(0);
     this.myAccount = account;
@@ -134,7 +130,7 @@ export class AntToken {
   async _getAntTokenPriceRatioTWAP(): Promise<number> {
     const tokenPairPrice = await this.liquidityProvider.getPairPriceTWAP(
       this.tokens.ANT,
-      this.tokens.BUSD,
+      this.tokens.USDC,
       this.priceDecimals,
     );
     const antTokenTargetPrice = await this.getAntTokenTargetPrice();
@@ -145,7 +141,7 @@ export class AntToken {
   async _getAntTokenPriceRatioLatest(): Promise<number> {
     const tokenPairPrice = await this.liquidityProvider.getPairPriceLatest(
       this.tokens.ANT,
-      this.tokens.BUSD,
+      this.tokens.USDC,
       this.priceDecimals,
     );
     const antTokenTargetPrice = await this.getAntTokenTargetPrice();
@@ -154,7 +150,7 @@ export class AntToken {
   }
 
   /**
-   * @returns Price in BUSD from last seigniorage, price in BUSD from PancakeSwap and
+   * @returns Price in USDC from last seigniorage, price in USDC from PancakeSwap and
    *          current total supply
    */
   async getAntTokenStat(): Promise<TokenStat> {
@@ -162,14 +158,14 @@ export class AntToken {
     const estimatedPriceRealTime = await this._getAntTokenPriceRatioLatest();
 
     return {
-      priceInBUSDLastEpoch: estimatedPriceEpoch.toFixed(this.priceDecimals),
-      priceInBUSDRealTime: estimatedPriceRealTime.toFixed(this.priceDecimals),
+      priceInUSDCLastEpoch: estimatedPriceEpoch.toFixed(this.priceDecimals),
+      priceInUSDCRealTime: estimatedPriceRealTime.toFixed(this.priceDecimals),
       totalSupply: await this.tokens.ANT.displayedTotalSupply(),
     };
   }
 
   /**
-   * @returns Ant Bond price in BUSD and total supply
+   * @returns Ant Bond price in USDC and total supply
    */
   async getAntBondStat(): Promise<TokenStat> {
     const antTokenPriceEpoch = await this._getAntTokenPriceRatioTWAP();
@@ -178,8 +174,8 @@ export class AntToken {
     const antBondPriceRealTime = 1.0 / antTokenPriceRealTime;
 
     return {
-      priceInBUSDLastEpoch: antBondPriceEpoch.toFixed(this.priceDecimals),
-      priceInBUSDRealTime: antBondPriceRealTime.toFixed(this.priceDecimals),
+      priceInUSDCLastEpoch: antBondPriceEpoch.toFixed(this.priceDecimals),
+      priceInUSDCRealTime: antBondPriceRealTime.toFixed(this.priceDecimals),
       totalSupply: await this.tokens.ANTB.displayedTotalSupply(),
     };
   }
@@ -227,7 +223,20 @@ export class AntToken {
 
   async getUserTotalLiquidity(bank: Bank): Promise<BigNumber> {
     const positions = await this._getLiquidityPositions(bank);
-    return this.liquidityProvider.getUserLiquidity(positions);
+
+    const [amount0, amount1] = await this.liquidityProvider.getUserLiquidity(
+      bank.token0,
+      bank.token1,
+      positions,
+    );
+
+    return amount0.add(amount1);
+  }
+
+  async getUserLiquidityAmounts(bank: Bank): Promise<[BigNumber, BigNumber]> {
+    const positions = await this._getLiquidityPositions(bank);
+
+    return this.liquidityProvider.getUserLiquidity(bank.token0, bank.token1, positions);
   }
 
   async getBankTotalLiquidity(bank: Bank): Promise<Array<BigNumber>> {
@@ -365,18 +374,18 @@ export class AntToken {
   }
 
   async changeDollarPrice(amount: BigNumber): Promise<TransactionResponse> {
-    const { BandOracle } = this.contracts;
-    return BandOracle.setTestRate(amount);
+    const { MockStdReference } = this.contracts;
+    return MockStdReference.setTestRate(amount);
   }
 
-  async getTokenPriceInBUSD(tokenName: string): Promise<BigNumber> {
+  async getTokenPriceInUSDC(tokenName: string): Promise<BigNumber> {
     if (tokenName === this.tokens.ANT.symbol) {
       const tokenPrice = await this._getAntTokenPriceRatioLatest();
       return decimalToBalance(tokenPrice);
     }
 
-    const { BandOracle } = this.contracts;
-    const priceData = await BandOracle.getReferenceData(tokenName, 'BUSD');
+    const { MockStdReference } = this.contracts;
+    const priceData = await MockStdReference.getReferenceData(tokenName, 'USDC');
 
     return priceData.rate;
   }

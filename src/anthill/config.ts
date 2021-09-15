@@ -1,7 +1,6 @@
 import { Export } from 'hardhat-deploy/types';
 
 export type Configuration = {
-  chainId: number;
   bscscanUrl: string;
   defaultProvider: string;
   deployments: Export;

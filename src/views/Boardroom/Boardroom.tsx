@@ -36,7 +36,7 @@ const Boardroom: React.FC = () => {
   const antTokenTotalSupply = useTotalSupply(antToken?.tokens.ANT);
 
   const scalingFactor = useMemo(
-    () => (antTokenStat ? Number(antTokenStat.priceInBUSDLastEpoch).toFixed(antToken.priceDecimals) : null),
+    () => (antTokenStat ? Number(antTokenStat.priceInUSDCLastEpoch).toFixed(antToken.priceDecimals) : null),
     [antTokenStat, antToken],
   );
   
@@ -97,7 +97,7 @@ const Boardroom: React.FC = () => {
                 description="Next Epoch"
               />
               <Stat
-                title={antTokenStat ? `${antTokenStat.priceInBUSDLastEpoch}` : '-'}
+                title={antTokenStat ? `${antTokenStat.priceInUSDCLastEpoch}` : '-'}
                 description="Last TWAP"
               />
               <Stat

@@ -13,8 +13,8 @@ const useLiquidityPoolTVL = (bank: Bank) => {
       bank,
     );
 
-    const token0Price = await antToken.getTokenPriceInBUSD(bank.token0.symbol);
-    const token1Price = await antToken.getTokenPriceInBUSD(bank.token1.symbol);
+    const token0Price = await antToken.getTokenPriceInUSDC(bank.token0.symbol);
+    const token1Price = await antToken.getTokenPriceInUSDC(bank.token1.symbol);
     const decimalsDivisor = BigNumber.from(10).pow(18);
 
     let TVL = token0TotalLiquidity.mul(token0Price).div(decimalsDivisor);

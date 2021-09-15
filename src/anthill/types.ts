@@ -7,8 +7,8 @@ export interface BankInfo {
   swapTitle: string;
   contract: ContractName;
   depositTokenName: ContractName;
-  token0Name: ContractName,
-  token1Name: ContractName,
+  token0Name: ContractName;
+  token1Name: ContractName;
   earnTokenSymbol: string;
   earnTokenName: ContractName;
   providerHelperName: ContractName;
@@ -17,28 +17,28 @@ export interface BankInfo {
   chainIds: number[];
 }
 
-export interface Bank extends  BankInfo {
+export interface Bank extends BankInfo {
   address: string;
   depositToken: ERC20;
-  token0: ERC20,
-  token1: ERC20,
+  token0: ERC20;
+  token1: ERC20;
   earnToken: ERC20;
 }
 
 export type TokenStat = {
-  priceInBUSDLastEpoch: string; // Price in BUSD from the last seigniorage
-  priceInBUSDRealTime: string;  // Price in BUSD form PancakeSwap
-  totalSupply: string;          // Total current supply
+  priceInUSDCLastEpoch: string; // Price in USDC from the last seigniorage
+  priceInUSDCRealTime: string; // Price in USDC form PancakeSwap
+  totalSupply: string; // Total current supply
 };
 
 export type TreasuryAllocationTime = {
   prevAllocation: Date;
   nextAllocation: Date;
-}
+};
 
 export type TokenInfo = {
   titleName: string;
   inlineName: string;
   symbol: string;
   color: string;
-}
+};

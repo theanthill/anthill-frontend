@@ -19,9 +19,9 @@ const Home: React.FC = () => {
       ant.getAntTokenStat(),
       ant.getAntBondStat(),
     ]);
-    if (Date.now() < config.antBondLaunchesAt.getTime() || parseFloat(antBond.priceInBUSDLastEpoch) < 1 ) {
-      antBond.priceInBUSDLastEpoch = '-';
-      antBond.priceInBUSDRealTime = '-';
+    if (Date.now() < config.antBondLaunchesAt.getTime() || parseFloat(antBond.priceInUSDCLastEpoch) < 1 ) {
+      antBond.priceInUSDCLastEpoch = '-';
+      antBond.priceInUSDCRealTime = '-';
     }
     setStats({ antToken, antBond });
   }, [ant, setStats]);
@@ -56,9 +56,9 @@ const Home: React.FC = () => {
             color={tokens['AntToken'].color}
             supplyLabel="Circulating Supply"
             address={antTokenAddr}
-            priceInBUSDRealTime={'$' + antToken?.priceInBUSDRealTime}
+            priceInUSDCRealTime={'$' + antToken?.priceInUSDCRealTime}
             priceTextRealTime='Latest price'
-            priceInBUSDLastEpoch={'$' + antToken?.priceInBUSDLastEpoch}
+            priceInUSDCLastEpoch={'$' + antToken?.priceInUSDCLastEpoch}
             priceTextLastEpoch='Average price (TWAP)'
             totalSupply={antToken?.totalSupply}            
             showSimplified={true}
@@ -69,7 +69,7 @@ const Home: React.FC = () => {
             symbol={tokens['AntBond'].symbol}
             color={tokens['AntBond'].color}
             address={antBondAddr}
-            priceInBUSDLastEpoch={ antBond?.priceInBUSDLastEpoch }
+            priceInUSDCLastEpoch={ antBond?.priceInUSDCLastEpoch }
             totalSupply={ antBond?.totalSupply }
             priceTextLastEpoch="Ant Bond per Ant Token"
             showSimplified={true}

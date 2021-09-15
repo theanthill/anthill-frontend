@@ -48,7 +48,7 @@ const usePoolAPRAPY = (bank: Bank) => {
     const lpTotalInQuoteToken = quoteTokenAmountPool.times(2);
 
     const tokenPriceVsQuote = quoteTokenAmountTotal.div(tokenAmountTotal);
-    const quoteTokenPriceE18 = await antToken.getTokenPriceInBUSD(bank.token1Name);
+    const quoteTokenPriceE18 = await antToken.getTokenPriceInUSDC(bank.token1Name);
     const quoteTokenPrice = new BigNumber(quoteTokenPriceE18.toString()).div(
       new BigNumber(10).pow(18),
     );

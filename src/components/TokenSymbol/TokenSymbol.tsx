@@ -4,21 +4,19 @@ import styled from 'styled-components';
 import antLogo from '../../assets/img/ant-token.png';
 import antsLogo from '../../assets/img/ant-share.png';
 import antbLogo from '../../assets/img/ant-bond.png';
-import BUSDLogo from '../../assets/img/BUSD.png';
-import BNBLogo from '../../assets/img/BNB.png';
+import USDCLogo from '../../assets/img/USDC.png';
 import ETHLogo from '../../assets/img/ETH.png';
 
 const logosBySymbol: {[title: string]: string} = {
   'ANT': antLogo,
   'ANTB': antbLogo,
   'ANTS': antsLogo,
-  'BUSD': BUSDLogo,
-  'BNB' : BNBLogo,
+  'USDC': USDCLogo,
   'ETH' : ETHLogo,
-  'AntToken-BUSD': antLogo,
+  'AntToken-USDC': antLogo,
   'AntToken-BNB': antLogo,
   'AntToken-ETH': antLogo,
-  'ANTS-BUSD': antsLogo,
+  'ANTS-USDC': antsLogo,
 };
 
 type AntTokenLogoProps = {

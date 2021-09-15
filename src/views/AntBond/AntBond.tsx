@@ -29,7 +29,7 @@ const AntBond: React.FC = () => {
   const antBondExchangeRate = balanceToDecimal(antBondExchangeRateBN);
   const antTokenPriceRealTime = useAntTokenPriceRealTime();
   
-  const ANTBPriceInANTLastEpoch = parseFloat(antBondStat?.priceInBUSDLastEpoch);
+  const ANTBPriceInANTLastEpoch = parseFloat(antBondStat?.priceInUSDCLastEpoch);
   const ANTPriceInANTBLastEpoch = 1.0;
 
   const antBondBalance = useTokenBalance(antToken?.tokens.ANTB);

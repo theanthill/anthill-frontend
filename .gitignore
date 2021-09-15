@@ -29,3 +29,5 @@ deployments.mainnet.json
 
 *.code-workspace
 *.log
+
+.env

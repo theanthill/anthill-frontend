@@ -12,9 +12,9 @@ interface HomeCardProps {
   color: string;
   supplyLabel?: string;
   address: string;
-  priceInBUSDLastEpoch?: string;
+  priceInUSDCLastEpoch?: string;
   priceTextLastEpoch?: string;
-  priceInBUSDRealTime?: string;
+  priceInUSDCRealTime?: string;
   priceTextRealTime?: string;
   totalSupply?: string;
   showSimplified?: boolean;
@@ -26,8 +26,8 @@ const HomeCard: React.FC<HomeCardProps> = ({
   color,
   address,
   supplyLabel = 'Total Supply',
-  priceInBUSDLastEpoch,
-  priceInBUSDRealTime,
+  priceInUSDCLastEpoch,
+  priceInUSDCRealTime,
   totalSupply,
   priceTextLastEpoch,
   priceTextRealTime,
@@ -39,9 +39,9 @@ const HomeCard: React.FC<HomeCardProps> = ({
       <CardHeader>{title}</CardHeader>
       <StyledCards>
         <TokenSymbol symbol={symbol} />
-        {priceInBUSDRealTime ? (
+        {priceInUSDCRealTime ? (
             <CardSection>
-              <StyledValue>{priceInBUSDRealTime}</StyledValue>
+              <StyledValue>{priceInUSDCRealTime}</StyledValue>
               <Label text={priceTextRealTime} color={color} />
             </CardSection>
           ) : (
@@ -50,9 +50,9 @@ const HomeCard: React.FC<HomeCardProps> = ({
               {!showSimplified && <Label text={priceTextRealTime} color={color} />}
             </CardSection>
           )} 
-        {priceInBUSDLastEpoch ? (
+        {priceInUSDCLastEpoch ? (
             <CardSection>
-              <StyledValue>{priceInBUSDLastEpoch}</StyledValue>
+              <StyledValue>{priceInUSDCLastEpoch}</StyledValue>
               <Label text={priceTextLastEpoch} color={color} />
             </CardSection>
           ) : (

@@ -33,7 +33,7 @@ const Help: React.FC = () => {
                             elements = {[ {header:`${tokens.AntToken.titleName}`, content: `${Configurations.deployments.contracts['AntToken'].address}`},
                                         {header:`${tokens.AntShare.titleName}`, content: `${Configurations.deployments.contracts['AntShare'].address}`},
                                         {header:`${tokens.AntBond.titleName}`, content: `${Configurations.deployments.contracts['AntBond'].address}`},
-                                        {header:'BUSD Token', content: `${Configurations.deployments.contracts['MockBUSD'].address}`},
+                                        {header:'USDC Token', content: `${Configurations.deployments.contracts['MockUSDC'].address}`},
                                         {header:'ETH Token', content: `${Configurations.deployments.contracts['MockETH'].address}`}
                     ]}/>
                     </StyledDesc>

@@ -63,7 +63,7 @@ const Providers: React.FC = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <UseWalletProvider 
-      chainId={config.chainId} 
+      chainId={parseInt(config.deployments.chainId)} 
       connectors={{
         bsc: {
           web3ReactConnector() {

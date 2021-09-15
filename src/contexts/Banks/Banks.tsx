@@ -10,9 +10,10 @@ const Banks: React.FC = ({ children }) => {
 
   const fetchPools = useCallback(async () => {
     const banks: Bank[] = [];
+    const chainId = parseInt(config.deployments.chainId);
 
     for (const bankInfo of Object.values(bankDefinitions)) {
-      if (bankInfo.chainIds.length>0 && !bankInfo.chainIds.includes(config.chainId))
+      if (bankInfo.chainIds.length>0 && !bankInfo.chainIds.includes(chainId))
       {
         continue;
       }

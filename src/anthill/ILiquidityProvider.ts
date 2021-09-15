@@ -10,7 +10,11 @@ export interface ILiquidityProvider {
     account: string,
   ): Promise<Array<BigNumber>>;
   getTotalLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<Array<BigNumber>>;
-  getUserLiquidity(positions: number[]): Promise<BigNumber>;
+  getUserLiquidity(
+    erc20Token0: ERC20,
+    erc20Token1: ERC20,
+    positions: number[],
+  ): Promise<[BigNumber, BigNumber]>;
   getPoolLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber>;
   getPoolSqrtPriceX96(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber>;
   getPoolCurrentTick(erc20Token0: ERC20, erc20Token1: ERC20): Promise<number>;
