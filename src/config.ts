@@ -89,7 +89,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     providerHelperName: 'USDCANTPoolHelper',
     finished: false,
     sort: 0,
-    chainIds: [4, 421611],
+    chainIds: [4, 421611, 31337],
   },
   ETHANTLPTokenANTPool: {
     name: `Earn ${tokens['AntToken'].inlineName} by ${tokens['AntToken'].symbol} + ETH`,
@@ -103,7 +103,7 @@ export const bankDefinitions: { [contractName: string]: BankInfo } = {
     providerHelperName: 'ETHANTPoolHelper',
     finished: false,
     sort: 1,
-    chainIds: [4, 421611],
+    chainIds: [4, 421611, 31337],
   },
 };
 
