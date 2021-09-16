@@ -3237,7 +3237,7 @@
       ]
     },
     "AntToken": {
-      "address": "0x6e116c0C64f0d446232443E142A93254bDfBfD71",
+      "address": "0x95Cdc9577C2cf59a87c6050cFcafFDa9eB55c4c1",
       "abi": [
         {
           "inputs": [],
@@ -3897,7 +3897,7 @@
       ]
     },
     "AntBond": {
-      "address": "0xee527A452fbd5de0B9158AE750A510658614DcaD",
+      "address": "0x56eCA78582cb3A48809e592F52e31083c1AE49dD",
       "abi": [
         {
           "inputs": [],
@@ -4557,7 +4557,7 @@
       ]
     },
     "AntShare": {
-      "address": "0xf43ac2B9D17b37441cd4666F7E79B983c9fDB14E",
+      "address": "0x98A629aE103687a3c2C1c16c5C63Ed64Ab3a877c",
       "abi": [
         {
           "inputs": [],
@@ -5216,8 +5216,8 @@
         }
       ]
     },
-    "MockBUSD": {
-      "address": "0xC1809E7599E432fB333B3852b530a001c162BCfd",
+    "MockUSDC": {
+      "address": "0x0632c4e382eAe1077aee48009EeC925a03D12696",
       "abi": [
         {
           "inputs": [],
@@ -5877,7 +5877,7 @@
       ]
     },
     "MockETH": {
-      "address": "0x5f23811a4514d362De6466B8CEc462aEAdcBa332",
+      "address": "0xC049b001Af072BAAABd9E7e81B17cA1b406617dA",
       "abi": [
         {
           "inputs": [],
@@ -6537,7 +6537,7 @@
       ]
     },
     "TokenFaucet": {
-      "address": "0x981f2f7dcdF70fC6a12aA25941d542a67F7f4BD1",
+      "address": "0x63b12452cB6F7F8C6C5713731cc4D7b649484187",
       "abi": [
         {
           "inputs": [
@@ -6651,7 +6651,7 @@
       ]
     },
     "MockStdReference": {
-      "address": "0x66B0b83CAa2b7F75B9C462dDDb89054433FCa432",
+      "address": "0xA96c0D2DC444b143b927fb83Ab640Dc5462Cd095",
       "abi": [
         {
           "inputs": [],
@@ -6673,7 +6673,7 @@
         },
         {
           "inputs": [],
-          "name": "encodedBNB",
+          "name": "encodedETH",
           "outputs": [
             {
               "internalType": "bytes32",
@@ -6686,7 +6686,7 @@
         },
         {
           "inputs": [],
-          "name": "encodedBUSD",
+          "name": "encodedUSDC",
           "outputs": [
             {
               "internalType": "bytes32",
@@ -6808,7 +6808,7 @@
       ]
     },
     "Boardroom": {
-      "address": "0xDDF733F89c51a9831e04bED7A0401dA995177feD",
+      "address": "0xA54CB13A91fcc2765514Fd188CeFe995cEf41D5A",
       "abi": [
         {
           "inputs": [
@@ -7404,7 +7404,7 @@
       ]
     },
     "Oracle": {
-      "address": "0xeD174122d7bA47Bba073f51246b810222dBF5b43",
+      "address": "0xD18c43726552861100e9c85F4e6083eCe8468AE5",
       "abi": [
         {
           "inputs": [
@@ -8075,7 +8075,7 @@
       ]
     },
     "ContributionPool": {
-      "address": "0x04b4f707826e27a678340Da0694129d4e479E2c8",
+      "address": "0xCf33dFCd8Ea9e6778a048baC60858A5C297E5cd1",
       "abi": [
         {
           "anonymous": false,
@@ -8518,7 +8518,7 @@
       ]
     },
     "Treasury": {
-      "address": "0xE6cD0E0aa6da65C3023D4101D9C0c811399eE2D4",
+      "address": "0x55B17431119eb21827b3d87F446a5De33B7965A2",
       "abi": [
         {
           "inputs": [
@@ -9362,7 +9362,7 @@
       ]
     },
     "TreasuryTimelock": {
-      "address": "0x2A3e75Eba4dcfc6EdF1d483a6d937bdB0F049A67",
+      "address": "0xEc3BD421e4fDE99D643f135d9351D7BaBfDEA479",
       "abi": [
         {
           "inputs": [
@@ -10171,7 +10171,7 @@
       ]
     },
     "OperatorTimelock": {
-      "address": "0x280D054ca61e1DD01AA620762A73401abBE26F7C",
+      "address": "0xF02052Fa958171da251168F49Bd7953aE0C57289",
       "abi": [
         {
           "inputs": [
@@ -10979,8 +10979,8 @@
         }
       ]
     },
-    "BUSDANTPoolStakerANT": {
-      "address": "0xc66804487D3C9C24f3c7473B9658B6D3fBB2FE75",
+    "USDCANTPoolStakerANT": {
+      "address": "0x9247c834d641E141dEdcf0e415ef268cB0755Ab1",
       "abi": [
         {
           "inputs": [
@@ -11538,7 +11538,7 @@
       ]
     },
     "ETHANTPoolStakerANT": {
-      "address": "0x68da0487647b3092EaCAf0e268e666Fe7d0235f0",
+      "address": "0xC97aBf43b57474179d2c75395d92309d2a4B77c3",
       "abi": [
         {
           "inputs": [
@@ -12095,8 +12095,8 @@
         }
       ]
     },
-    "BUSDANTPoolHelper": {
-      "address": "0x2F2b89fe2E7F97B5DA01b4fD424c4F491d48e35B",
+    "USDCANTPoolHelper": {
+      "address": "0x24B78f257B6f897F5C8277B9C6697dA5BCE49c3C",
       "abi": [
         {
           "inputs": [
@@ -12430,7 +12430,7 @@
       ]
     },
     "ETHANTPoolHelper": {
-      "address": "0x7c76146F80A65031e3F060d6DD5D35D34F146CBd",
+      "address": "0xe41243aD720ed73dd4c9d4c4Bc63b8f2da386A49",
       "abi": [
         {
           "inputs": [
