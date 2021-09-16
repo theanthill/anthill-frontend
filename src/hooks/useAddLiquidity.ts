@@ -22,8 +22,8 @@ const useAddLiquidity = (bank: Bank) => {
       handleTransactionReceipt(
         antToken.addLiquidityAndStake(
           bank,
-          token0Amount,
-          token1Amount,
+          bank.token0.address < bank.token1.address ? token0Amount : token1Amount,
+          bank.token0.address < bank.token1.address ? token1Amount : token0Amount,
           BigNumber.from(0),
           BigNumber.from(0),
           deadline(),

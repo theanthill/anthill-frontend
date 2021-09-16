@@ -113,7 +113,6 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     const slot0 = await pool.slot0();
 
     for (let i = 0; i < positions.length; ++i) {
-      console.log(positions[i].toString());
       const [
         ,
         ,
@@ -147,18 +146,22 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
           amount0 = amount0.add(amount);
         }
         {
-          const numerator1 = liquidity.mul(BigNumber.from(2).pow(96));
-          const numerator2 = slot0.sqrtPriceX96.sub(sqrtRatioAX96);
+          const Q96 = BigNumber.from(2).pow(96);
 
-          const amount = numerator1.mul(numerator2).div(slot0.sqrtPriceX96).div(sqrtRatioAX96);
+          const multiplier = slot0.sqrtPriceX96.sub(sqrtRatioAX96);
+          const numerator = liquidity.mul(multiplier);
+
+          const amount = numerator.div(Q96);
 
           amount1 = amount1.add(amount);
         }
       } else {
-        const numerator1 = liquidity.mul(BigNumber.from(2).pow(96));
-        const numerator2 = sqrtRatioBX96.sub(sqrtRatioAX96);
+        const Q96 = BigNumber.from(2).pow(96);
 
-        const amount = numerator1.mul(numerator2).div(sqrtRatioBX96).div(sqrtRatioAX96);
+        const multiplier = sqrtRatioBX96.sub(sqrtRatioAX96);
+        const numerator = liquidity.mul(multiplier);
+
+        const amount = numerator.div(Q96);
 
         amount1 = amount1.add(amount);
       }
@@ -194,7 +197,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     const slot0 = await pool.slot0();
     const sqrtPriceX96 = slot0.sqrtPriceX96;
 
-    const price = decodeSqrtX96(sqrtPriceX96, decimals);
+    const price = decodeSqrtX96(sqrtPriceX96, 10);
 
     return erc20Token0.address < erc20Token1.address
       ? [price, 1.0 / price]

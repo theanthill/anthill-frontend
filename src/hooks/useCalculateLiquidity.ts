@@ -8,18 +8,19 @@ const useCalculateLiquidity = (bank: Bank, token0In: boolean, amountIn: number) 
   const [amountOut, setAmountOut] = useState<number>(null);
 
   const fetchLiquidityAmount = useCallback(async () => {
-      const pairPrice = await antToken.getPairPrice(bank);
+    const pairPrice = await antToken.getPairPrice(bank);
 
-      const price = token0In ? pairPrice[0] : pairPrice[1];
+    const price = token0In ? pairPrice[0] : pairPrice[1];
+    const amountOut = (amountIn * price).toFixed(18);
 
-      setAmountOut(amountIn * price)
-      
-    }, [bank, token0In, amountIn, antToken],
-  );
+    setAmountOut(Number(amountOut));
+  }, [bank, token0In, amountIn, antToken]);
 
   useEffect(() => {
     if (antToken && bank && amountIn) {
-      fetchLiquidityAmount().catch((err) => console.log(`Failed to calculate liquidity amount out: ${err.stack}`));
+      fetchLiquidityAmount().catch((err) =>
+        console.log(`Failed to calculate liquidity amount out: ${err.stack}`),
+      );
     }
   }, [bank, amountIn, antToken, fetchLiquidityAmount]);
 

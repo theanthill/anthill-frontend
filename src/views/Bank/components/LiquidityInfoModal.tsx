@@ -45,7 +45,7 @@ const LiquidityInfoModal: React.FC<LiquidityInfoModalProps> = ({ onDismiss, bank
           <StyledActionSpacer/>
           <Value size='24px' value={`${userToken1Amount} ${bank.token1.symbol}`}/>
         </StyledValues>
-        <Label text={`Reedemable tokens`} />
+        <Label text={`Redeemable tokens`} />
         <StyledActionSpacer/>
         <StyledValues>
           <Value size='24px' value={`${totalToken0Amount} ${bank.token0.symbol}`}/>
