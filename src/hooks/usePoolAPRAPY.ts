@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { BigNumber } from 'bignumber.js';
+import { BigNumber } from 'ethers';
 import useAntToken from './useAntToken';
 import { Bank } from '../anthill';
 import config from '../config';
@@ -11,13 +11,14 @@ const usePoolAPRAPY = (bank: Bank) => {
   const antTokenUnlocked = antToken?.isUnlocked;
 
   const fetchRewardRate = useCallback(async () => {
-    /*const rewardRatePerSecondBN = await antToken.getBankRewardRate(bank);
-    const totalSupplyBN = await antToken.getBankTotalSupply(bank);
-    let totalSupply = new BigNumber(totalSupplyBN.toString());
-    const unit = new BigNumber(10).pow(18);
+    /*
+    const rewardRatePerSecondBN = await antToken.getBankRewardRate(bank);
+    const [token0Amount, token1Amount] = await antToken.getUserLiquidityAmounts(bank);
+
+    let totalSupply = bank.token0Name === 'ANT' ? token0Amount : token1Amount;
 
     if (totalSupply.isZero()) {
-      totalSupply = unit;
+      totalSupply = BigNumber.from(10).pow(18);
     }
 
     const rewardRatePerSecond = balanceToDecimal(rewardRatePerSecondBN);
@@ -28,47 +29,40 @@ const usePoolAPRAPY = (bank: Bank) => {
     const quoteTokenBalanceLP = await bank.token1.balanceOf(bank.depositToken.address);
     const lpTokenBalancePool = await bank.depositToken.balanceOf(bank.address);
     const lpTotalSupply = await bank.depositToken.totalSupply();
+
     const tokenDecimals = bank.token0.decimal;
     const quoteTokenDecimals = bank.token1.decimal;
 
-    const lpTokenRatio = new BigNumber(lpTokenBalancePool.toString()).div(
-      new BigNumber(lpTotalSupply.toString()),
-    );
+    const lpTokenRatio = lpTokenBalancePool.div(lpTotalSupply);
 
-    const tokenAmountTotal = new BigNumber(tokenBalanceLP.toString()).div(
-      new BigNumber(10).pow(tokenDecimals),
-    );
-    const quoteTokenAmountTotal = new BigNumber(quoteTokenBalanceLP.toString()).div(
-      new BigNumber(10).pow(quoteTokenDecimals),
+    const tokenAmountTotal = tokenBalanceLP.div(BigNumber.from(10).pow(tokenDecimals));
+    const quoteTokenAmountTotal = quoteTokenBalanceLP.div(
+      BigNumber.from(10).pow(quoteTokenDecimals),
     );
 
     //const tokenAmountPool = tokenAmountTotal.times(lpTokenRatio)
-    const quoteTokenAmountPool = quoteTokenAmountTotal.times(lpTokenRatio);
+    const quoteTokenAmountPool = quoteTokenAmountTotal.mul(lpTokenRatio);
 
-    const lpTotalInQuoteToken = quoteTokenAmountPool.times(2);
+    const lpTotalInQuoteToken = quoteTokenAmountPool.mul(2);
 
     const tokenPriceVsQuote = quoteTokenAmountTotal.div(tokenAmountTotal);
     const quoteTokenPriceE18 = await antToken.getTokenPriceInUSDC(bank.token1Name);
-    const quoteTokenPrice = new BigNumber(quoteTokenPriceE18.toString()).div(
-      new BigNumber(10).pow(18),
-    );
+    const quoteTokenPrice = quoteTokenPriceE18.div(BigNumber.from(10).pow(18));
 
-    const tokenPriceUsd = new BigNumber(quoteTokenPrice).times(tokenPriceVsQuote);
+    const tokenPriceUsd = quoteTokenPrice.mul(tokenPriceVsQuote);
 
-    const poolLiquidityUSD = lpTotalInQuoteToken.times(
-      new BigNumber(quoteTokenPrice.toString()),
-    );
+    const poolLiquidityUSD = lpTotalInQuoteToken.mul(quoteTokenPrice);
 
-    const APR_BN = new BigNumber(rewardsPerYear)
-      .times(tokenPriceUsd)
-      .times(100)
+    const APR_BN = BigNumber.from(rewardsPerYear)
+      .mul(tokenPriceUsd)
+      .mul(100)
       .div(poolLiquidityUSD);
 
     const APR = APR_BN.toNumber();
     const APY = (1 + APR / 365) ** 365 - 1;
-    */
+*/
     setAPRAPY([0, 0]);
-  }, [antToken, bank]);
+  }, []);
 
   useEffect(() => {
     if (antToken?.isUnlocked) {
