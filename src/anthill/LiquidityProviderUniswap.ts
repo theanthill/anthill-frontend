@@ -68,30 +68,6 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
     this.quoter = this.quoter.connect(signer);
   }
 
-  async getAccountLiquidity(
-    erc20Token0: ERC20,
-    erc20Token1: ERC20,
-    account: string,
-  ): Promise<Array<BigNumber>> {
-    // Get the specific liquidity for a position
-    /*const token0 = new Token(this.chainId, erc20Token0.address, erc20Token0.decimal);
-    const token1 = new Token(this.chainId, erc20Token1.address, erc20Token1.decimal);
-
-    const pair = await Fetcher.fetchPairData(token0 , token1, this.provider);
-      
-    const liquidityAmount = new TokenAmount(pair.liquidityToken, pairLiquidity.toString());
-    const totalSupplyAmount = new TokenAmount(pair.liquidityToken, totalSupply.toString());
-
-    const token0Amount = pair.getLiquidityValue(pair.token0, totalSupplyAmount, liquidityAmount, false);
-    const token1Amount = pair.getLiquidityValue(pair.token1, totalSupplyAmount, liquidityAmount, false);
-
-    const token0AmountBN = BigNumber.from(token0Amount.raw.toString());
-    const token1AmountBN = BigNumber.from(token1Amount.raw.toString());
-
-    return token0.sortsBefore(token1) ? [token0AmountBN, token1AmountBN] : [token1AmountBN, token0AmountBN];*/
-    return [BigNumber.from('19900000000000000000'), BigNumber.from('19900000000000000000')];
-  }
-
   async getTotalLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<Array<BigNumber>> {
     const pool = await this.getPool(erc20Token0, erc20Token1);
 
@@ -167,7 +143,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
       }
     }
 
-    return [amount0, amount1];
+    return erc20Token0.address < erc20Token1.address ? [amount0, amount1] : [amount1, amount0];
   }
 
   async getPoolLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<BigNumber> {

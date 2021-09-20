@@ -4,11 +4,6 @@ import ERC20 from './ERC20';
 
 export interface ILiquidityProvider {
   unlockWallet(signer: ethers.Signer): void;
-  getAccountLiquidity(
-    erc20Token0: ERC20,
-    erc20Token1: ERC20,
-    account: string,
-  ): Promise<Array<BigNumber>>;
   getTotalLiquidity(erc20Token0: ERC20, erc20Token1: ERC20): Promise<Array<BigNumber>>;
   getUserLiquidity(
     erc20Token0: ERC20,
