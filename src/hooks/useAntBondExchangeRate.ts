@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import useAntToken from './useAntToken';
 import config from '../config';
-import { BigNumber } from 'ethers';
 
 const useAntBondExchangeRate = () => {
-  const [price, setPrice] = useState<BigNumber>(BigNumber.from(0));
+  const [price, setPrice] = useState<number>(0);
   const antToken = useAntToken();
 
   const fetchAntTokenPrice = useCallback(async () => {

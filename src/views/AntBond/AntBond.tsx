@@ -16,7 +16,6 @@ import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
 import useHandleTransactionReceipt from '../../hooks/useHandleTransactionReceipt';
 import useAntBondExchangeRate from '../../hooks/useAntBondExchangeRate';
-import { balanceToDecimal } from '../../anthill/ether-utils';
 
 const AntBond: React.FC = () => {
   const { path } = useRouteMatch();
@@ -25,8 +24,7 @@ const AntBond: React.FC = () => {
   const handleTransactionReceipt = useHandleTransactionReceipt();
   const antBondStat = useAntBondStats();
 
-  const antBondExchangeRateBN = useAntBondExchangeRate();
-  const antBondExchangeRate = balanceToDecimal(antBondExchangeRateBN);
+  const antBondExchangeRate = useAntBondExchangeRate();
   const antTokenPriceRealTime = useAntTokenPriceRealTime();
   
   const ANTBPriceInANTLastEpoch = parseFloat(antBondStat?.priceInUSDCLastEpoch);
@@ -38,22 +36,22 @@ const AntBond: React.FC = () => {
     async (amount: number) => {
       const antBondAmount = amount * ANTBPriceInANTLastEpoch;
       handleTransactionReceipt(
-        antToken.buyAntBonds(amount, antBondExchangeRateBN),
+        antToken.buyAntBonds(amount),
         `Buy ${antBondAmount.toFixed(antToken.priceDecimals)} ANTB with ${amount.toFixed(antToken.priceDecimals)} ANT`
       );
     },
-    [antToken, handleTransactionReceipt, ANTBPriceInANTLastEpoch, antBondExchangeRateBN],
+    [antToken, handleTransactionReceipt, ANTBPriceInANTLastEpoch],
   );
 
   const handleRedeemAntBonds = useCallback(
     async (amount: number) => {
       const antTokenAmount = amount * ANTPriceInANTBLastEpoch;
       handleTransactionReceipt(
-        antToken.redeemAntBonds(amount, antBondExchangeRateBN),
+        antToken.redeemAntBonds(amount),
         `Redeem ${amount.toFixed(antToken.priceDecimals)} ANTB for ${antTokenAmount.toFixed(antToken.priceDecimals)} ANT`
       );  
     },
-    [antToken, antBondExchangeRateBN, ANTPriceInANTBLastEpoch, handleTransactionReceipt],
+    [antToken, ANTPriceInANTBLastEpoch, handleTransactionReceipt],
   );
 
   const antTokenIsOverPriced = useMemo(() => antBondExchangeRate > antTokenPriceRealTime, [antTokenPriceRealTime, antBondExchangeRate]);

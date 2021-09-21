@@ -107,12 +107,8 @@ export class AntToken {
   /**
    * @returns Get exchange rate for bonds in BN format
    */
-  async getAntBondExchangeRate(): Promise<BigNumber> {
-    const price = await this._getAntTokenPriceRatioTWAP();
-    const units = BigNumber.from(10).pow(18);
-    return BigNumber.from(price * 1000)
-      .mul(units)
-      .div(1000);
+  async getAntBondExchangeRate(): Promise<number> {
+    return this._getAntTokenPriceRatioTWAP();
   }
 
   /**
@@ -186,12 +182,10 @@ export class AntToken {
    * Buy Ant Bonds with Ant Token.
    * @param amount amount of Ant Token to purchase Ant Bonds with.
    */
-  async buyAntBonds(
-    amount: string | number,
-    targetPrice: BigNumber,
-  ): Promise<TransactionResponse> {
+  async buyAntBonds(amount: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
     const bondsAmount = decimalToBalance(amount);
+    const targetPrice = await Treasury.tokenPriceTWAP();
     return await Treasury.buyAntBonds(bondsAmount, targetPrice);
   }
 
@@ -199,12 +193,10 @@ export class AntToken {
    * Redeem Ant Bonds for Ant Token.
    * @param amount amount of Ant Bonds to redeem.
    */
-  async redeemAntBonds(
-    amount: string | number,
-    targetPrice: BigNumber,
-  ): Promise<TransactionResponse> {
+  async redeemAntBonds(amount: string | number): Promise<TransactionResponse> {
     const { Treasury } = this.contracts;
     const redeemAmount = decimalToBalance(amount);
+    const targetPrice = await Treasury.tokenPriceTWAP();
     return await Treasury.redeemAntBonds(redeemAmount, targetPrice);
   }
 
