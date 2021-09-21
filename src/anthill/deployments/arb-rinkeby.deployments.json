@@ -3237,7 +3237,7 @@
       ]
     },
     "AntToken": {
-      "address": "0xf75AacA3dCAd70F943Cd68aaE9f90ca05853cabF",
+      "address": "0x2c7Ce72a5AbeBA489f4bDa754ccDBd10c60c8B89",
       "abi": [
         {
           "inputs": [],
@@ -3897,7 +3897,7 @@
       ]
     },
     "AntBond": {
-      "address": "0x7F44d71514B9056bbDC2D70a324aaBFCA23F2671",
+      "address": "0xEA33AE833A26802Ad22ec35eFd50D7ef19B829F8",
       "abi": [
         {
           "inputs": [],
@@ -4557,7 +4557,7 @@
       ]
     },
     "AntShare": {
-      "address": "0x9105d47480a7CC08b65E8097ADdD3737CE58AB1E",
+      "address": "0xcAa5ECf956BEf3bB62Ff95f49e5420E99D2a616a",
       "abi": [
         {
           "inputs": [],
@@ -5217,7 +5217,7 @@
       ]
     },
     "MockUSDC": {
-      "address": "0xAe9231C1ca3c44e3C854E3037e93E116a2FFfc0d",
+      "address": "0xf04B85BC1e8bE4542B720C443507eD21dEc46c92",
       "abi": [
         {
           "inputs": [],
@@ -5877,7 +5877,7 @@
       ]
     },
     "MockETH": {
-      "address": "0xA54CB13A91fcc2765514Fd188CeFe995cEf41D5A",
+      "address": "0x2117b4bB853088e52eF040f39b15FADEf488ce52",
       "abi": [
         {
           "inputs": [],
@@ -6537,7 +6537,7 @@
       ]
     },
     "TokenFaucet": {
-      "address": "0xCf33dFCd8Ea9e6778a048baC60858A5C297E5cd1",
+      "address": "0xb0eac9666BC3A1d2f7782772Ccf56f4F79fD36fd",
       "abi": [
         {
           "inputs": [
@@ -6651,7 +6651,7 @@
       ]
     },
     "MockStdReference": {
-      "address": "0x9247c834d641E141dEdcf0e415ef268cB0755Ab1",
+      "address": "0xAA462eed0c9A1aD21840bAD414181dE8118Cfa8E",
       "abi": [
         {
           "inputs": [],
@@ -6808,7 +6808,7 @@
       ]
     },
     "Boardroom": {
-      "address": "0x0a63363c8675735Fc5eD359eB831364E984B6Cc3",
+      "address": "0xEba214382a82136cDc33FF2935b6864663FA4449",
       "abi": [
         {
           "inputs": [
@@ -7404,7 +7404,7 @@
       ]
     },
     "Oracle": {
-      "address": "0x6C9b1D4207e568922C7FaA65F23dC2BA3B625969",
+      "address": "0x534523bc4c7313fa3b0B176c5094dd5d28387f56",
       "abi": [
         {
           "inputs": [
@@ -8075,7 +8075,7 @@
       ]
     },
     "ContributionPool": {
-      "address": "0x7CF5c93BC5686D8B01c8c33FCB7A4b810aa9292B",
+      "address": "0x52009A745D5d92f41a5576f344AdC1644a1546FA",
       "abi": [
         {
           "anonymous": false,
@@ -8518,7 +8518,7 @@
       ]
     },
     "Treasury": {
-      "address": "0xb1aFE681fAc8ccD2e9A35d10bc5B35EdaAa117b4",
+      "address": "0x134435D812f22E0fb28F87Ca6dDC077934538743",
       "abi": [
         {
           "inputs": [
@@ -9362,7 +9362,7 @@
       ]
     },
     "TreasuryTimelock": {
-      "address": "0x8de5D5982fd9BE4896234d1aC06794B1a36d819d",
+      "address": "0xdd588E6E98fe60b89daC68FEDdEAA7387b93CE85",
       "abi": [
         {
           "inputs": [
@@ -10171,7 +10171,7 @@
       ]
     },
     "OperatorTimelock": {
-      "address": "0x92B22dc5A91430e93b41B7f9283322991B89C770",
+      "address": "0xB830701c24c95C5E676B4d38cf51d8Dd4953DC45",
       "abi": [
         {
           "inputs": [
@@ -10980,7 +10980,7 @@
       ]
     },
     "USDCANTPoolStakerANT": {
-      "address": "0x0d6e2EF7547Fa109fdf36Fb4BB4367A5B7ab2122",
+      "address": "0x9b80f0d40afdd69F9B3d7354c52D1941eE90888A",
       "abi": [
         {
           "inputs": [
@@ -11538,7 +11538,7 @@
       ]
     },
     "ETHANTPoolStakerANT": {
-      "address": "0xdD343f13114486EC108662acA9004249F64D5F09",
+      "address": "0x9B4b6E34424beD53256454F77D091929f3f07b42",
       "abi": [
         {
           "inputs": [
@@ -12096,7 +12096,7 @@
       ]
     },
     "USDCANTPoolHelper": {
-      "address": "0x291742Ef9Ae157EE73570f1694A40a3403710F6b",
+      "address": "0xd3C6F98FF58b38dc697139926249C109a7b8125D",
       "abi": [
         {
           "inputs": [
@@ -12430,7 +12430,7 @@
       ]
     },
     "ETHANTPoolHelper": {
-      "address": "0x85149922C3f6091445237B4BAE16F13A89292A24",
+      "address": "0x2138Ebef4cFe4A59CC6683c4BDd5f181C2447a1f",
       "abi": [
         {
           "inputs": [
