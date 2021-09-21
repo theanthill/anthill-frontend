@@ -8,7 +8,7 @@ import CardIcon from '../../../components/CardIcon';
 
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 
-import { getBalance } from '../../../utils/formatBalance';
+import { getBalance, getDisplayBalance } from '../../../utils/formatBalance';
 
 import TokenSymbol from '../../../components/TokenSymbol';
 import { Bank } from '../../../anthill';
@@ -59,6 +59,9 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
     
   }, [])
   
+  const balanceA = Number(getDisplayBalance(tokenABalance, 18, 6));
+  const balanceB = Number(getDisplayBalance(tokenBBalance, 18, 6));
+
   const handleChangeSwapDirection = useCallback(() => {
     setToken0In(!token0In)
   }, [setToken0In, token0In])
@@ -138,7 +141,7 @@ const AddLiquidity: React.FC<StakeProps> = ({ bank }) => {
                   <StyledCardActions>
                     <>
                       <Button
-                        disabled={amountToken0 === 0 || amountToken1 === 0 || amountToken0 > getBalance(tokenABalance) || amountToken1 > getBalance(tokenBBalance)}
+                        disabled={amountToken0 === 0 || amountToken1 === 0 || amountToken0 > balanceA || amountToken1 > balanceB}
                         onClick={handleAddLiquidity}
                         text={`Add Liquidity & Stake`}
                       />
