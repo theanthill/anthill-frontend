@@ -108,7 +108,9 @@ export class AntToken {
    * @returns Get exchange rate for bonds in BN format
    */
   async getAntBondExchangeRate(): Promise<number> {
-    return this._getAntTokenPriceRatioTWAP();
+    const { Oracle } = this.contracts;
+    const price = await Oracle.priceTWAP(this.tokens.ANT.address);
+    return balanceToDecimal(price);
   }
 
   /**
@@ -164,11 +166,10 @@ export class AntToken {
    * @returns Ant Bond price in USDC and total supply
    */
   async getAntBondStat(): Promise<TokenStat> {
-    const antTokenPriceEpoch = await this._getAntTokenPriceRatioTWAP();
+    const antTokenPriceEpoch = await this.getAntBondExchangeRate();
     const antTokenPriceRealTime = await this._getAntTokenPriceRatioLatest();
     const antBondPriceEpoch = 1.0 / antTokenPriceEpoch;
     const antBondPriceRealTime = 1.0 / antTokenPriceRealTime;
-
     return {
       priceInUSDCLastEpoch: antBondPriceEpoch.toFixed(this.priceDecimals),
       priceInUSDCRealTime: antBondPriceRealTime.toFixed(this.priceDecimals),
