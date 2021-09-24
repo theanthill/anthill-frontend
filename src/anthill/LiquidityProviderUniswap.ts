@@ -216,7 +216,7 @@ export class LiquidityProviderUniswap implements ILiquidityProvider {
   }
 
   async getPool(erc20Token0: ERC20, erc20Token1: ERC20): Promise<Contract> {
-    let key = erc20Token0.address + erc20Token1;
+    let key = erc20Token0.address + erc20Token1.address;
     if (erc20Token0.address > erc20Token1.address) {
       key = erc20Token1.address + erc20Token0.address;
     }
