@@ -3237,7 +3237,7 @@
       ]
     },
     "AntToken": {
-      "address": "0x927B180f4d80De2B03335bBD9850A7b7933c5fA9",
+      "address": "0x5Ff1B92ED93778e256F13F2f83bD93f6B672aED6",
       "abi": [
         {
           "inputs": [],
@@ -3897,7 +3897,7 @@
       ]
     },
     "AntBond": {
-      "address": "0x11bE9864386a070b6485798aBeb16806618fcd82",
+      "address": "0x3491086801b0F96C3e5Ed9EDc1732c6d72e012B8",
       "abi": [
         {
           "inputs": [],
@@ -4557,7 +4557,7 @@
       ]
     },
     "AntShare": {
-      "address": "0xbEd414ca0b0D528d470926D383fCaF4951cAd3Dd",
+      "address": "0x5A3Bb957c4420E02212C095A9E542Dcb27f35aA3",
       "abi": [
         {
           "inputs": [],
@@ -5217,7 +5217,7 @@
       ]
     },
     "MockUSDC": {
-      "address": "0x57d2bb68a28687acF5Fe3c70007Bd308b91B32fC",
+      "address": "0x3B89611ef5CE60e19436f913d9fdd1651CcBb3e3",
       "abi": [
         {
           "inputs": [],
@@ -5877,7 +5877,7 @@
       ]
     },
     "MockETH": {
-      "address": "0xeE927d1DD5C54487ffaCa846e3683cdF211A9950",
+      "address": "0x4e8B8e1c10c44bB76E37eD16Dd4FE155d2358070",
       "abi": [
         {
           "inputs": [],
@@ -6537,7 +6537,7 @@
       ]
     },
     "MockStdReference": {
-      "address": "0x6A09c71252E97E63e90eB7AeB84361E19C713922",
+      "address": "0x7E7545a0d8ee9A9EC121d217D5a5fDd76C84904E",
       "abi": [
         {
           "inputs": [],
@@ -6694,7 +6694,7 @@
       ]
     },
     "TokenFaucet": {
-      "address": "0xa584333890Ee3470eB39814BE1B2A6a759bD960B",
+      "address": "0xbE7c3553eFCaF21C3D5dc2bcccE0870958ccc5C8",
       "abi": [
         {
           "inputs": [
@@ -6844,7 +6844,7 @@
       ]
     },
     "Boardroom": {
-      "address": "0x11AA803bB7B68Dc10E1ec8D74F7667e80ED4F8c0",
+      "address": "0xCD879caf9f73259Ea36Cb69D30e67E2F868b93F6",
       "abi": [
         {
           "inputs": [
@@ -7440,7 +7440,7 @@
       ]
     },
     "Oracle": {
-      "address": "0x4366C6Af44032e5e28d991702015dA47338Cfa56",
+      "address": "0x8D8eb97f91c5653E894f0b8A8FB1d96a8E62e3Cd",
       "abi": [
         {
           "inputs": [
@@ -7548,15 +7548,9 @@
           "inputs": [
             {
               "indexed": false,
-              "internalType": "uint256",
-              "name": "price0CumulativeLast",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price1CumulativeLast",
-              "type": "uint256"
+              "internalType": "uint160",
+              "name": "averageSqrtPriceX96",
+              "type": "uint160"
             }
           ],
           "name": "Updated",
@@ -7642,12 +7636,12 @@
         },
         {
           "inputs": [],
-          "name": "bandOracle",
+          "name": "averageSqrtPriceX96",
           "outputs": [
             {
-              "internalType": "contract IStdReference",
+              "internalType": "uint160",
               "name": "",
-              "type": "address"
+              "type": "uint160"
             }
           ],
           "stateMutability": "view",
@@ -7655,12 +7649,12 @@
         },
         {
           "inputs": [],
-          "name": "blockTimestampLast",
+          "name": "bandOracle",
           "outputs": [
             {
-              "internalType": "uint32",
+              "internalType": "contract IStdReference",
               "name": "",
-              "type": "uint32"
+              "type": "address"
             }
           ],
           "stateMutability": "view",
@@ -7886,58 +7880,6 @@
         },
         {
           "inputs": [],
-          "name": "price0Average",
-          "outputs": [
-            {
-              "internalType": "uint224",
-              "name": "_x",
-              "type": "uint224"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "price0CumulativeLast",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "price1Average",
-          "outputs": [
-            {
-              "internalType": "uint224",
-              "name": "_x",
-              "type": "uint224"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "price1CumulativeLast",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
           "name": "priceDollar",
           "outputs": [
             {
@@ -8111,7 +8053,7 @@
       ]
     },
     "ContributionPool": {
-      "address": "0x11DE9644Ffe59aad65e33DD137253eA86f24A57F",
+      "address": "0x9857f937E11b4F9341d5e525e0756028159325e3",
       "abi": [
         {
           "anonymous": false,
@@ -8554,7 +8496,7 @@
       ]
     },
     "Treasury": {
-      "address": "0x2F320d0054DEe39E4df56AAA365Ce2FC06ef2965",
+      "address": "0xf46Ba57DEDa9070E819f89B7f8EA17E9922A6334",
       "abi": [
         {
           "inputs": [
@@ -9398,7 +9340,7 @@
       ]
     },
     "TreasuryTimelock": {
-      "address": "0xB0D860415BF5bD824916bE1D3CF2772a16b4240E",
+      "address": "0x8C6048581259D2A1B6A56C3eE3768a72a4F6d1DF",
       "abi": [
         {
           "inputs": [
@@ -10207,7 +10149,7 @@
       ]
     },
     "OperatorTimelock": {
-      "address": "0x301E7f8dE7e5ef2D549fe095dd8E97857b6B1FeF",
+      "address": "0xf15f42461Daa466A994Eec9C2e7B04c1954CFd8c",
       "abi": [
         {
           "inputs": [
@@ -11016,7 +10958,7 @@
       ]
     },
     "USDCANTPoolStakerANT": {
-      "address": "0xADD589e15B91C99b24d78b7AB2C3Bc4FeaaeBa20",
+      "address": "0xeBb947B52239D5B61f1A45FE3a5063E17cf9a722",
       "abi": [
         {
           "inputs": [
@@ -11574,7 +11516,7 @@
       ]
     },
     "ETHANTPoolStakerANT": {
-      "address": "0x469C0597503b19a84D50E3c2c7e50747a39E0057",
+      "address": "0x116edD122cB59B343dcbDD58837C843e76245368",
       "abi": [
         {
           "inputs": [
@@ -12132,7 +12074,7 @@
       ]
     },
     "USDCANTPoolHelper": {
-      "address": "0x4c57C76396B427495362e66A3E1099fc3E76B4FB",
+      "address": "0xB535d8f3d45998E1377ea44Ad0092FbB2e511ce3",
       "abi": [
         {
           "inputs": [
@@ -12466,7 +12408,7 @@
       ]
     },
     "ETHANTPoolHelper": {
-      "address": "0x1F7ECf6f340659a71a08eD2843F53F1B98678b2B",
+      "address": "0x892855e66bea2c51b1a799103960dF3D2e53Bc4a",
       "abi": [
         {
           "inputs": [
